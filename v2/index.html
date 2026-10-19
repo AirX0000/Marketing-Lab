@@ -1439,7 +1439,7 @@ textarea.form-control {
   <!-- Main Navigation Header -->
   <header class="site-header">
     <div class="container header-content">
-      <a href="#/home" class="brand-wrapper" aria-label="Marketing Insights Lab Home">
+      <a href="#/home" class="brand-wrapper" aria-label="Marketing Insights Lab Home" onclick="if(window.app){window.app.navigate('#/home');return false;}">
         <img src="assets/logo.png" alt="British Management University Marketing Insights Lab logo" class="brand-logo">
         <div class="brand-text">
           <span class="brand-title">Marketing Insights Lab</span>
@@ -1449,16 +1449,16 @@ textarea.form-control {
 
       <!-- Desktop Navigation Links -->
       <nav class="nav-menu" aria-label="Primary navigation">
-        <a href="#/home" class="nav-link active">Home</a>
-        <a href="#/articles" class="nav-link">Publications</a>
-        <a href="#/team" class="nav-link">The Team</a>
-        <a href="#/events" class="nav-link">Events</a>
-        <a href="#/resources" class="nav-link">Resources</a>
-        <a href="#/about" class="nav-link">About</a>
-        <a href="#/bookmarks" class="nav-link">
+        <a href="#/home" class="nav-link active" onclick="if(window.app){window.app.navigate('#/home');return false;}">Home</a>
+        <a href="#/articles" class="nav-link" onclick="if(window.app){window.app.navigate('#/articles');return false;}">Publications</a>
+        <a href="#/team" class="nav-link" onclick="if(window.app){window.app.navigate('#/team');return false;}">The Team</a>
+        <a href="#/events" class="nav-link" onclick="if(window.app){window.app.navigate('#/events');return false;}">Events</a>
+        <a href="#/resources" class="nav-link" onclick="if(window.app){window.app.navigate('#/resources');return false;}">Resources</a>
+        <a href="#/about" class="nav-link" onclick="if(window.app){window.app.navigate('#/about');return false;}">About</a>
+        <a href="#/bookmarks" class="nav-link" onclick="if(window.app){window.app.navigate('#/bookmarks');return false;}">
           Reading List <span id="bookmark-count-badge" class="nav-badge" style="display:none">0</span>
         </a>
-        <a href="#/admin" id="admin-nav-item" class="nav-link" style="display:none;color:var(--accent-primary)">
+        <a href="#/admin" id="admin-nav-item" class="nav-link" style="display:none;color:var(--accent-primary)" onclick="if(window.app){window.app.navigate('#/admin');return false;}">
           Admin ⚙
         </a>
       </nav>
@@ -1468,7 +1468,7 @@ textarea.form-control {
         <button id="theme-toggle-btn" class="icon-btn" aria-label="Toggle light or dark theme" title="Toggle theme">
           🌙
         </button>
-        <a href="#/join" class="btn btn-primary btn-sm">Join the Lab</a>
+        <a href="#/join" class="btn btn-primary btn-sm" onclick="if(window.app){window.app.navigate('#/join');return false;}">Join the Lab</a>
         <button id="mobile-nav-toggle" class="icon-btn mobile-toggle" aria-label="Open navigation menu">
           ☰
         </button>
@@ -1479,14 +1479,15 @@ textarea.form-control {
   <!-- Mobile Drawer Navigation -->
   <div id="mobile-drawer" class="mobile-drawer">
     <nav class="mobile-nav-links">
-      <a href="#/home" onclick="document.getElementById('mobile-drawer').classList.remove('open')">Home</a>
-      <a href="#/articles" onclick="document.getElementById('mobile-drawer').classList.remove('open')">Publications</a>
-      <a href="#/team" onclick="document.getElementById('mobile-drawer').classList.remove('open')">The Team</a>
-      <a href="#/events" onclick="document.getElementById('mobile-drawer').classList.remove('open')">Events</a>
-      <a href="#/resources" onclick="document.getElementById('mobile-drawer').classList.remove('open')">Resources</a>
-      <a href="#/about" onclick="document.getElementById('mobile-drawer').classList.remove('open')">About</a>
-      <a href="#/bookmarks" onclick="document.getElementById('mobile-drawer').classList.remove('open')">Reading List</a>
-      <a href="#/join" onclick="document.getElementById('mobile-drawer').classList.remove('open')">Apply to Join</a>
+      <a href="#/home" onclick="if(window.app){window.app.navigate('#/home');return false;}">Home</a>
+      <a href="#/articles" onclick="if(window.app){window.app.navigate('#/articles');return false;}">Publications</a>
+      <a href="#/team" onclick="if(window.app){window.app.navigate('#/team');return false;}">The Team</a>
+      <a href="#/events" onclick="if(window.app){window.app.navigate('#/events');return false;}">Events</a>
+      <a href="#/resources" onclick="if(window.app){window.app.navigate('#/resources');return false;}">Resources</a>
+      <a href="#/about" onclick="if(window.app){window.app.navigate('#/about');return false;}">About</a>
+      <a href="#/bookmarks" onclick="if(window.app){window.app.navigate('#/bookmarks');return false;}">Reading List</a>
+      <a href="#/admin" onclick="if(window.app){window.app.navigate('#/admin');return false;}">Admin ⚙</a>
+      <a href="#/join" onclick="if(window.app){window.app.navigate('#/join');return false;}">Apply to Join</a>
     </nav>
   </div>
 
@@ -1917,7 +1918,7 @@ textarea.form-control {
         <div>
           © 2026 Marketing Insights Lab · British Management University. All rights reserved.
           <!-- Secret lock icon for administrator authentication -->
-          <a href="#/admin" style="opacity:0.25;margin-left:8px;text-decoration:none" title="Admin access" aria-label="Admin portal">🔒</a>
+          <a href="#/admin" onclick="if(window.app){window.app.navigate('#/admin');return false;}" style="opacity:0.25;margin-left:8px;text-decoration:none" title="Admin access" aria-label="Admin portal">🔒</a>
         </div>
         <div style="display:flex;gap:18px">
           <a href="#/about">Editorial Policy</a>
@@ -2410,25 +2411,54 @@ class App {
     }
   }
 
+  navigate(routeOrHash) {
+    let cleanHash = routeOrHash || '#/home';
+    if (!cleanHash.startsWith('#')) {
+      if (cleanHash.startsWith('/')) cleanHash = cleanHash.slice(1);
+      cleanHash = '#/' + cleanHash;
+    }
+
+    try {
+      const drawer = document.getElementById('mobile-drawer');
+      if (drawer && drawer.classList.contains('open')) {
+        drawer.classList.remove('open');
+      }
+    } catch (e) {}
+
+    try {
+      if (typeof window !== 'undefined' && window.location && window.location.protocol === 'file:') {
+        window.location.hash = cleanHash;
+      } else if (typeof window !== 'undefined' && window.history && window.history.pushState) {
+        window.history.pushState(null, '', cleanHash);
+      } else if (typeof location !== 'undefined') {
+        location.hash = cleanHash;
+      }
+    } catch (e) {
+      try { if (typeof location !== 'undefined') location.hash = cleanHash; } catch(err) {}
+    }
+    this.handleRoute();
+  }
+
   initRouter() {
     if (typeof window !== 'undefined') {
       window.addEventListener('hashchange', () => this.handleRoute());
+      window.addEventListener('popstate', () => this.handleRoute());
       window.addEventListener('scroll', () => this.handleScroll(), { passive: true });
 
-      // Immediate click delegation for in-page navigation links
+      // Immediate click delegation for all #/... links
       document.addEventListener('click', (e) => {
         const link = e.target && e.target.closest && e.target.closest('a[href^="#/"]');
         if (link) {
           const href = link.getAttribute('href');
-          if (href && (location.hash === href || location.hash === '')) {
-            setTimeout(() => this.handleRoute(), 10);
+          if (href) {
+            e.preventDefault();
+            this.navigate(href);
           }
         }
       });
     }
     this.handleRoute();
   }
-
   handleScroll() {
     const progressBar = document.getElementById('reading-progress');
     if (!progressBar || typeof window === 'undefined') return;
@@ -2503,10 +2533,10 @@ class App {
   }
 
   updateNavLinks(currentRoute) {
-    document.querySelectorAll('.nav-link').forEach(link => {
+    document.querySelectorAll('.nav-link, .mobile-nav-links a').forEach(link => {
       const href = link.getAttribute('href') || '';
       const target = href.replace(/^#\/?/, '');
-      if (target === currentRoute || (currentRoute === 'home' && target === '')) {
+      if (target === currentRoute || (currentRoute === 'home' && (target === '' || target === 'home'))) {
         link.classList.add('active');
       } else {
         link.classList.remove('active');
@@ -3589,7 +3619,7 @@ END:VCALENDAR`;
     const dialog = document.getElementById(id);
     if (!dialog) return;
     if (typeof dialog.showModal === 'function') {
-      try { this.openModal(dialog.id || 'article-modal'); return; } catch (e) {}
+      try { dialog.showModal(); return; } catch (e) {}
     }
     dialog.setAttribute('open', '');
     dialog.style.display = 'block';

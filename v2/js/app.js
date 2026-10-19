@@ -478,25 +478,54 @@ class App {
     }
   }
 
+  navigate(routeOrHash) {
+    let cleanHash = routeOrHash || '#/home';
+    if (!cleanHash.startsWith('#')) {
+      if (cleanHash.startsWith('/')) cleanHash = cleanHash.slice(1);
+      cleanHash = '#/' + cleanHash;
+    }
+
+    try {
+      const drawer = document.getElementById('mobile-drawer');
+      if (drawer && drawer.classList.contains('open')) {
+        drawer.classList.remove('open');
+      }
+    } catch (e) {}
+
+    try {
+      if (typeof window !== 'undefined' && window.location && window.location.protocol === 'file:') {
+        window.location.hash = cleanHash;
+      } else if (typeof window !== 'undefined' && window.history && window.history.pushState) {
+        window.history.pushState(null, '', cleanHash);
+      } else if (typeof location !== 'undefined') {
+        location.hash = cleanHash;
+      }
+    } catch (e) {
+      try { if (typeof location !== 'undefined') location.hash = cleanHash; } catch(err) {}
+    }
+    this.handleRoute();
+  }
+
   initRouter() {
     if (typeof window !== 'undefined') {
       window.addEventListener('hashchange', () => this.handleRoute());
+      window.addEventListener('popstate', () => this.handleRoute());
       window.addEventListener('scroll', () => this.handleScroll(), { passive: true });
 
-      // Immediate click delegation for in-page navigation links
+      // Immediate click delegation for all #/... links
       document.addEventListener('click', (e) => {
         const link = e.target && e.target.closest && e.target.closest('a[href^="#/"]');
         if (link) {
           const href = link.getAttribute('href');
-          if (href && (location.hash === href || location.hash === '')) {
-            setTimeout(() => this.handleRoute(), 10);
+          if (href) {
+            e.preventDefault();
+            this.navigate(href);
           }
         }
       });
     }
     this.handleRoute();
   }
-
   handleScroll() {
     const progressBar = document.getElementById('reading-progress');
     if (!progressBar || typeof window === 'undefined') return;
@@ -571,10 +600,10 @@ class App {
   }
 
   updateNavLinks(currentRoute) {
-    document.querySelectorAll('.nav-link').forEach(link => {
+    document.querySelectorAll('.nav-link, .mobile-nav-links a').forEach(link => {
       const href = link.getAttribute('href') || '';
       const target = href.replace(/^#\/?/, '');
-      if (target === currentRoute || (currentRoute === 'home' && target === '')) {
+      if (target === currentRoute || (currentRoute === 'home' && (target === '' || target === 'home'))) {
         link.classList.add('active');
       } else {
         link.classList.remove('active');
@@ -1657,7 +1686,7 @@ END:VCALENDAR`;
     const dialog = document.getElementById(id);
     if (!dialog) return;
     if (typeof dialog.showModal === 'function') {
-      try { this.openModal(dialog.id || 'article-modal'); return; } catch (e) {}
+      try { dialog.showModal(); return; } catch (e) {}
     }
     dialog.setAttribute('open', '');
     dialog.style.display = 'block';
