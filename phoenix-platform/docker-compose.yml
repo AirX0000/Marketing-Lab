@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: phoenix_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: phoenix_db
+      POSTGRES_USER: phoenix_user
+      POSTGRES_PASSWORD: phoenix_secure_password_2026
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U phoenix_user -d phoenix_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: phoenix_backend
+    restart: always
+    environment:
+      FLASK_ENV: production
+      DATABASE_URL: postgresql://phoenix_user:phoenix_secure_password_2026@db:5432/phoenix_db
+      SECRET_KEY: phoenix-prod-crypto-secret-key-9a8b7c6d5e
+      JWT_SECRET_KEY: phoenix-jwt-prod-crypto-key-1a2b3c4d5e
+      CORS_ALLOWED_ORIGINS: http://localhost:5173,http://localhost:3000
+      PORT: 5000
+    ports:
+      - "5000:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
