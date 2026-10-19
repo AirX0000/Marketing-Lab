@@ -359,7 +359,33 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
 
 
 
-// Application State
+// Safe Storage Helper (avoids DOMException / SecurityError on file://, Safari Private, strict iframes)
+const safeStorage = {
+  get(type, key) {
+    try {
+      if (typeof window !== 'undefined' && window[type]) {
+        return window[type].getItem(key);
+      }
+    } catch (e) {}
+    return null;
+  },
+  set(type, key, value) {
+    try {
+      if (typeof window !== 'undefined' && window[type]) {
+        window[type].setItem(key, value);
+      }
+    } catch (e) {}
+  },
+  remove(type, key) {
+    try {
+      if (typeof window !== 'undefined' && window[type]) {
+        window[type].removeItem(key);
+      }
+    } catch (e) {}
+  }
+};
+
+// Application State Keys
 const STATE_KEY = 'marketing_lab_v2_data';
 const BOOKMARKS_KEY = 'marketing_lab_v2_bookmarks';
 const AUTH_KEY = 'marketing_lab_v2_auth';
@@ -369,7 +395,7 @@ class App {
   constructor() {
     this.data = this.loadData();
     this.bookmarks = this.loadBookmarks();
-    this.isAdmin = sessionStorage.getItem(AUTH_KEY) === '1';
+    this.isAdmin = safeStorage.get('sessionStorage', AUTH_KEY) === '1';
     this.currentCategory = 'All';
     this.searchQuery = '';
     this.currentTeamDept = 'All';
@@ -381,7 +407,7 @@ class App {
 
   loadData() {
     try {
-      const saved = localStorage.getItem(STATE_KEY);
+      const saved = safeStorage.get('localStorage', STATE_KEY);
       if (saved) {
         return JSON.parse(saved);
       }
@@ -393,7 +419,7 @@ class App {
 
   saveData() {
     try {
-      localStorage.setItem(STATE_KEY, JSON.stringify(this.data));
+      safeStorage.set('localStorage', STATE_KEY, JSON.stringify(this.data));
     } catch (e) {
       console.error('Storage error', e);
     }
@@ -401,7 +427,7 @@ class App {
 
   loadBookmarks() {
     try {
-      const b = localStorage.getItem(BOOKMARKS_KEY);
+      const b = safeStorage.get('localStorage', BOOKMARKS_KEY);
       return b ? JSON.parse(b) : [];
     } catch (e) {
       return [];
@@ -410,46 +436,70 @@ class App {
 
   saveBookmarks() {
     try {
-      localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(this.bookmarks));
+      safeStorage.set('localStorage', BOOKMARKS_KEY, JSON.stringify(this.bookmarks));
       this.updateBookmarkBadge();
     } catch (e) {}
   }
 
   initTheme() {
-    const savedTheme = localStorage.getItem(THEME_KEY);
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const theme = savedTheme || (prefersDark ? 'dark' : 'light');
-    document.documentElement.setAttribute('data-theme', theme);
-    this.updateThemeButton();
+    try {
+      const savedTheme = safeStorage.get('localStorage', THEME_KEY);
+      let prefersDark = false;
+      if (typeof window !== 'undefined' && window.matchMedia && typeof window.matchMedia === 'function') {
+        prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      }
+      const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+      if (typeof document !== 'undefined' && document.documentElement) {
+        document.documentElement.setAttribute('data-theme', theme);
+      }
+      this.updateThemeButton();
+    } catch (e) {}
   }
 
   toggleTheme() {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem(THEME_KEY, next);
-    this.updateThemeButton();
-    this.showToast(`Switched to ${next} mode`);
+    try {
+      const current = (document.documentElement && document.documentElement.getAttribute('data-theme')) || 'light';
+      const next = current === 'dark' ? 'light' : 'dark';
+      if (document.documentElement) {
+        document.documentElement.setAttribute('data-theme', next);
+      }
+      safeStorage.set('localStorage', THEME_KEY, next);
+      this.updateThemeButton();
+      this.showToast(`Switched to ${next} mode`);
+    } catch (e) {}
   }
 
   updateThemeButton() {
     const btn = document.getElementById('theme-toggle-btn');
     if (btn) {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const isDark = document.documentElement && document.documentElement.getAttribute('data-theme') === 'dark';
       btn.innerHTML = isDark ? '☀️' : '🌙';
       btn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
     }
   }
 
   initRouter() {
-    window.addEventListener('hashchange', () => this.handleRoute());
-    window.addEventListener('scroll', () => this.handleScroll(), { passive: true });
+    if (typeof window !== 'undefined') {
+      window.addEventListener('hashchange', () => this.handleRoute());
+      window.addEventListener('scroll', () => this.handleScroll(), { passive: true });
+
+      // Immediate click delegation for in-page navigation links
+      document.addEventListener('click', (e) => {
+        const link = e.target && e.target.closest && e.target.closest('a[href^="#/"]');
+        if (link) {
+          const href = link.getAttribute('href');
+          if (href && (location.hash === href || location.hash === '')) {
+            setTimeout(() => this.handleRoute(), 10);
+          }
+        }
+      });
+    }
     this.handleRoute();
   }
 
   handleScroll() {
     const progressBar = document.getElementById('reading-progress');
-    if (!progressBar) return;
+    if (!progressBar || typeof window === 'undefined') return;
     const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
     if (totalHeight <= 0) {
       progressBar.style.width = '0%';
@@ -460,50 +510,63 @@ class App {
   }
 
   handleRoute() {
-    const hash = location.hash.replace(/^#\/?/, '') || 'home';
-    const parts = hash.split('/');
-    const route = parts[0] || 'home';
-    const param = parts[1];
+    try {
+      const fullHash = (typeof location !== 'undefined' && location.hash ? location.hash.replace(/^#[/]?/, '') : '') || 'home';
+      const [pathOnly, queryString] = fullHash.split('?');
+      const parts = (pathOnly || 'home').split('/');
+      const route = parts[0] || 'home';
+      const param = parts[1];
 
-    this.updateNavLinks(route);
-    window.scrollTo({ top: 0, behavior: 'instant' });
+      this.updateNavLinks(route);
+      try {
+        if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+          window.scrollTo(0, 0);
+        }
+      } catch (e) {}
 
-    const appEl = document.getElementById('app');
-    if (!appEl) return;
+      const appEl = document.getElementById('app');
+      if (!appEl) return;
 
-    switch (route) {
-      case 'home':
+      switch (route) {
+        case 'home':
+          this.renderHome(appEl);
+          break;
+        case 'articles':
+          this.renderArticles(appEl, queryString);
+          break;
+        case 'article':
+          this.renderArticleDetail(appEl, param);
+          break;
+        case 'team':
+          this.renderTeam(appEl, param);
+          break;
+        case 'events':
+          this.renderEvents(appEl);
+          break;
+        case 'resources':
+          this.renderResources(appEl);
+          break;
+        case 'about':
+          this.renderAbout(appEl);
+          break;
+        case 'join':
+          this.renderJoin(appEl);
+          break;
+        case 'bookmarks':
+          this.renderBookmarks(appEl);
+          break;
+        case 'admin':
+          this.renderAdmin(appEl);
+          break;
+        default:
+          this.renderHome(appEl);
+      }
+    } catch (err) {
+      console.error('Routing error:', err);
+      const appEl = document.getElementById('app');
+      if (appEl && (!appEl.innerHTML || !appEl.innerHTML.trim())) {
         this.renderHome(appEl);
-        break;
-      case 'articles':
-        this.renderArticles(appEl);
-        break;
-      case 'article':
-        this.renderArticleDetail(appEl, param);
-        break;
-      case 'team':
-        this.renderTeam(appEl, param);
-        break;
-      case 'events':
-        this.renderEvents(appEl);
-        break;
-      case 'resources':
-        this.renderResources(appEl);
-        break;
-      case 'about':
-        this.renderAbout(appEl);
-        break;
-      case 'join':
-        this.renderJoin(appEl);
-        break;
-      case 'bookmarks':
-        this.renderBookmarks(appEl);
-        break;
-      case 'admin':
-        this.renderAdmin(appEl);
-        break;
-      default:
-        this.renderHome(appEl);
+      }
     }
   }
 
@@ -778,10 +841,15 @@ class App {
     `;
   }
 
-  renderArticles(container) {
-    const urlParams = new URLSearchParams(location.hash.split('?')[1] || '');
-    if (urlParams.has('cat')) {
-      this.currentCategory = urlParams.get('cat');
+  renderArticles(container, queryString) {
+    const qStr = queryString || (typeof location !== 'undefined' && location.hash && location.hash.includes('?') ? location.hash.split('?')[1] : '');
+    if (qStr) {
+      try {
+        const urlParams = new URLSearchParams(qStr);
+        if (urlParams.has('cat')) {
+          this.currentCategory = urlParams.get('cat');
+        }
+      } catch (e) {}
     }
 
     const filtered = this.data.posts.filter(p => {
@@ -1356,7 +1424,7 @@ class App {
     const expected = this.data.cfg.adminPass || 'admin123';
     if (input === expected) {
       this.isAdmin = true;
-      sessionStorage.setItem(AUTH_KEY, '1');
+      safeStorage.set('sessionStorage', AUTH_KEY, '1');
       this.showToast('Authentication successful!', 'success');
       this.handleRoute();
     } else {
@@ -1367,7 +1435,7 @@ class App {
 
   handleAdminLogout() {
     this.isAdmin = false;
-    sessionStorage.removeItem(AUTH_KEY);
+    safeStorage.remove('sessionStorage', AUTH_KEY);
     this.showToast('Logged out of admin mode');
     location.hash = '#/home';
   }
@@ -1399,7 +1467,7 @@ class App {
 
     dialog.innerHTML = `
       <div class="dialog-box">
-        <button class="dialog-close" onclick="document.getElementById('article-modal').close()">✕</button>
+        <button class="dialog-close" onclick="window.app.closeModal('article-modal')">✕</button>
         <h3 style="font-family:var(--font-serif);font-size:22px;margin-bottom:20px">
           ${post ? 'Edit Article' : 'New Publication'}
         </h3>
@@ -1444,12 +1512,12 @@ class App {
           </div>
           <div style="display:flex;gap:12px;margin-top:24px">
             <button type="submit" class="btn btn-primary">Save & Publish</button>
-            <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('article-modal').close()">Cancel</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="window.app.closeModal('article-modal')">Cancel</button>
           </div>
         </form>
       </div>
     `;
-    dialog.showModal();
+    this.openModal(dialog.id || 'article-modal');
   }
 
   saveArticleForm(e, postId) {
@@ -1482,7 +1550,7 @@ class App {
     }
 
     this.saveData();
-    document.getElementById('article-modal').close();
+    window.app.closeModal('article-modal');
     this.showToast('Article published successfully!', 'success');
     this.handleRoute();
   }
@@ -1495,7 +1563,7 @@ class App {
 
     dialog.innerHTML = `
       <div class="dialog-box">
-        <button class="dialog-close" onclick="document.getElementById('rsvp-modal').close()">✕</button>
+        <button class="dialog-close" onclick="window.app.closeModal('rsvp-modal')">✕</button>
         <span class="section-eyebrow">Spot Reservation</span>
         <h3 style="font-family:var(--font-serif);font-size:22px;margin:6px 0 16px">${this.escape(ev.t)}</h3>
         <p style="font-size:14px;color:var(--text-secondary);margin-bottom:20px">📅 ${ev.d} · ⏰ ${ev.time || '15:00'} · 📍 ${this.escape(ev.p)}</p>
@@ -1515,12 +1583,12 @@ class App {
         </form>
       </div>
     `;
-    dialog.showModal();
+    this.openModal(dialog.id || 'article-modal');
   }
 
   handleRsvpSubmit(e, eventId) {
     e.preventDefault();
-    document.getElementById('rsvp-modal').close();
+    window.app.closeModal('rsvp-modal');
     this.showToast('Spot confirmed! We have emailed you the entry ticket.', 'success');
   }
 
@@ -1582,6 +1650,27 @@ END:VCALENDAR`;
     a.download = `marketing-lab-backup-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     this.showToast('Backup JSON downloaded!');
+  }
+
+
+  openModal(id) {
+    const dialog = document.getElementById(id);
+    if (!dialog) return;
+    if (typeof dialog.showModal === 'function') {
+      try { this.openModal(dialog.id || 'article-modal'); return; } catch (e) {}
+    }
+    dialog.setAttribute('open', '');
+    dialog.style.display = 'block';
+  }
+
+  closeModal(id) {
+    const dialog = document.getElementById(id);
+    if (!dialog) return;
+    if (typeof dialog.close === 'function') {
+      try { dialog.close(); return; } catch (e) {}
+    }
+    dialog.removeAttribute('open');
+    dialog.style.display = 'none';
   }
 
   initEventListeners() {
