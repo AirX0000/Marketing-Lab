@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marketing Insights Lab · British Management University</title>
+  <meta name="description" content="A student-driven marketing publication, research hub, and professional community connected to British Management University.">
+  <meta property="og:title" content="Marketing Insights Lab · British Management University">
+  <meta property="og:description" content="Think like marketers. Act like analysts. Create like professionals.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- Reading Progress Bar -->
+  <div id="reading-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Reading progress"></div>
+
+  <!-- Main Navigation Header -->
+  <header class="site-header">
+    <div class="container header-content">
+      <a href="#/home" class="brand-wrapper" aria-label="Marketing Insights Lab Home">
+        <img src="assets/logo.png" alt="British Management University Marketing Insights Lab logo" class="brand-logo">
+        <div class="brand-text">
+          <span class="brand-title">Marketing Insights Lab</span>
+          <span class="brand-subtitle">British Management University</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="nav-menu" aria-label="Primary navigation">
+        <a href="#/home" class="nav-link active">Home</a>
+        <a href="#/articles" class="nav-link">Publications</a>
+        <a href="#/team" class="nav-link">The Team</a>
+        <a href="#/events" class="nav-link">Events</a>
+        <a href="#/resources" class="nav-link">Resources</a>
+        <a href="#/about" class="nav-link">About</a>
+        <a href="#/bookmarks" class="nav-link">
+          Reading List <span id="bookmark-count-badge" class="nav-badge" style="display:none">0</span>
+        </a>
+        <a href="#/admin" id="admin-nav-item" class="nav-link" style="display:none;color:var(--accent-primary)">
+          Admin ⚙
+        </a>
+      </nav>
+
+      <!-- Action Controls -->
+      <div class="header-actions">
+        <button id="theme-toggle-btn" class="icon-btn" aria-label="Toggle light or dark theme" title="Toggle theme">
+          🌙
+        </button>
+        <a href="#/join" class="btn btn-primary btn-sm">Join the Lab</a>
+        <button id="mobile-nav-toggle" class="icon-btn mobile-toggle" aria-label="Open navigation menu">
+          ☰
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Navigation -->
+  <div id="mobile-drawer" class="mobile-drawer">
+    <nav class="mobile-nav-links">
+      <a href="#/home" onclick="document.getElementById('mobile-drawer').classList.remove('open')">Home</a>
+      <a href="#/articles" onclick="document.getElementById('mobile-drawer').classList.remove('open')">Publications</a>
+      <a href="#/team" onclick="document.getElementById('mobile-drawer').classList.remove('open')">The Team</a>
+      <a href="#/events" onclick="document.getElementById('mobile-drawer').classList.remove('open')">Events</a>
+      <a href="#/resources" onclick="document.getElementById('mobile-drawer').classList.remove('open')">Resources</a>
+      <a href="#/about" onclick="document.getElementById('mobile-drawer').classList.remove('open')">About</a>
+      <a href="#/bookmarks" onclick="document.getElementById('mobile-drawer').classList.remove('open')">Reading List</a>
+      <a href="#/join" onclick="document.getElementById('mobile-drawer').classList.remove('open')">Apply to Join</a>
+    </nav>
+  </div>
+
+  <!-- Dynamic Application Root -->
+  <main id="app">
+    <!-- Populated reactively by app.js -->
+  </main>
+
+  <!-- Modals using native <dialog> -->
+  <dialog id="article-modal" aria-label="Article Editor"></dialog>
+  <dialog id="rsvp-modal" aria-label="Event RSVP"></dialog>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" aria-live="polite"></div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="brand-wrapper" style="margin-bottom:14px">
+            <img src="assets/logo.png" alt="" class="brand-logo" style="height:36px">
+            <span class="brand-title" style="font-size:18px">Marketing Insights Lab</span>
+          </div>
+          <p style="font-size:14px;color:var(--text-secondary);max-width:320px;line-height:1.6">
+            A student-led marketing research publication and collaborative community based at British Management University.
+          </p>
+          <div style="display:flex;gap:12px;margin-top:18px">
+            <a href="https://t.me/bmu_marketing_lab" target="_blank" rel="noopener" class="icon-btn" title="Telegram Channel" aria-label="Telegram">TG</a>
+            <a href="https://www.linkedin.com/school/british-management-university" target="_blank" rel="noopener" class="icon-btn" title="LinkedIn" aria-label="LinkedIn">in</a>
+            <a href="https://www.instagram.com/bmu_marketinglab" target="_blank" rel="noopener" class="icon-btn" title="Instagram" aria-label="Instagram">IG</a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Publications</h4>
+          <ul class="footer-links">
+            <li><a href="#/articles?cat=Campaign%20Analysis">Campaign Analysis</a></li>
+            <li><a href="#/articles?cat=Research">Research & Surveys</a></li>
+            <li><a href="#/articles?cat=Educational">Educational Guides</a></li>
+            <li><a href="#/articles?cat=Opinion">Thought Leadership</a></li>
+            <li><a href="#/articles?cat=News">Industry Briefs</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Community</h4>
+          <ul class="footer-links">
+            <li><a href="#/team">The Student Collective</a></li>
+            <li><a href="#/events">Masterclasses & Events</a></li>
+            <li><a href="#/resources">Templates & Frameworks</a></li>
+            <li><a href="#/about">Our Mission & Values</a></li>
+            <li><a href="#/join">Membership Application</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Newsletter</h4>
+          <p style="font-size:13px;color:var(--text-secondary);margin-bottom:14px">
+            Receive our monthly curated briefing on regional and global marketing developments.
+          </p>
+          <form onsubmit="event.preventDefault();window.app.showToast('Subscribed to the monthly digest!', 'success');this.reset()" style="display:flex;gap:8px">
+            <input type="email" placeholder="Your student or work email" required class="form-control" style="font-size:13px;padding:8px 12px">
+            <button type="submit" class="btn btn-primary btn-sm" style="flex-shrink:0">Join</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026 Marketing Insights Lab · British Management University. All rights reserved.
+          <!-- Secret lock icon for administrator authentication -->
+          <a href="#/admin" style="opacity:0.25;margin-left:8px;text-decoration:none" title="Admin access" aria-label="Admin portal">🔒</a>
+        </div>
+        <div style="display:flex;gap:18px">
+          <a href="#/about">Editorial Policy</a>
+          <a href="#/bookmarks">Reading List</a>
+          <a href="mailto:marketinglab@bmu-edu.uz">Contact Editors</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Controller -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
