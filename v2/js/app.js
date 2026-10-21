@@ -393,6 +393,9 @@ const THEME_KEY = 'marketing_lab_v2_theme';
 
 class App {
   constructor() {
+    window.app = this;
+    window.marketingLab = this;
+
     this.data = this.loadData();
     this.bookmarks = this.loadBookmarks();
     this.isAdmin = safeStorage.get('sessionStorage', AUTH_KEY) === '1';
@@ -1718,10 +1721,16 @@ END:VCALENDAR`;
   }
 }
 
-// Safe initialization for both file:// and http/https environments
+// Bulletproof initialization that cannot be hijacked by named DOM elements (like <main id="app">)
 function startMarketingLabApp() {
-  if (!window.app) {
-    window.app = new App();
+  try {
+    if (!(window.app instanceof App)) {
+      const appInstance = new App();
+      window.app = appInstance;
+      window.marketingLab = appInstance;
+    }
+  } catch (err) {
+    console.error('Fatal MarketingLabApp init error:', err);
   }
 }
 
@@ -1730,3 +1739,8 @@ if (document.readyState === 'loading') {
 } else {
   startMarketingLabApp();
 }
+
+// Fallback direct execution
+try {
+  startMarketingLabApp();
+} catch (e) {}
