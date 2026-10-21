@@ -1418,25 +1418,25 @@ textarea.form-control {
 }
 
 /* ==========================================================================
-   Marketing Lab v2 · Interactive 3D Exploded Heraldic Crest Stage
+   Marketing Lab v2 · Interactive 3D Exploded Heraldic Crest Stage (Clean)
    ========================================================================== */
 
 .hero-emblem-widget {
-  background: rgba(30, 4, 6, 0.85);
-  border: 1px solid rgba(201, 154, 50, 0.42);
-  border-radius: 20px;
+  background: rgba(28, 4, 6, 0.88);
+  border: 1px solid rgba(201, 154, 50, 0.38);
+  border-radius: 24px;
   padding: 24px;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.48), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.48), 0 0 0 1px rgba(255, 255, 255, 0.06);
   position: relative;
   overflow: hidden;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .hero-emblem-widget:hover {
-  border-color: rgba(201, 154, 50, 0.7);
-  box-shadow: 0 28px 75px rgba(0, 0, 0, 0.55), 0 0 36px rgba(201, 154, 50, 0.22);
+  border-color: rgba(201, 154, 50, 0.65);
+  box-shadow: 0 28px 75px rgba(0, 0, 0, 0.55), 0 0 36px rgba(201, 154, 50, 0.2);
 }
 
 .widget-kicker {
@@ -1451,64 +1451,26 @@ textarea.form-control {
 }
 
 .emblem-widget-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
+  margin-bottom: 12px;
 }
 
 .emblem-widget-header h4 {
   font-family: var(--font-serif);
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: #ffffff;
   margin: 0;
+  letter-spacing: -0.2px;
 }
 
-.emblem-model-tabs {
-  display: flex;
-  gap: 6px;
-  background: rgba(0, 0, 0, 0.38);
-  padding: 4px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  overflow-x: auto;
-}
-
-.emblem-tab {
-  background: transparent;
-  border: none;
-  color: rgba(255, 255, 255, 0.75);
-  font-family: var(--font-sans);
-  font-size: 11px;
-  font-weight: 600;
-  padding: 5px 12px;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.emblem-tab:hover {
-  color: #ffffff;
-}
-
-.emblem-tab.active {
-  background: linear-gradient(135deg, var(--gold-500), var(--gold-600));
-  color: #1a1a1a;
-  box-shadow: 0 2px 8px rgba(201, 154, 50, 0.35);
-}
-
-/* 3D Exploded Stage */
+/* 3D Crest Stage (Clean, distraction-free artwork viewport) */
 .emblem-stage {
   position: relative;
   width: 100%;
-  height: 410px;
-  margin: 16px 0 14px;
-  border-radius: 16px;
-  background: radial-gradient(circle at 50% 45%, #760810 0%, #4a060b 60%, #220204 100%);
-  border: 1px solid rgba(201, 154, 50, 0.28);
+  height: 440px;
+  border-radius: 18px;
+  background: radial-gradient(circle at 50% 45%, #760810 0%, #4a060b 58%, #200204 100%);
+  border: 1px solid rgba(201, 154, 50, 0.24);
   overflow: hidden;
   perspective: 1200px;
   perspective-origin: 50% 45%;
@@ -1523,14 +1485,14 @@ textarea.form-control {
   cursor: grabbing;
 }
 
-/* Coordinate Grid */
+/* Technical Coordinate Grid matching user's original image */
 .emblem-grid-backdrop {
   position: absolute;
   inset: 0;
   background-size: 38px 38px;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
   pointer-events: none;
   z-index: 1;
 }
@@ -1548,9 +1510,9 @@ textarea.form-control {
 
 .emblem-ring-outer {
   position: absolute;
-  width: 320px;
-  height: 320px;
-  border: 1.5px dashed rgba(255, 255, 255, 0.2);
+  width: 330px;
+  height: 330px;
+  border: 1.5px dashed rgba(255, 255, 255, 0.22);
   border-radius: 50%;
   animation: emblemOrbitCW 48s linear infinite;
   box-shadow: 0 0 35px rgba(118, 8, 16, 0.35) inset;
@@ -1558,8 +1520,8 @@ textarea.form-control {
 
 .emblem-ring-inner {
   position: absolute;
-  width: 230px;
-  height: 230px;
+  width: 240px;
+  height: 240px;
   border: 1.2px dashed rgba(201, 154, 50, 0.32);
   border-radius: 50%;
   animation: emblemOrbitCCW 34s linear infinite;
@@ -1579,8 +1541,8 @@ textarea.form-control {
 .emblem-3d-anchor {
   position: relative;
   z-index: 5;
-  width: 205px;
-  height: 230px;
+  width: 220px;
+  height: 245px;
   transform-style: preserve-3d;
   will-change: transform;
   display: flex;
@@ -1591,16 +1553,16 @@ textarea.form-control {
 /* Floor Cast Drop Shadow */
 .emblem-floor-shadow {
   position: absolute;
-  bottom: -44px;
-  width: 200px;
-  height: 34px;
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.45) 45%, transparent 75%);
+  bottom: -48px;
+  width: 215px;
+  height: 36px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.45) 45%, transparent 75%);
   filter: blur(12px);
   border-radius: 50%;
   transform: translateZ(-35px);
   pointer-events: none;
   will-change: transform, opacity, filter;
-  opacity: 0.9;
+  opacity: 0.92;
 }
 
 /* Exploded 3D Stack */
@@ -1713,73 +1675,6 @@ textarea.form-control {
   50% { opacity: 0.9; transform: scale(1.15); }
 }
 
-/* Technical Calipers HUD (Layer dimension tags in 3D) */
-.exploded-calipers {
-  position: absolute;
-  inset: -12% -20%;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.25s ease;
-  transform-style: preserve-3d;
-  z-index: 20;
-}
-
-.caliper-tag {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 8px;
-  font-weight: 700;
-  letter-spacing: 0.6px;
-  color: #ffd54f;
-  white-space: nowrap;
-}
-
-.caliper-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--gold-400);
-  box-shadow: 0 0 8px rgba(255, 213, 79, 0.9);
-}
-
-.caliper-line {
-  width: 20px;
-  height: 1.5px;
-  background: linear-gradient(to right, var(--gold-400), rgba(255, 213, 79, 0.1));
-}
-
-.caliper-label {
-  background: rgba(10, 1, 3, 0.92);
-  border: 1px solid rgba(255, 213, 79, 0.5);
-  border-radius: 4px;
-  padding: 2.5px 7px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.75);
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
-}
-
-.tag-chassis {
-  bottom: 20%;
-  left: 6%;
-}
-
-.tag-bars {
-  bottom: 36%;
-  right: 6%;
-}
-
-.tag-trend {
-  top: 46%;
-  left: 3%;
-}
-
-.tag-symbols {
-  top: 16%;
-  right: 3%;
-}
-
 /* Specular Glare Sheen */
 .layer-glare {
   position: absolute;
@@ -1790,150 +1685,6 @@ textarea.form-control {
   opacity: 0.7;
   mix-blend-mode: overlay;
 }
-
-/* Floating Academic Metric Badges in 3D Space */
-.emblem-callout {
-  position: absolute;
-  z-index: 12;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px 11px;
-  background: rgba(18, 2, 4, 0.9);
-  border: 1px solid rgba(201, 154, 50, 0.55);
-  border-radius: 999px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
-  pointer-events: none;
-  max-width: 155px;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.callout-top-left {
-  top: 10px;
-  left: 10px;
-}
-
-.callout-bottom-right {
-  bottom: 46px;
-  right: 10px;
-}
-
-.emblem-callout strong {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  font-weight: 700;
-  color: #ffffff;
-  line-height: 1.1;
-}
-
-.emblem-callout small {
-  display: block;
-  font-size: 8px;
-  font-weight: 600;
-  color: var(--gold-300);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.callout-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--gold-400);
-  box-shadow: 0 0 8px rgba(201, 154, 50, 0.8);
-}
-
-.callout-dot.green {
-  background: #10b981;
-  box-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
-}
-
-.emblem-callout strong {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 700;
-  color: #ffffff;
-  line-height: 1.1;
-}
-
-.emblem-callout small {
-  display: block;
-  font-size: 9.5px;
-  font-weight: 600;
-  color: var(--gold-300);
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
-}
-
-/* Stage HUD */
-.emblem-stage-hud {
-  position: absolute;
-  bottom: 8px;
-  left: 12px;
-  right: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.7);
-  background: rgba(0, 0, 0, 0.6);
-  padding: 5px 10px;
-  border-radius: 6px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  z-index: 15;
-}
-
-.hud-left-meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.hud-explode-btn {
-  background: rgba(201, 154, 50, 0.22);
-  border: 1px solid rgba(201, 154, 50, 0.6);
-  color: #ffffff;
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  font-weight: 700;
-  padding: 4px 11px;
-  border-radius: 5px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  white-space: nowrap;
-  flex-shrink: 0;
-  letter-spacing: 0.3px;
-  transition: all 0.2s ease;
-}
-
-.hud-explode-btn:hover {
-  background: rgba(201, 154, 50, 0.35);
-  border-color: var(--gold-400);
-  transform: translateY(-1px);
-}
-
-.hud-explode-btn.active {
-  background: var(--gold-500);
-  color: #120204;
-  border-color: var(--gold-400);
-  font-weight: 700;
-}
-
 
 /* Subtle editorial 3D perspective transforms on cards */
 .card, .team-card, .event-card {

@@ -414,18 +414,9 @@ class MarketingLabEmblem3D {
     this.layerBars = document.getElementById("layer-bars");
     this.layerTrendline = document.getElementById("layer-trendline");
     this.layerSymbols = document.getElementById("layer-symbols");
-    this.calipers = document.getElementById("exploded-calipers");
     this.shadow = document.getElementById("emblem-floor-shadow");
     this.pulseOrb = document.getElementById("emblem-pulse-orb");
-    this.hudText = document.getElementById("emblem-scroll-hud");
     this.glare = document.getElementById("layer-glare");
-    this.explodeBtn = document.getElementById("hud-explode-btn");
-    this.explodeBtnLabel = document.getElementById("explode-btn-label");
-
-    this.val1El = document.getElementById("metric-hero-val1");
-    this.lbl1El = document.getElementById("metric-hero-lbl1");
-    this.val2El = document.getElementById("metric-hero-val2");
-    this.lbl2El = document.getElementById("metric-hero-lbl2");
 
     if (!this.stage || !this.stack) return;
 
@@ -438,31 +429,6 @@ class MarketingLabEmblem3D {
       { x: 599, y: 350 }
     ];
 
-    this.models = {
-      brand: {
-        title: "Brand Equity Crest",
-        val1: "+240%",
-        lbl1: "Brand Salience Multiplier",
-        val2: "88.4 / 100",
-        lbl2: "Empirical Equity Index"
-      },
-      roi: {
-        title: "CAC : LTV Acquisition",
-        val1: "4.6 : 1",
-        lbl1: "LTV to CAC Ratio",
-        val2: "2.4 Mos",
-        lbl2: "Capital Recovery Horizon"
-      },
-      retention: {
-        title: "Cohort Retention Model",
-        val1: "64.2%",
-        lbl1: "Annual Retention Baseline",
-        val2: "0.92 β",
-        lbl2: "Cohort Stability Beta"
-      }
-    };
-    this.activeKey = "brand";
-
     this.rx = 0;
     this.ry = 0;
     this.targetRx = 0;
@@ -472,9 +438,7 @@ class MarketingLabEmblem3D {
     this.mouseNy = 0;
 
     this.scrollProgress = 0;
-    this.isManualExploded = false;
     this.explodeAmount = 0;
-    this.targetExplode = 0;
 
     this.time = 0;
     this.lastTime = performance.now();
@@ -506,61 +470,19 @@ class MarketingLabEmblem3D {
     window.addEventListener("scroll", this.scrollHandler, { passive: true });
     this.onScroll();
 
-    // Explode toggle button
-    if (this.explodeBtn) {
-      this.explodeClickHandler = () => this.toggleManualExplode();
-      this.explodeBtn.addEventListener("click", this.explodeClickHandler);
-    }
-
-    // Tab switcher
-    const tabs = document.querySelectorAll(".emblem-tab");
-    tabs.forEach(tab => {
-      tab.addEventListener("click", (e) => {
-        const key = e.currentTarget.getAttribute("data-model");
-        if (key && this.models[key]) {
-          this.switchModel(key);
-          tabs.forEach(t => t.classList.remove("active"));
-          e.currentTarget.classList.add("active");
-        }
-      });
-    });
-
     // Click on stack to trigger physical ripple
     this.stackClickHandler = () => this.triggerRipple();
     this.stack.addEventListener("click", this.stackClickHandler);
   }
 
-  toggleManualExplode() {
-    this.isManualExploded = !this.isManualExploded;
-    if (this.explodeBtn) {
-      this.explodeBtn.classList.toggle("active", this.isManualExploded);
-    }
-    if (this.explodeBtnLabel) {
-      this.explodeBtnLabel.textContent = this.isManualExploded ? "Assemble Crest" : "Explode Layers";
-    }
-    this.targetRx -= 10;
-  }
-
   onScroll() {
     const scrollY = (typeof window !== "undefined" && window.scrollY) || 0;
-    this.scrollProgress = Math.min(1, Math.max(0, scrollY / 480));
-  }
-
-  switchModel(key) {
-    if (!this.models[key]) return;
-    this.activeKey = key;
-    const m = this.models[key];
-
-    if (this.val1El) this.val1El.textContent = m.val1;
-    if (this.lbl1El) this.lbl1El.textContent = m.lbl1;
-    if (this.val2El) this.val2El.textContent = m.val2;
-    if (this.lbl2El) this.lbl2El.textContent = m.lbl2;
-
-    this.triggerRipple();
+    // Explodes smoothly over first 500px of scroll
+    this.scrollProgress = Math.min(1, Math.max(0, scrollY / 500));
   }
 
   triggerRipple() {
-    this.targetRx -= 12;
+    this.targetRx -= 14;
   }
 
   loop(timestamp) {
@@ -575,20 +497,17 @@ class MarketingLabEmblem3D {
     this.lastTime = timestamp;
     this.time += dt;
 
-    // Determine target explosion amount: driven by scroll, boosted if manual toggle is on
-    const scrollExplode = this.scrollProgress;
-    const rawTarget = this.isManualExploded ? Math.max(0.9, scrollExplode) : scrollExplode;
-    this.targetExplode = rawTarget;
-    this.explodeAmount += (this.targetExplode - this.explodeAmount) * 0.14;
+    // Scroll drives the explode separation smoothly
+    this.explodeAmount += (this.scrollProgress - this.explodeAmount) * 0.12;
 
-    // Levitation oscillation
-    const levitateY = Math.sin(this.time * 2.2) * (5 - this.explodeAmount * 2.5);
-    const levitateRz = Math.sin(this.time * 1.5) * 1.2;
+    // Natural breathing levitation
+    const levitateY = Math.sin(this.time * 2.2) * (5 - this.explodeAmount * 2);
+    const levitateRz = Math.sin(this.time * 1.5) * 1.1;
 
-    // Exploded View Isometric Pitch & Yaw + Mouse Parallax
-    const explodePitch = this.explodeAmount * 26; // Tilt forward to look down at layers
-    const explodeYaw = -this.explodeAmount * 22; // Yaw left for clean layer separation
-    const explodeTz = 20 + this.explodeAmount * 38; // Elevate whole anchor toward camera
+    // Isometric 3D pitch & yaw tilt on scroll
+    const explodePitch = this.explodeAmount * 24; // Tilt forward
+    const explodeYaw = -this.explodeAmount * 20; // Yaw left
+    const explodeTz = 20 + this.explodeAmount * 36; // Pop forward in Z depth
 
     this.targetRx = -this.mouseNy * 22 + explodePitch;
     this.targetRy = this.mouseNx * 26 + explodeYaw;
@@ -602,7 +521,7 @@ class MarketingLabEmblem3D {
       this.stack.style.transform = `perspective(1100px) translateY(${levitateY.toFixed(2)}px) rotateX(${this.rx.toFixed(2)}deg) rotateY(${this.ry.toFixed(2)}deg) rotateZ(${levitateRz.toFixed(2)}deg) translateZ(${explodeTz.toFixed(1)}px)`;
     }
 
-    // Separate individual layers along Z-axis in exploded view
+    // Smoothly separate individual layers along Z-axis in exploded view
     const exp = this.explodeAmount;
     if (this.layerChassis) {
       const zChassis = exp * 12;
@@ -633,19 +552,12 @@ class MarketingLabEmblem3D {
       this.layerSymbols.style.filter = exp > 0.05 ? `drop-shadow(0 ${exp * 14}px ${shadowBlur}px rgba(0,0,0,${shadowAlpha}))` : "none";
     }
 
-    // Calipers visibility and position
-    if (this.calipers) {
-      const caliperOpacity = Math.max(0, Math.min(1, (exp - 0.22) / 0.65));
-      this.calipers.style.opacity = caliperOpacity.toFixed(2);
-      this.calipers.style.transform = `translateZ(${(exp * 210).toFixed(1)}px)`;
-    }
-
     // Dynamic Floor Shadow physics
     if (this.shadow) {
       const shadowOffsetX = -this.ry * 1.4;
       const shadowOffsetY = this.rx * 0.85;
       const shadowScale = 1 + exp * 0.35 - (levitateY / 40);
-      const shadowOpacity = Math.max(0.35, 0.88 - exp * 0.28 - (levitateY / 50));
+      const shadowOpacity = Math.max(0.35, 0.92 - exp * 0.28 - (levitateY / 50));
       const shadowBlur = 12 + exp * 14;
       this.shadow.style.transform = `translate(${shadowOffsetX.toFixed(1)}px, ${shadowOffsetY.toFixed(1)}px) scale(${shadowScale.toFixed(2)})`;
       this.shadow.style.opacity = shadowOpacity.toFixed(2);
@@ -677,18 +589,6 @@ class MarketingLabEmblem3D {
       }
     }
 
-    // Update HUD status
-    if (this.hudText) {
-      if (exp < 0.05) {
-        this.hudText.textContent = "Scroll down or click Explode to deconstruct 3D crest";
-      } else {
-        const percent = Math.round(exp * 100);
-        const zSpread = Math.round(exp * 192);
-        const pitch = Math.round(this.rx);
-        this.hudText.textContent = `Exploded: ${percent}% · Z-Spread: ${zSpread}px · Pitch: ${pitch}°`;
-      }
-    }
-
     this.rafId = requestAnimationFrame(t => this.loop(t));
   }
 
@@ -706,9 +606,6 @@ class MarketingLabEmblem3D {
     }
     if (this.scrollHandler) {
       window.removeEventListener("scroll", this.scrollHandler);
-    }
-    if (this.explodeBtn && this.explodeClickHandler) {
-      this.explodeBtn.removeEventListener("click", this.explodeClickHandler);
     }
     if (this.stack && this.stackClickHandler) {
       this.stack.removeEventListener("click", this.stackClickHandler);
@@ -1060,19 +957,12 @@ class App {
           <div>
             <div class="hero-emblem-widget" id="hero-emblem-widget">
               <div class="emblem-widget-header">
-                <div>
-                  <span class="widget-kicker">British Management University</span>
-                  <h4 id="emblem-widget-title">Marketing Insights Lab</h4>
-                </div>
-                <div class="emblem-model-tabs" role="tablist" aria-label="Econometric Focus">
-                  <button class="emblem-tab active" data-model="brand" type="button">Brand Equity</button>
-                  <button class="emblem-tab" data-model="roi" type="button">CAC : LTV</button>
-                  <button class="emblem-tab" data-model="retention" type="button">Retention</button>
-                </div>
+                <span class="widget-kicker">British Management University</span>
+                <h4 id="emblem-widget-title">Marketing Insights Lab</h4>
               </div>
 
-              <!-- 3D Exploded Crest Stage -->
-              <div class="emblem-stage" id="emblem-stage" title="3D Exploded Crest — Move cursor or scroll down to deconstruct into 3D layers">
+              <!-- 3D Crest Stage (Pure Artwork & Scroll Animation) -->
+              <div class="emblem-stage" id="emblem-stage" title="3D Marketing Lab Crest — Move mouse or scroll down to deconstruct into 3D layers">
                 <!-- Grid Backdrop -->
                 <div class="emblem-grid-backdrop" aria-hidden="true"></div>
 
@@ -1133,72 +1023,8 @@ class App {
                       </div>
                     </div>
 
-                    <!-- Layer 4: Hologram Exploded Calipers / HUD Leader Lines -->
-                    <div class="exploded-calipers" id="exploded-calipers" aria-hidden="true">
-                      <div class="caliper-tag tag-chassis">
-                        <span class="caliper-dot"></span>
-                        <span class="caliper-line"></span>
-                        <span class="caliper-label">01 // CHASSIS FOUNDATION</span>
-                      </div>
-                      <div class="caliper-tag tag-bars">
-                        <span class="caliper-dot"></span>
-                        <span class="caliper-line"></span>
-                        <span class="caliper-label">02 // 5 MARKET DATA BARS</span>
-                      </div>
-                      <div class="caliper-tag tag-trend">
-                        <span class="caliper-dot"></span>
-                        <span class="caliper-line"></span>
-                        <span class="caliper-label">03 // ECONOMETRIC SPLINE</span>
-                      </div>
-                      <div class="caliper-tag tag-symbols">
-                        <span class="caliper-dot"></span>
-                        <span class="caliper-line"></span>
-                        <span class="caliper-label">04 // BRAND &amp; INNOVATION CORE</span>
-                      </div>
-                    </div>
-
                   </div> <!-- /emblem-exploded-stack -->
                 </div> <!-- /emblem-3d-anchor -->
-
-    <!-- Floating Metric Callouts in Stage Corners -->
-                <div class="emblem-callout callout-top-left" id="callout-metric-1">
-                  <span class="callout-dot"></span>
-                  <div>
-                    <strong id="metric-hero-val1">+240%</strong>
-                    <small id="metric-hero-lbl1">Brand Salience Multiplier</small>
-                  </div>
-                </div>
-
-                <div class="emblem-callout callout-bottom-right" id="callout-metric-2">
-                  <span class="callout-dot green"></span>
-                  <div>
-                    <strong id="metric-hero-val2">88.4 / 100</strong>
-                    <small id="metric-hero-lbl2">Empirical Equity Index</small>
-                  </div>
-                </div>
-
-                <!-- Bottom HUD Status with Interactive Exploded Toggle -->
-                <div class="emblem-stage-hud">
-                  <div class="hud-left-meta">
-                    <span class="hud-tag">3D EXPLODED SHIELD</span>
-                    <span class="hud-status" id="emblem-scroll-hud">Scroll down to explode crest into 3D layers</span>
-                  </div>
-                  <button class="hud-explode-btn" id="hud-explode-btn" type="button" title="Toggle 3D Exploded View">
-                    <span class="btn-icon">❖</span> <span id="explode-btn-label">Explode Layers</span>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Summary Stats Row -->
-              <div class="hero-stats-row">
-                <div class="hero-stat-box">
-                  <strong>${this.data.posts.length}</strong>
-                  <span>Case Studies & Surveys</span>
-                </div>
-                <div class="hero-stat-box">
-                  <strong>${this.data.team.filter(m => !m.hidden).length}</strong>
-                  <span>Active Student Fellows</span>
-                </div>
               </div>
             </div></div>
           </div>

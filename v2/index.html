@@ -1432,25 +1432,25 @@ textarea.form-control {
 }
 
 /* ==========================================================================
-   Marketing Lab v2 · Interactive 3D Exploded Heraldic Crest Stage
+   Marketing Lab v2 · Interactive 3D Exploded Heraldic Crest Stage (Clean)
    ========================================================================== */
 
 .hero-emblem-widget {
-  background: rgba(30, 4, 6, 0.85);
-  border: 1px solid rgba(201, 154, 50, 0.42);
-  border-radius: 20px;
+  background: rgba(28, 4, 6, 0.88);
+  border: 1px solid rgba(201, 154, 50, 0.38);
+  border-radius: 24px;
   padding: 24px;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.48), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.48), 0 0 0 1px rgba(255, 255, 255, 0.06);
   position: relative;
   overflow: hidden;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .hero-emblem-widget:hover {
-  border-color: rgba(201, 154, 50, 0.7);
-  box-shadow: 0 28px 75px rgba(0, 0, 0, 0.55), 0 0 36px rgba(201, 154, 50, 0.22);
+  border-color: rgba(201, 154, 50, 0.65);
+  box-shadow: 0 28px 75px rgba(0, 0, 0, 0.55), 0 0 36px rgba(201, 154, 50, 0.2);
 }
 
 .widget-kicker {
@@ -1465,64 +1465,26 @@ textarea.form-control {
 }
 
 .emblem-widget-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
+  margin-bottom: 12px;
 }
 
 .emblem-widget-header h4 {
   font-family: var(--font-serif);
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: #ffffff;
   margin: 0;
+  letter-spacing: -0.2px;
 }
 
-.emblem-model-tabs {
-  display: flex;
-  gap: 6px;
-  background: rgba(0, 0, 0, 0.38);
-  padding: 4px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  overflow-x: auto;
-}
-
-.emblem-tab {
-  background: transparent;
-  border: none;
-  color: rgba(255, 255, 255, 0.75);
-  font-family: var(--font-sans);
-  font-size: 11px;
-  font-weight: 600;
-  padding: 5px 12px;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.emblem-tab:hover {
-  color: #ffffff;
-}
-
-.emblem-tab.active {
-  background: linear-gradient(135deg, var(--gold-500), var(--gold-600));
-  color: #1a1a1a;
-  box-shadow: 0 2px 8px rgba(201, 154, 50, 0.35);
-}
-
-/* 3D Exploded Stage */
+/* 3D Crest Stage (Clean, distraction-free artwork viewport) */
 .emblem-stage {
   position: relative;
   width: 100%;
-  height: 410px;
-  margin: 16px 0 14px;
-  border-radius: 16px;
-  background: radial-gradient(circle at 50% 45%, #760810 0%, #4a060b 60%, #220204 100%);
-  border: 1px solid rgba(201, 154, 50, 0.28);
+  height: 440px;
+  border-radius: 18px;
+  background: radial-gradient(circle at 50% 45%, #760810 0%, #4a060b 58%, #200204 100%);
+  border: 1px solid rgba(201, 154, 50, 0.24);
   overflow: hidden;
   perspective: 1200px;
   perspective-origin: 50% 45%;
@@ -1537,14 +1499,14 @@ textarea.form-control {
   cursor: grabbing;
 }
 
-/* Coordinate Grid */
+/* Technical Coordinate Grid matching user's original image */
 .emblem-grid-backdrop {
   position: absolute;
   inset: 0;
   background-size: 38px 38px;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
   pointer-events: none;
   z-index: 1;
 }
@@ -1562,9 +1524,9 @@ textarea.form-control {
 
 .emblem-ring-outer {
   position: absolute;
-  width: 320px;
-  height: 320px;
-  border: 1.5px dashed rgba(255, 255, 255, 0.2);
+  width: 330px;
+  height: 330px;
+  border: 1.5px dashed rgba(255, 255, 255, 0.22);
   border-radius: 50%;
   animation: emblemOrbitCW 48s linear infinite;
   box-shadow: 0 0 35px rgba(118, 8, 16, 0.35) inset;
@@ -1572,8 +1534,8 @@ textarea.form-control {
 
 .emblem-ring-inner {
   position: absolute;
-  width: 230px;
-  height: 230px;
+  width: 240px;
+  height: 240px;
   border: 1.2px dashed rgba(201, 154, 50, 0.32);
   border-radius: 50%;
   animation: emblemOrbitCCW 34s linear infinite;
@@ -1593,8 +1555,8 @@ textarea.form-control {
 .emblem-3d-anchor {
   position: relative;
   z-index: 5;
-  width: 205px;
-  height: 230px;
+  width: 220px;
+  height: 245px;
   transform-style: preserve-3d;
   will-change: transform;
   display: flex;
@@ -1605,16 +1567,16 @@ textarea.form-control {
 /* Floor Cast Drop Shadow */
 .emblem-floor-shadow {
   position: absolute;
-  bottom: -44px;
-  width: 200px;
-  height: 34px;
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.45) 45%, transparent 75%);
+  bottom: -48px;
+  width: 215px;
+  height: 36px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.45) 45%, transparent 75%);
   filter: blur(12px);
   border-radius: 50%;
   transform: translateZ(-35px);
   pointer-events: none;
   will-change: transform, opacity, filter;
-  opacity: 0.9;
+  opacity: 0.92;
 }
 
 /* Exploded 3D Stack */
@@ -1727,73 +1689,6 @@ textarea.form-control {
   50% { opacity: 0.9; transform: scale(1.15); }
 }
 
-/* Technical Calipers HUD (Layer dimension tags in 3D) */
-.exploded-calipers {
-  position: absolute;
-  inset: -12% -20%;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.25s ease;
-  transform-style: preserve-3d;
-  z-index: 20;
-}
-
-.caliper-tag {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 8px;
-  font-weight: 700;
-  letter-spacing: 0.6px;
-  color: #ffd54f;
-  white-space: nowrap;
-}
-
-.caliper-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--gold-400);
-  box-shadow: 0 0 8px rgba(255, 213, 79, 0.9);
-}
-
-.caliper-line {
-  width: 20px;
-  height: 1.5px;
-  background: linear-gradient(to right, var(--gold-400), rgba(255, 213, 79, 0.1));
-}
-
-.caliper-label {
-  background: rgba(10, 1, 3, 0.92);
-  border: 1px solid rgba(255, 213, 79, 0.5);
-  border-radius: 4px;
-  padding: 2.5px 7px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.75);
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
-}
-
-.tag-chassis {
-  bottom: 20%;
-  left: 6%;
-}
-
-.tag-bars {
-  bottom: 36%;
-  right: 6%;
-}
-
-.tag-trend {
-  top: 46%;
-  left: 3%;
-}
-
-.tag-symbols {
-  top: 16%;
-  right: 3%;
-}
-
 /* Specular Glare Sheen */
 .layer-glare {
   position: absolute;
@@ -1804,150 +1699,6 @@ textarea.form-control {
   opacity: 0.7;
   mix-blend-mode: overlay;
 }
-
-/* Floating Academic Metric Badges in 3D Space */
-.emblem-callout {
-  position: absolute;
-  z-index: 12;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px 11px;
-  background: rgba(18, 2, 4, 0.9);
-  border: 1px solid rgba(201, 154, 50, 0.55);
-  border-radius: 999px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
-  pointer-events: none;
-  max-width: 155px;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.callout-top-left {
-  top: 10px;
-  left: 10px;
-}
-
-.callout-bottom-right {
-  bottom: 46px;
-  right: 10px;
-}
-
-.emblem-callout strong {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  font-weight: 700;
-  color: #ffffff;
-  line-height: 1.1;
-}
-
-.emblem-callout small {
-  display: block;
-  font-size: 8px;
-  font-weight: 600;
-  color: var(--gold-300);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.callout-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--gold-400);
-  box-shadow: 0 0 8px rgba(201, 154, 50, 0.8);
-}
-
-.callout-dot.green {
-  background: #10b981;
-  box-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
-}
-
-.emblem-callout strong {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 700;
-  color: #ffffff;
-  line-height: 1.1;
-}
-
-.emblem-callout small {
-  display: block;
-  font-size: 9.5px;
-  font-weight: 600;
-  color: var(--gold-300);
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
-}
-
-/* Stage HUD */
-.emblem-stage-hud {
-  position: absolute;
-  bottom: 8px;
-  left: 12px;
-  right: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.7);
-  background: rgba(0, 0, 0, 0.6);
-  padding: 5px 10px;
-  border-radius: 6px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  z-index: 15;
-}
-
-.hud-left-meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.hud-explode-btn {
-  background: rgba(201, 154, 50, 0.22);
-  border: 1px solid rgba(201, 154, 50, 0.6);
-  color: #ffffff;
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  font-weight: 700;
-  padding: 4px 11px;
-  border-radius: 5px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  white-space: nowrap;
-  flex-shrink: 0;
-  letter-spacing: 0.3px;
-  transition: all 0.2s ease;
-}
-
-.hud-explode-btn:hover {
-  background: rgba(201, 154, 50, 0.35);
-  border-color: var(--gold-400);
-  transform: translateY(-1px);
-}
-
-.hud-explode-btn.active {
-  background: var(--gold-500);
-  color: #120204;
-  border-color: var(--gold-400);
-  font-weight: 700;
-}
-
 
 /* Subtle editorial 3D perspective transforms on cards */
 .card, .team-card, .event-card {
@@ -2075,19 +1826,12 @@ textarea.form-control {
           <div>
             <div class="hero-emblem-widget" id="hero-emblem-widget">
               <div class="emblem-widget-header">
-                <div>
-                  <span class="widget-kicker">British Management University</span>
-                  <h4 id="emblem-widget-title">Marketing Insights Lab</h4>
-                </div>
-                <div class="emblem-model-tabs" role="tablist" aria-label="Econometric Focus">
-                  <button class="emblem-tab active" data-model="brand" type="button">Brand Equity</button>
-                  <button class="emblem-tab" data-model="roi" type="button">CAC : LTV</button>
-                  <button class="emblem-tab" data-model="retention" type="button">Retention</button>
-                </div>
+                <span class="widget-kicker">British Management University</span>
+                <h4 id="emblem-widget-title">Marketing Insights Lab</h4>
               </div>
 
-              <!-- 3D Exploded Crest Stage -->
-              <div class="emblem-stage" id="emblem-stage" title="3D Exploded Crest — Move cursor or scroll down to deconstruct into 3D layers">
+              <!-- 3D Crest Stage (Pure Artwork & Scroll Animation) -->
+              <div class="emblem-stage" id="emblem-stage" title="3D Marketing Lab Crest — Move mouse or scroll down to deconstruct into 3D layers">
                 <!-- Grid Backdrop -->
                 <div class="emblem-grid-backdrop" aria-hidden="true"></div>
 
@@ -2148,72 +1892,8 @@ textarea.form-control {
                       </div>
                     </div>
 
-                    <!-- Layer 4: Hologram Exploded Calipers / HUD Leader Lines -->
-                    <div class="exploded-calipers" id="exploded-calipers" aria-hidden="true">
-                      <div class="caliper-tag tag-chassis">
-                        <span class="caliper-dot"></span>
-                        <span class="caliper-line"></span>
-                        <span class="caliper-label">01 // CHASSIS FOUNDATION</span>
-                      </div>
-                      <div class="caliper-tag tag-bars">
-                        <span class="caliper-dot"></span>
-                        <span class="caliper-line"></span>
-                        <span class="caliper-label">02 // 5 MARKET DATA BARS</span>
-                      </div>
-                      <div class="caliper-tag tag-trend">
-                        <span class="caliper-dot"></span>
-                        <span class="caliper-line"></span>
-                        <span class="caliper-label">03 // ECONOMETRIC SPLINE</span>
-                      </div>
-                      <div class="caliper-tag tag-symbols">
-                        <span class="caliper-dot"></span>
-                        <span class="caliper-line"></span>
-                        <span class="caliper-label">04 // BRAND &amp; INNOVATION CORE</span>
-                      </div>
-                    </div>
-
                   </div> <!-- /emblem-exploded-stack -->
-
-                  <!-- Floating Metric Callouts (anchored in 3D) -->
-                  <div class="emblem-callout callout-top-left" id="callout-metric-1">
-                    <span class="callout-dot"></span>
-                    <div>
-                      <strong id="metric-hero-val1">+240%</strong>
-                      <small id="metric-hero-lbl1">Brand Salience Multiplier</small>
-                    </div>
-                  </div>
-
-                  <div class="emblem-callout callout-bottom-right" id="callout-metric-2">
-                    <span class="callout-dot green"></span>
-                    <div>
-                      <strong id="metric-hero-val2">88.4 / 100</strong>
-                      <small id="metric-hero-lbl2">Empirical Equity Index</small>
-                    </div>
-                  </div>
                 </div> <!-- /emblem-3d-anchor -->
-
-                <!-- Bottom HUD Status with Interactive Exploded Toggle -->
-                <div class="emblem-stage-hud">
-                  <div class="hud-left-meta">
-                    <span class="hud-tag">3D EXPLODED SHIELD</span>
-                    <span class="hud-status" id="emblem-scroll-hud">Scroll down to explode crest into 3D layers</span>
-                  </div>
-                  <button class="hud-explode-btn" id="hud-explode-btn" type="button" title="Toggle 3D Exploded View">
-                    <span class="btn-icon">❖</span> <span id="explode-btn-label">Explode Layers</span>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Summary Stats Row -->
-              <div class="hero-stats-row">
-                <div class="hero-stat-box">
-                  <strong>6</strong>
-                  <span>Case Studies & Surveys</span>
-                </div>
-                <div class="hero-stat-box">
-                  <strong>7</strong>
-                  <span>Active Student Fellows</span>
-                </div>
               </div>
             </div>
           </div>
@@ -3016,18 +2696,9 @@ class MarketingLabEmblem3D {
     this.layerBars = document.getElementById("layer-bars");
     this.layerTrendline = document.getElementById("layer-trendline");
     this.layerSymbols = document.getElementById("layer-symbols");
-    this.calipers = document.getElementById("exploded-calipers");
     this.shadow = document.getElementById("emblem-floor-shadow");
     this.pulseOrb = document.getElementById("emblem-pulse-orb");
-    this.hudText = document.getElementById("emblem-scroll-hud");
     this.glare = document.getElementById("layer-glare");
-    this.explodeBtn = document.getElementById("hud-explode-btn");
-    this.explodeBtnLabel = document.getElementById("explode-btn-label");
-
-    this.val1El = document.getElementById("metric-hero-val1");
-    this.lbl1El = document.getElementById("metric-hero-lbl1");
-    this.val2El = document.getElementById("metric-hero-val2");
-    this.lbl2El = document.getElementById("metric-hero-lbl2");
 
     if (!this.stage || !this.stack) return;
 
@@ -3040,31 +2711,6 @@ class MarketingLabEmblem3D {
       { x: 599, y: 350 }
     ];
 
-    this.models = {
-      brand: {
-        title: "Brand Equity Crest",
-        val1: "+240%",
-        lbl1: "Brand Salience Multiplier",
-        val2: "88.4 / 100",
-        lbl2: "Empirical Equity Index"
-      },
-      roi: {
-        title: "CAC : LTV Acquisition",
-        val1: "4.6 : 1",
-        lbl1: "LTV to CAC Ratio",
-        val2: "2.4 Mos",
-        lbl2: "Capital Recovery Horizon"
-      },
-      retention: {
-        title: "Cohort Retention Model",
-        val1: "64.2%",
-        lbl1: "Annual Retention Baseline",
-        val2: "0.92 β",
-        lbl2: "Cohort Stability Beta"
-      }
-    };
-    this.activeKey = "brand";
-
     this.rx = 0;
     this.ry = 0;
     this.targetRx = 0;
@@ -3074,9 +2720,7 @@ class MarketingLabEmblem3D {
     this.mouseNy = 0;
 
     this.scrollProgress = 0;
-    this.isManualExploded = false;
     this.explodeAmount = 0;
-    this.targetExplode = 0;
 
     this.time = 0;
     this.lastTime = performance.now();
@@ -3108,61 +2752,19 @@ class MarketingLabEmblem3D {
     window.addEventListener("scroll", this.scrollHandler, { passive: true });
     this.onScroll();
 
-    // Explode toggle button
-    if (this.explodeBtn) {
-      this.explodeClickHandler = () => this.toggleManualExplode();
-      this.explodeBtn.addEventListener("click", this.explodeClickHandler);
-    }
-
-    // Tab switcher
-    const tabs = document.querySelectorAll(".emblem-tab");
-    tabs.forEach(tab => {
-      tab.addEventListener("click", (e) => {
-        const key = e.currentTarget.getAttribute("data-model");
-        if (key && this.models[key]) {
-          this.switchModel(key);
-          tabs.forEach(t => t.classList.remove("active"));
-          e.currentTarget.classList.add("active");
-        }
-      });
-    });
-
     // Click on stack to trigger physical ripple
     this.stackClickHandler = () => this.triggerRipple();
     this.stack.addEventListener("click", this.stackClickHandler);
   }
 
-  toggleManualExplode() {
-    this.isManualExploded = !this.isManualExploded;
-    if (this.explodeBtn) {
-      this.explodeBtn.classList.toggle("active", this.isManualExploded);
-    }
-    if (this.explodeBtnLabel) {
-      this.explodeBtnLabel.textContent = this.isManualExploded ? "Assemble Crest" : "Explode Layers";
-    }
-    this.targetRx -= 10;
-  }
-
   onScroll() {
     const scrollY = (typeof window !== "undefined" && window.scrollY) || 0;
-    this.scrollProgress = Math.min(1, Math.max(0, scrollY / 480));
-  }
-
-  switchModel(key) {
-    if (!this.models[key]) return;
-    this.activeKey = key;
-    const m = this.models[key];
-
-    if (this.val1El) this.val1El.textContent = m.val1;
-    if (this.lbl1El) this.lbl1El.textContent = m.lbl1;
-    if (this.val2El) this.val2El.textContent = m.val2;
-    if (this.lbl2El) this.lbl2El.textContent = m.lbl2;
-
-    this.triggerRipple();
+    // Explodes smoothly over first 500px of scroll
+    this.scrollProgress = Math.min(1, Math.max(0, scrollY / 500));
   }
 
   triggerRipple() {
-    this.targetRx -= 12;
+    this.targetRx -= 14;
   }
 
   loop(timestamp) {
@@ -3177,20 +2779,17 @@ class MarketingLabEmblem3D {
     this.lastTime = timestamp;
     this.time += dt;
 
-    // Determine target explosion amount: driven by scroll, boosted if manual toggle is on
-    const scrollExplode = this.scrollProgress;
-    const rawTarget = this.isManualExploded ? Math.max(0.9, scrollExplode) : scrollExplode;
-    this.targetExplode = rawTarget;
-    this.explodeAmount += (this.targetExplode - this.explodeAmount) * 0.14;
+    // Scroll drives the explode separation smoothly
+    this.explodeAmount += (this.scrollProgress - this.explodeAmount) * 0.12;
 
-    // Levitation oscillation
-    const levitateY = Math.sin(this.time * 2.2) * (5 - this.explodeAmount * 2.5);
-    const levitateRz = Math.sin(this.time * 1.5) * 1.2;
+    // Natural breathing levitation
+    const levitateY = Math.sin(this.time * 2.2) * (5 - this.explodeAmount * 2);
+    const levitateRz = Math.sin(this.time * 1.5) * 1.1;
 
-    // Exploded View Isometric Pitch & Yaw + Mouse Parallax
-    const explodePitch = this.explodeAmount * 26; // Tilt forward to look down at layers
-    const explodeYaw = -this.explodeAmount * 22; // Yaw left for clean layer separation
-    const explodeTz = 20 + this.explodeAmount * 38; // Elevate whole anchor toward camera
+    // Isometric 3D pitch & yaw tilt on scroll
+    const explodePitch = this.explodeAmount * 24; // Tilt forward
+    const explodeYaw = -this.explodeAmount * 20; // Yaw left
+    const explodeTz = 20 + this.explodeAmount * 36; // Pop forward in Z depth
 
     this.targetRx = -this.mouseNy * 22 + explodePitch;
     this.targetRy = this.mouseNx * 26 + explodeYaw;
@@ -3204,7 +2803,7 @@ class MarketingLabEmblem3D {
       this.stack.style.transform = `perspective(1100px) translateY(${levitateY.toFixed(2)}px) rotateX(${this.rx.toFixed(2)}deg) rotateY(${this.ry.toFixed(2)}deg) rotateZ(${levitateRz.toFixed(2)}deg) translateZ(${explodeTz.toFixed(1)}px)`;
     }
 
-    // Separate individual layers along Z-axis in exploded view
+    // Smoothly separate individual layers along Z-axis in exploded view
     const exp = this.explodeAmount;
     if (this.layerChassis) {
       const zChassis = exp * 12;
@@ -3235,19 +2834,12 @@ class MarketingLabEmblem3D {
       this.layerSymbols.style.filter = exp > 0.05 ? `drop-shadow(0 ${exp * 14}px ${shadowBlur}px rgba(0,0,0,${shadowAlpha}))` : "none";
     }
 
-    // Calipers visibility and position
-    if (this.calipers) {
-      const caliperOpacity = Math.max(0, Math.min(1, (exp - 0.22) / 0.65));
-      this.calipers.style.opacity = caliperOpacity.toFixed(2);
-      this.calipers.style.transform = `translateZ(${(exp * 210).toFixed(1)}px)`;
-    }
-
     // Dynamic Floor Shadow physics
     if (this.shadow) {
       const shadowOffsetX = -this.ry * 1.4;
       const shadowOffsetY = this.rx * 0.85;
       const shadowScale = 1 + exp * 0.35 - (levitateY / 40);
-      const shadowOpacity = Math.max(0.35, 0.88 - exp * 0.28 - (levitateY / 50));
+      const shadowOpacity = Math.max(0.35, 0.92 - exp * 0.28 - (levitateY / 50));
       const shadowBlur = 12 + exp * 14;
       this.shadow.style.transform = `translate(${shadowOffsetX.toFixed(1)}px, ${shadowOffsetY.toFixed(1)}px) scale(${shadowScale.toFixed(2)})`;
       this.shadow.style.opacity = shadowOpacity.toFixed(2);
@@ -3279,18 +2871,6 @@ class MarketingLabEmblem3D {
       }
     }
 
-    // Update HUD status
-    if (this.hudText) {
-      if (exp < 0.05) {
-        this.hudText.textContent = "Scroll down or click Explode to deconstruct 3D crest";
-      } else {
-        const percent = Math.round(exp * 100);
-        const zSpread = Math.round(exp * 192);
-        const pitch = Math.round(this.rx);
-        this.hudText.textContent = `Exploded: ${percent}% · Z-Spread: ${zSpread}px · Pitch: ${pitch}°`;
-      }
-    }
-
     this.rafId = requestAnimationFrame(t => this.loop(t));
   }
 
@@ -3308,9 +2888,6 @@ class MarketingLabEmblem3D {
     }
     if (this.scrollHandler) {
       window.removeEventListener("scroll", this.scrollHandler);
-    }
-    if (this.explodeBtn && this.explodeClickHandler) {
-      this.explodeBtn.removeEventListener("click", this.explodeClickHandler);
     }
     if (this.stack && this.stackClickHandler) {
       this.stack.removeEventListener("click", this.stackClickHandler);
@@ -3662,19 +3239,12 @@ class App {
           <div>
             <div class="hero-emblem-widget" id="hero-emblem-widget">
               <div class="emblem-widget-header">
-                <div>
-                  <span class="widget-kicker">British Management University</span>
-                  <h4 id="emblem-widget-title">Marketing Insights Lab</h4>
-                </div>
-                <div class="emblem-model-tabs" role="tablist" aria-label="Econometric Focus">
-                  <button class="emblem-tab active" data-model="brand" type="button">Brand Equity</button>
-                  <button class="emblem-tab" data-model="roi" type="button">CAC : LTV</button>
-                  <button class="emblem-tab" data-model="retention" type="button">Retention</button>
-                </div>
+                <span class="widget-kicker">British Management University</span>
+                <h4 id="emblem-widget-title">Marketing Insights Lab</h4>
               </div>
 
-              <!-- 3D Exploded Crest Stage -->
-              <div class="emblem-stage" id="emblem-stage" title="3D Exploded Crest — Move cursor or scroll down to deconstruct into 3D layers">
+              <!-- 3D Crest Stage (Pure Artwork & Scroll Animation) -->
+              <div class="emblem-stage" id="emblem-stage" title="3D Marketing Lab Crest — Move mouse or scroll down to deconstruct into 3D layers">
                 <!-- Grid Backdrop -->
                 <div class="emblem-grid-backdrop" aria-hidden="true"></div>
 
@@ -3735,72 +3305,8 @@ class App {
                       </div>
                     </div>
 
-                    <!-- Layer 4: Hologram Exploded Calipers / HUD Leader Lines -->
-                    <div class="exploded-calipers" id="exploded-calipers" aria-hidden="true">
-                      <div class="caliper-tag tag-chassis">
-                        <span class="caliper-dot"></span>
-                        <span class="caliper-line"></span>
-                        <span class="caliper-label">01 // CHASSIS FOUNDATION</span>
-                      </div>
-                      <div class="caliper-tag tag-bars">
-                        <span class="caliper-dot"></span>
-                        <span class="caliper-line"></span>
-                        <span class="caliper-label">02 // 5 MARKET DATA BARS</span>
-                      </div>
-                      <div class="caliper-tag tag-trend">
-                        <span class="caliper-dot"></span>
-                        <span class="caliper-line"></span>
-                        <span class="caliper-label">03 // ECONOMETRIC SPLINE</span>
-                      </div>
-                      <div class="caliper-tag tag-symbols">
-                        <span class="caliper-dot"></span>
-                        <span class="caliper-line"></span>
-                        <span class="caliper-label">04 // BRAND &amp; INNOVATION CORE</span>
-                      </div>
-                    </div>
-
                   </div> <!-- /emblem-exploded-stack -->
                 </div> <!-- /emblem-3d-anchor -->
-
-    <!-- Floating Metric Callouts in Stage Corners -->
-                <div class="emblem-callout callout-top-left" id="callout-metric-1">
-                  <span class="callout-dot"></span>
-                  <div>
-                    <strong id="metric-hero-val1">+240%</strong>
-                    <small id="metric-hero-lbl1">Brand Salience Multiplier</small>
-                  </div>
-                </div>
-
-                <div class="emblem-callout callout-bottom-right" id="callout-metric-2">
-                  <span class="callout-dot green"></span>
-                  <div>
-                    <strong id="metric-hero-val2">88.4 / 100</strong>
-                    <small id="metric-hero-lbl2">Empirical Equity Index</small>
-                  </div>
-                </div>
-
-                <!-- Bottom HUD Status with Interactive Exploded Toggle -->
-                <div class="emblem-stage-hud">
-                  <div class="hud-left-meta">
-                    <span class="hud-tag">3D EXPLODED SHIELD</span>
-                    <span class="hud-status" id="emblem-scroll-hud">Scroll down to explode crest into 3D layers</span>
-                  </div>
-                  <button class="hud-explode-btn" id="hud-explode-btn" type="button" title="Toggle 3D Exploded View">
-                    <span class="btn-icon">❖</span> <span id="explode-btn-label">Explode Layers</span>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Summary Stats Row -->
-              <div class="hero-stats-row">
-                <div class="hero-stat-box">
-                  <strong>${this.data.posts.length}</strong>
-                  <span>Case Studies & Surveys</span>
-                </div>
-                <div class="hero-stat-box">
-                  <strong>${this.data.team.filter(m => !m.hidden).length}</strong>
-                  <span>Active Student Fellows</span>
-                </div>
               </div>
             </div></div>
           </div>
