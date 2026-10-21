@@ -391,6 +391,518 @@ const BOOKMARKS_KEY = 'marketing_lab_v2_bookmarks';
 const AUTH_KEY = 'marketing_lab_v2_auth';
 const THEME_KEY = 'marketing_lab_v2_theme';
 
+/**
+ * MarketingLab3DScene
+ * High-performance, zero-dependency interactive 3D WebGL / Canvas scene
+ * Features:
+ * - 3D Dual-Core Polyhedron (Strategic Icosahedron + Analytic Dodecahedron)
+ * - 3 Concentric Marketing Orbit Rings with beacon markers
+ * - 3D Constellation / Particle field with dynamic distance-based neural connections
+ * - Scroll-driven 3D camera choreography (pitch, yaw, zoom, speed-warp streaks)
+ * - Interactive mouse parallax with smooth damping (lerp)
+ * - Dark / Light theme adaptive palette matching BMU branding
+ * - 3D interactive card tilt with specular glare
+ * - 3D Holographic Scroll HUD widget
+ */
+class MarketingLab3DScene {
+  constructor() {
+    this.canvas = document.getElementById("bg-canvas-3d");
+    if (!this.canvas) return;
+    this.ctx = this.canvas.getContext("2d");
+    if (!this.ctx) return;
+
+    this.hudCanvas = document.getElementById("hud-3d-canvas");
+    this.hudCtx = this.hudCanvas ? this.hudCanvas.getContext("2d") : null;
+    this.hudLabel = document.getElementById("hud-3d-label");
+
+    this.dpr = Math.min(window.devicePixelRatio || 1, 2);
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
+
+    // Scroll physics & tracking
+    this.scrollY = window.scrollY || 0;
+    this.targetScrollY = this.scrollY;
+    this.scrollVelocity = 0;
+    this.scrollPercent = 0;
+
+    // Mouse parallax
+    this.mouseX = 0;
+    this.mouseY = 0;
+    this.targetMouseX = 0;
+    this.targetMouseY = 0;
+
+    // Continuous time
+    this.time = 0;
+    this.lastTime = performance.now();
+
+    // Theme state
+    this.isDark = document.documentElement.getAttribute("data-theme") === "dark";
+
+    // Reduced motion
+    this.reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    this.initGeometry();
+    this.initParticles();
+    this.initOrbits();
+    this.initHUDCube();
+    this.bindEvents();
+    this.onResize();
+
+    this.isRunning = true;
+    this.rafId = requestAnimationFrame(t => this.loop(t));
+  }
+
+  initGeometry() {
+    // 1. Outer icosahedron core (Marketing Strategy Shell)
+    const phi = (1 + Math.sqrt(5)) / 2;
+    const rawVertices = [
+      [-1, phi, 0], [1, phi, 0], [-1, -phi, 0], [1, -phi, 0],
+      [0, -1, phi], [0, 1, phi], [0, -1, -phi], [0, 1, -phi],
+      [phi, 0, -1], [phi, 0, 1], [-phi, 0, -1], [-phi, 0, 1]
+    ];
+    this.coreRadius = 145;
+    this.coreVertices = rawVertices.map(([x, y, z]) => {
+      const len = Math.hypot(x, y, z);
+      return [(x / len) * this.coreRadius, (y / len) * this.coreRadius, (z / len) * this.coreRadius];
+    });
+
+    const edgeDist = (2 * this.coreRadius) / Math.hypot(phi, 1);
+    this.coreEdges = [];
+    for (let i = 0; i < this.coreVertices.length; i++) {
+      for (let j = i + 1; j < this.coreVertices.length; j++) {
+        const d = Math.hypot(
+          this.coreVertices[i][0] - this.coreVertices[j][0],
+          this.coreVertices[i][1] - this.coreVertices[j][1],
+          this.coreVertices[i][2] - this.coreVertices[j][2]
+        );
+        if (Math.abs(d - edgeDist) < 18) {
+          this.coreEdges.push([i, j]);
+        }
+      }
+    }
+
+    // 2. Inner octahedron (Analytic Core)
+    const inR = 75;
+    this.innerVertices = [
+      [inR, 0, 0], [-inR, 0, 0],
+      [0, inR, 0], [0, -inR, 0],
+      [0, 0, inR], [0, 0, -inR]
+    ];
+    this.innerEdges = [
+      [0, 2], [0, 3], [0, 4], [0, 5],
+      [1, 2], [1, 3], [1, 4], [1, 5],
+      [2, 4], [4, 3], [3, 5], [5, 2]
+    ];
+  }
+
+  initOrbits() {
+    this.orbitRings = [
+      { radius: 210, tiltX: 0.35, tiltY: 0.25, tiltZ: 0.1, speed: 0.0012, beacon: "STRATEGY", color: "#c99a32" },
+      { radius: 280, tiltX: -0.45, tiltY: 0.40, tiltZ: -0.2, speed: -0.0009, beacon: "ANALYTICS", color: "#b31d27" },
+      { radius: 360, tiltX: 0.70, tiltY: -0.30, tiltZ: 0.4, speed: 0.0007, beacon: "GROWTH", color: "#e0b44e" }
+    ];
+
+    this.orbitRings.forEach(ring => {
+      ring.points = [];
+      const count = 48;
+      for (let i = 0; i < count; i++) {
+        const a = (i / count) * Math.PI * 2;
+        ring.points.push(this.rotate3D([Math.cos(a) * ring.radius, Math.sin(a) * ring.radius, 0], ring.tiltX, ring.tiltY, ring.tiltZ));
+      }
+    });
+  }
+
+  initParticles() {
+    this.particles = [];
+    const count = 90;
+    for (let i = 0; i < count; i++) {
+      this.particles.push({
+        x: (Math.random() - 0.5) * 1400,
+        y: (Math.random() - 0.5) * 1100,
+        z: (Math.random() - 0.5) * 900,
+        vx: (Math.random() - 0.5) * 0.25,
+        vy: (Math.random() - 0.5) * 0.25,
+        vz: (Math.random() - 0.5) * 0.25,
+        size: Math.random() * 2 + 1,
+        colorType: Math.random() > 0.6 ? "gold" : "crimson"
+      });
+    }
+  }
+
+  initHUDCube() {
+    const s = 11;
+    this.hudCubeVertices = [
+      [-s, -s, -s], [s, -s, -s], [s, s, -s], [-s, s, -s],
+      [-s, -s, s], [s, -s, s], [s, s, s], [-s, s, s]
+    ];
+    this.hudCubeEdges = [
+      [0, 1], [1, 2], [2, 3], [3, 0],
+      [4, 5], [5, 6], [6, 7], [7, 4],
+      [0, 4], [1, 5], [2, 6], [3, 7]
+    ];
+  }
+
+  rotate3D(p, ax, ay, az) {
+    let [x, y, z] = p;
+    if (ax) {
+      const cos = Math.cos(ax), sin = Math.sin(ax);
+      const y1 = y * cos - z * sin, z1 = y * sin + z * cos;
+      y = y1; z = z1;
+    }
+    if (ay) {
+      const cos = Math.cos(ay), sin = Math.sin(ay);
+      const x1 = x * cos + z * sin, z1 = -x * sin + z * cos;
+      x = x1; z = z1;
+    }
+    if (az) {
+      const cos = Math.cos(az), sin = Math.sin(az);
+      const x1 = x * cos - y * sin, y1 = x * sin + y * cos;
+      x = x1; y = y1;
+    }
+    return [x, y, z];
+  }
+
+  project(p, focal, cx, cy) {
+    const z = p[2] + focal;
+    if (z <= 1) return null;
+    const scale = focal / z;
+    return {
+      x: cx + p[0] * scale,
+      y: cy + p[1] * scale,
+      scale,
+      z: p[2]
+    };
+  }
+
+  bindEvents() {
+    window.addEventListener("resize", () => this.onResize(), { passive: true });
+    window.addEventListener("scroll", () => {
+      this.targetScrollY = window.scrollY || 0;
+    }, { passive: true });
+
+    window.addEventListener("mousemove", (e) => {
+      this.targetMouseX = (e.clientX / (this.width || 1) - 0.5) * 2;
+      this.targetMouseY = (e.clientY / (this.height || 1) - 0.5) * 2;
+    }, { passive: true });
+
+    document.addEventListener("visibilitychange", () => {
+      this.isRunning = !document.hidden;
+      if (this.isRunning) {
+        this.lastTime = performance.now();
+        this.rafId = requestAnimationFrame(t => this.loop(t));
+      }
+    });
+
+    const hudBtn = document.getElementById("hud-3d-scroll");
+    if (hudBtn) {
+      hudBtn.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
+
+    // 3D Card tilt on hover with specular glare position
+    document.addEventListener("mousemove", (e) => {
+      const card = e.target && e.target.closest && e.target.closest(".card, .hero-widget, .team-card, .event-card");
+      if (card) {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        card.style.setProperty("--tilt-x", `${(y - 0.5) * -12}deg`);
+        card.style.setProperty("--tilt-y", `${(x - 0.5) * 12}deg`);
+        card.style.setProperty("--mouse-x", `${x * 100}%`);
+        card.style.setProperty("--mouse-y", `${y * 100}%`);
+      }
+    }, { passive: true });
+
+    document.addEventListener("mouseout", (e) => {
+      const card = e.target && e.target.closest && e.target.closest(".card, .hero-widget, .team-card, .event-card");
+      if (card && (!e.relatedTarget || !card.contains(e.relatedTarget))) {
+        card.style.setProperty("--tilt-x", "0deg");
+        card.style.setProperty("--tilt-y", "0deg");
+      }
+    }, { passive: true });
+  }
+
+  onResize() {
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
+    this.dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    if (this.canvas) {
+      this.canvas.width = this.width * this.dpr;
+      this.canvas.height = this.height * this.dpr;
+      this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+      this.ctx.scale(this.dpr, this.dpr);
+    }
+  }
+
+  updateTheme() {
+    this.isDark = document.documentElement.getAttribute("data-theme") === "dark";
+  }
+
+  onRouteChanged() {
+    this.targetScrollY = 0;
+    this.scrollY = 0;
+    this.updateTheme();
+  }
+
+  loop(currentTime) {
+    if (!this.isRunning) return;
+    const dt = Math.min((currentTime - this.lastTime) / 1000, 0.1);
+    this.lastTime = currentTime;
+    this.time += dt;
+
+    this.updatePhysics(dt);
+    this.render();
+    this.renderHUD();
+
+    this.rafId = requestAnimationFrame(t => this.loop(t));
+  }
+
+  updatePhysics(dt) {
+    const prevScroll = this.scrollY;
+    this.scrollY += (this.targetScrollY - this.scrollY) * 0.1;
+    this.scrollVelocity = (this.scrollY - prevScroll);
+    const docHeight = (document.documentElement.scrollHeight - this.height) || 1;
+    this.scrollPercent = Math.min(1, Math.max(0, this.scrollY / docHeight));
+
+    this.mouseX += (this.targetMouseX - this.mouseX) * 0.08;
+    this.mouseY += (this.targetMouseY - this.mouseY) * 0.08;
+  }
+
+  render() {
+    this.ctx.clearRect(0, 0, this.width, this.height);
+
+    // Dynamic focal center shifts smoothly with screen width and scroll depth
+    const isDesktop = this.width > 900;
+    const baseCX = isDesktop ? 0.66 : 0.50;
+    const targetCX = 0.50;
+    const cx = this.width * (baseCX + (targetCX - baseCX) * Math.min(1, this.scrollPercent * 2.2));
+    const cy = this.height * 0.48;
+
+    const rotY = this.time * 0.22 + this.scrollPercent * Math.PI * 3.5 + this.mouseX * 0.35;
+    const rotX = 0.18 + Math.sin(this.scrollPercent * Math.PI * 2) * 0.32 + this.mouseY * 0.25;
+    const rotZ = this.scrollPercent * 0.45;
+    const focal = 600;
+
+    const goldColor = this.isDark ? "#c99a32" : "#a97e24";
+    const goldGlow = this.isDark ? "rgba(201, 154, 50, " : "rgba(169, 126, 36, ";
+    const crimsonColor = this.isDark ? "#b31d27" : "#93131c";
+    const crimsonGlow = this.isDark ? "rgba(179, 29, 39, " : "rgba(147, 19, 28, ";
+
+    // 1. Render 3D Background Particles with Speed Warp
+    const projectedParticles = [];
+    const warpStreak = Math.abs(this.scrollVelocity) * 1.2;
+
+    for (let i = 0; i < this.particles.length; i++) {
+      const p = this.particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.z += p.vz - this.scrollVelocity * 0.35;
+
+      // Wrap in 3D volume
+      if (p.x > 700) p.x = -700; else if (p.x < -700) p.x = 700;
+      if (p.y > 550) p.y = -550; else if (p.y < -550) p.y = 550;
+      if (p.z > 450) p.z = -450; else if (p.z < -450) p.z = 450;
+
+      const r = this.rotate3D([p.x, p.y, p.z], rotX * 0.4, rotY * 0.4, 0);
+      const proj = this.project(r, focal, cx, cy);
+      if (proj) {
+        projectedParticles.push({ ...proj, size: p.size, colorType: p.colorType });
+      }
+    }
+
+    // Draw particle lines between nearest neighbors
+    this.ctx.lineWidth = 0.7;
+    for (let i = 0; i < projectedParticles.length; i++) {
+      const p1 = projectedParticles[i];
+      for (let j = i + 1; j < projectedParticles.length; j++) {
+        const p2 = projectedParticles[j];
+        const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+        if (dist < 85) {
+          const alpha = (1 - dist / 85) * (this.isDark ? 0.22 : 0.14);
+          this.ctx.strokeStyle = p1.colorType === "gold" ? `${goldGlow}${alpha})` : `${crimsonGlow}${alpha})`;
+          this.ctx.beginPath();
+          this.ctx.moveTo(p1.x, p1.y);
+          this.ctx.lineTo(p2.x, p2.y);
+          this.ctx.stroke();
+        }
+      }
+    }
+
+    // Draw particle nodes with warp streak
+    for (let i = 0; i < projectedParticles.length; i++) {
+      const p = projectedParticles[i];
+      const alpha = Math.min(1, Math.max(0.15, (p.z + 450) / 900)) * (this.isDark ? 0.65 : 0.45);
+      this.ctx.fillStyle = p.colorType === "gold" ? `${goldGlow}${alpha})` : `${crimsonGlow}${alpha})`;
+
+      if (warpStreak > 2) {
+        this.ctx.strokeStyle = this.ctx.fillStyle;
+        this.ctx.lineWidth = p.size * p.scale;
+        this.ctx.beginPath();
+        this.ctx.moveTo(p.x, p.y);
+        this.ctx.lineTo(p.x, p.y - this.scrollVelocity * p.scale * 1.4);
+        this.ctx.stroke();
+      } else {
+        this.ctx.beginPath();
+        this.ctx.arc(p.x, p.y, p.size * p.scale, 0, Math.PI * 2);
+        this.ctx.fill();
+      }
+    }
+
+    // 2. Render 3 Concentric Orbital Rings with Markers
+    this.orbitRings.forEach(ring => {
+      const projectedRingPoints = ring.points.map(pt => {
+        const r = this.rotate3D(pt, rotX, rotY, rotZ);
+        return this.project(r, focal, cx, cy);
+      }).filter(Boolean);
+
+      if (projectedRingPoints.length > 2) {
+        this.ctx.beginPath();
+        this.ctx.setLineDash([4, 6]);
+        this.ctx.lineWidth = 1.1;
+        this.ctx.strokeStyle = ring.color === "#c99a32" ? `${goldGlow}0.32)` : `${crimsonGlow}0.30)`;
+        this.ctx.moveTo(projectedRingPoints[0].x, projectedRingPoints[0].y);
+        for (let i = 1; i < projectedRingPoints.length; i++) {
+          this.ctx.lineTo(projectedRingPoints[i].x, projectedRingPoints[i].y);
+        }
+        this.ctx.closePath();
+        this.ctx.stroke();
+        this.ctx.setLineDash([]);
+      }
+
+      // Orbital beacon
+      const beaconAngle = this.time * ring.speed * 8 + this.scrollPercent * Math.PI * 2.5;
+      const beaconLocal = this.rotate3D([Math.cos(beaconAngle) * ring.radius, Math.sin(beaconAngle) * ring.radius, 0], ring.tiltX, ring.tiltY, ring.tiltZ);
+      const beaconRot = this.rotate3D(beaconLocal, rotX, rotY, rotZ);
+      const beaconProj = this.project(beaconRot, focal, cx, cy);
+
+      if (beaconProj) {
+        this.ctx.beginPath();
+        this.ctx.arc(beaconProj.x, beaconProj.y, 4.5 * beaconProj.scale, 0, Math.PI * 2);
+        this.ctx.fillStyle = ring.color;
+        this.ctx.fill();
+
+        this.ctx.font = "600 9px \"JetBrains Mono\", monospace";
+        this.ctx.fillStyle = this.isDark ? "#e0b44e" : "#760810";
+        this.ctx.fillText(ring.beacon, beaconProj.x + 8, beaconProj.y + 3);
+      }
+    });
+
+    // 3. Render Outer Strategic Icosahedron Core
+    const projCore = this.coreVertices.map(v => {
+      const r = this.rotate3D(v, rotX, rotY, rotZ);
+      return this.project(r, focal, cx, cy);
+    });
+
+    // Draw Icosahedron Edges with depth gradient
+    this.coreEdges.forEach(([i, j]) => {
+      const p1 = projCore[i];
+      const p2 = projCore[j];
+      if (!p1 || !p2) return;
+
+      const avgZ = (p1.z + p2.z) / 2;
+      const depthAlpha = Math.min(0.9, Math.max(0.18, (avgZ + this.coreRadius) / (2 * this.coreRadius)));
+      const grad = this.ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y);
+      grad.addColorStop(0, `${goldGlow}${depthAlpha})`);
+      grad.addColorStop(1, `${crimsonGlow}${depthAlpha * 0.85})`);
+
+      this.ctx.strokeStyle = grad;
+      this.ctx.lineWidth = Math.max(1, 2.2 * p1.scale);
+      this.ctx.beginPath();
+      this.ctx.moveTo(p1.x, p1.y);
+      this.ctx.lineTo(p2.x, p2.y);
+      this.ctx.stroke();
+    });
+
+    // Draw Icosahedron Glowing Vertex Nodes
+    projCore.forEach(p => {
+      if (!p) return;
+      const nodeR = 3.5 * p.scale;
+      this.ctx.beginPath();
+      this.ctx.arc(p.x, p.y, nodeR, 0, Math.PI * 2);
+      this.ctx.fillStyle = this.isDark ? "#e0b44e" : "#b31d27";
+      this.ctx.fill();
+    });
+
+    // 4. Render Inner Counter-Rotating Octahedron (Analytic Core)
+    const inRotY = -rotY * 1.6;
+    const inRotX = -rotX * 1.3;
+    const inRotZ = rotZ * 1.4;
+
+    const projInner = this.innerVertices.map(v => {
+      const r = this.rotate3D(v, inRotX, inRotY, inRotZ);
+      return this.project(r, focal, cx, cy);
+    });
+
+    this.innerEdges.forEach(([i, j]) => {
+      const p1 = projInner[i];
+      const p2 = projInner[j];
+      if (!p1 || !p2) return;
+
+      this.ctx.strokeStyle = `${goldGlow}${this.isDark ? 0.75 : 0.65})`;
+      this.ctx.lineWidth = 1.4 * p1.scale;
+      this.ctx.beginPath();
+      this.ctx.moveTo(p1.x, p1.y);
+      this.ctx.lineTo(p2.x, p2.y);
+      this.ctx.stroke();
+    });
+
+    // Center pulsing energy core
+    const centerProj = this.project(this.rotate3D([0, 0, 0], rotX, rotY, rotZ), focal, cx, cy);
+    if (centerProj) {
+      const pulse = 1 + Math.sin(this.time * 3.5) * 0.25;
+      const rad = 7 * centerProj.scale * pulse;
+      const glowGrad = this.ctx.createRadialGradient(centerProj.x, centerProj.y, 0, centerProj.x, centerProj.y, rad * 2.5);
+      glowGrad.addColorStop(0, `${goldGlow}0.8)`);
+      glowGrad.addColorStop(0.5, `${crimsonGlow}0.4)`);
+      glowGrad.addColorStop(1, "transparent");
+
+      this.ctx.fillStyle = glowGrad;
+      this.ctx.beginPath();
+      this.ctx.arc(centerProj.x, centerProj.y, rad * 2.5, 0, Math.PI * 2);
+      this.ctx.fill();
+    }
+  }
+
+  renderHUD() {
+    if (!this.hudCtx || !this.hudCanvas) return;
+    this.hudCtx.clearRect(0, 0, 56, 56);
+
+    const cx = 28;
+    const cy = 28;
+    const focal = 50;
+
+    const rotX = this.scrollPercent * Math.PI * 3 + this.time * 0.4;
+    const rotY = this.scrollPercent * Math.PI * 4 + this.time * 0.5;
+    const rotZ = this.scrollPercent * Math.PI * 2;
+
+    const proj = this.hudCubeVertices.map(v => {
+      const r = this.rotate3D(v, rotX, rotY, rotZ);
+      return this.project(r, focal, cx, cy);
+    });
+
+    this.hudCtx.strokeStyle = this.isDark ? "#e0b44e" : "#93131c";
+    this.hudCtx.lineWidth = 1.4;
+
+    this.hudCubeEdges.forEach(([i, j]) => {
+      const p1 = proj[i];
+      const p2 = proj[j];
+      if (p1 && p2) {
+        this.hudCtx.beginPath();
+        this.hudCtx.moveTo(p1.x, p1.y);
+        this.hudCtx.lineTo(p2.x, p2.y);
+        this.hudCtx.stroke();
+      }
+    });
+
+    if (this.hudLabel) {
+      const pct = Math.round(this.scrollPercent * 100);
+      this.hudLabel.textContent = `${pct}% · 3D`;
+    }
+  }
+}
+
 class App {
   constructor() {
     window.app = this;
@@ -406,6 +918,7 @@ class App {
     this.initTheme();
     this.initEventListeners();
     this.initRouter();
+    this.init3DScene();
   }
 
   loadData() {
@@ -456,6 +969,7 @@ class App {
         document.documentElement.setAttribute('data-theme', theme);
       }
       this.updateThemeButton();
+      if (this.scene3D) this.scene3D.updateTheme();
     } catch (e) {}
   }
 
@@ -468,6 +982,7 @@ class App {
       }
       safeStorage.set('localStorage', THEME_KEY, next);
       this.updateThemeButton();
+      if (this.scene3D) this.scene3D.updateTheme();
       this.showToast(`Switched to ${next} mode`);
     } catch (e) {}
   }
@@ -509,6 +1024,16 @@ class App {
     this.handleRoute();
   }
 
+
+  init3DScene() {
+    try {
+      if (!this.scene3D) {
+        this.scene3D = new MarketingLab3DScene();
+      }
+    } catch (e) {
+      console.warn("3D scene init error:", e);
+    }
+  }
   initRouter() {
     if (typeof window !== 'undefined') {
       window.addEventListener('hashchange', () => this.handleRoute());
@@ -550,6 +1075,7 @@ class App {
       const param = parts[1];
 
       this.updateNavLinks(route);
+      if (this.scene3D) this.scene3D.onRouteChanged();
       try {
         if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
           window.scrollTo(0, 0);
