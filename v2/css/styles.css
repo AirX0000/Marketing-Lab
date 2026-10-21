@@ -1418,7 +1418,7 @@ textarea.form-control {
 }
 
 /* ==========================================================================
-   Marketing Lab v2 · Interactive 3D Heraldic Crest Emblem Stage
+   Marketing Lab v2 · Interactive 3D Exploded Heraldic Crest Stage
    ========================================================================== */
 
 .hero-emblem-widget {
@@ -1500,17 +1500,18 @@ textarea.form-control {
   box-shadow: 0 2px 8px rgba(201, 154, 50, 0.35);
 }
 
-/* The 3D Emblem Stage (Replicating user's crest artwork) */
+/* 3D Exploded Stage */
 .emblem-stage {
   position: relative;
   width: 100%;
-  height: 350px;
+  height: 410px;
   margin: 16px 0 14px;
   border-radius: 16px;
-  background: radial-gradient(circle at 50% 45%, #760810 0%, #4a060b 60%, #260305 100%);
+  background: radial-gradient(circle at 50% 45%, #760810 0%, #4a060b 60%, #220204 100%);
   border: 1px solid rgba(201, 154, 50, 0.28);
   overflow: hidden;
   perspective: 1200px;
+  perspective-origin: 50% 45%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1522,7 +1523,7 @@ textarea.form-control {
   cursor: grabbing;
 }
 
-/* Subtle Technical Coordinate Grid matching user's image */
+/* Coordinate Grid */
 .emblem-grid-backdrop {
   position: absolute;
   inset: 0;
@@ -1534,7 +1535,7 @@ textarea.form-control {
   z-index: 1;
 }
 
-/* Concentric Dashed Technical Orbit Rings matching user's image */
+/* Concentric Dashed Technical Orbit Rings */
 .emblem-orbit-rings {
   position: absolute;
   inset: 0;
@@ -1547,8 +1548,8 @@ textarea.form-control {
 
 .emblem-ring-outer {
   position: absolute;
-  width: 310px;
-  height: 310px;
+  width: 320px;
+  height: 320px;
   border: 1.5px dashed rgba(255, 255, 255, 0.2);
   border-radius: 50%;
   animation: emblemOrbitCW 48s linear infinite;
@@ -1557,8 +1558,8 @@ textarea.form-control {
 
 .emblem-ring-inner {
   position: absolute;
-  width: 220px;
-  height: 220px;
+  width: 230px;
+  height: 230px;
   border: 1.2px dashed rgba(201, 154, 50, 0.32);
   border-radius: 50%;
   animation: emblemOrbitCCW 34s linear infinite;
@@ -1574,64 +1575,106 @@ textarea.form-control {
   to { transform: rotate(0deg); }
 }
 
-/* 3D Floating Shield Container */
+/* 3D Perspective Anchor */
 .emblem-3d-anchor {
   position: relative;
   z-index: 5;
+  width: 205px;
+  height: 230px;
+  transform-style: preserve-3d;
+  will-change: transform;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  transform-style: preserve-3d;
-  will-change: transform;
 }
 
-/* Physical 3D Shield */
-.emblem-shield-body {
+/* Floor Cast Drop Shadow */
+.emblem-floor-shadow {
+  position: absolute;
+  bottom: -44px;
+  width: 200px;
+  height: 34px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.45) 45%, transparent 75%);
+  filter: blur(12px);
+  border-radius: 50%;
+  transform: translateZ(-35px);
+  pointer-events: none;
+  will-change: transform, opacity, filter;
+  opacity: 0.9;
+}
+
+/* Exploded 3D Stack */
+.emblem-exploded-stack {
   position: relative;
-  width: 195px;
-  height: 220px;
+  width: 100%;
+  height: 100%;
   transform-style: preserve-3d;
-  transition: transform 0.1s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform;
 }
 
-.emblem-shield-img {
+/* Generic Exploded Layer */
+.exploded-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  pointer-events: none;
+  will-change: transform, filter;
+}
+
+.layer-img {
   width: 100%;
   height: 100%;
   object-fit: contain;
   display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Layer 0: Chassis Base */
+.layer-chassis {
+  z-index: 1;
+}
+
+.layer-chassis .layer-img {
   filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.45));
-  pointer-events: none;
 }
 
-/* Real Cast Drop Shadow Underneath matching user's image */
-.emblem-floor-shadow {
+/* Layer 1: Market Data Columns */
+.layer-bars {
+  z-index: 2;
+}
+
+/* Layer 2: Trendline */
+.layer-trendline {
+  z-index: 3;
+}
+
+/* Layer 3: Symbols (M & Bulb) */
+.layer-symbols {
+  z-index: 4;
+}
+
+.symbol-elem {
   position: absolute;
-  bottom: -34px;
-  width: 185px;
-  height: 28px;
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 45%, transparent 75%);
-  filter: blur(10px);
-  border-radius: 50%;
-  transform: translateZ(-20px);
-  pointer-events: none;
-  transition: transform 0.1s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
-  opacity: 0.92;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
 }
 
-/* SVG Vector Overlay for Luminous Pulses */
+/* SVG Vector Overlay for Trendline & Flare */
 .emblem-crest-overlay {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 2;
 }
 
 .emblem-trend-glow {
-  stroke: rgba(223, 183, 92, 0.65);
+  stroke: rgba(223, 183, 92, 0.7);
   stroke-width: 10;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -1649,7 +1692,7 @@ textarea.form-control {
   fill: #ffffff;
   stroke: var(--gold-500);
   stroke-width: 3.5;
-  filter: drop-shadow(0 0 6px rgba(201, 154, 50, 0.85));
+  filter: drop-shadow(0 0 6px rgba(201, 154, 50, 0.9));
 }
 
 .emblem-pulse-orb {
@@ -1660,18 +1703,85 @@ textarea.form-control {
 }
 
 .emblem-bulb-flare {
-  fill: rgba(223, 183, 92, 0.2);
+  fill: rgba(223, 183, 92, 0.25);
   filter: blur(14px);
   animation: bulbGlow 3s ease-in-out infinite;
 }
 
 @keyframes bulbGlow {
   0%, 100% { opacity: 0.35; transform: scale(0.95); }
-  50% { opacity: 0.85; transform: scale(1.15); }
+  50% { opacity: 0.9; transform: scale(1.15); }
+}
+
+/* Technical Calipers HUD (Layer dimension tags in 3D) */
+.exploded-calipers {
+  position: absolute;
+  inset: -12% -20%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  transform-style: preserve-3d;
+  z-index: 20;
+}
+
+.caliper-tag {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  color: #ffd54f;
+  white-space: nowrap;
+}
+
+.caliper-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold-400);
+  box-shadow: 0 0 8px rgba(255, 213, 79, 0.9);
+}
+
+.caliper-line {
+  width: 20px;
+  height: 1.5px;
+  background: linear-gradient(to right, var(--gold-400), rgba(255, 213, 79, 0.1));
+}
+
+.caliper-label {
+  background: rgba(10, 1, 3, 0.92);
+  border: 1px solid rgba(255, 213, 79, 0.5);
+  border-radius: 4px;
+  padding: 2.5px 7px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.75);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+}
+
+.tag-chassis {
+  bottom: 20%;
+  left: 6%;
+}
+
+.tag-bars {
+  bottom: 36%;
+  right: 6%;
+}
+
+.tag-trend {
+  top: 46%;
+  left: 3%;
+}
+
+.tag-symbols {
+  top: 16%;
+  right: 3%;
 }
 
 /* Specular Glare Sheen */
-.emblem-glare-sheen {
+.layer-glare {
   position: absolute;
   inset: 0;
   border-radius: inherit;
@@ -1679,35 +1789,56 @@ textarea.form-control {
   background: radial-gradient(circle at var(--glare-x, 50%) var(--glare-y, 30%), rgba(255, 255, 255, 0.18) 0%, transparent 60%);
   opacity: 0.7;
   mix-blend-mode: overlay;
-  transition: opacity 0.3s ease;
 }
 
 /* Floating Academic Metric Badges in 3D Space */
 .emblem-callout {
   position: absolute;
-  z-index: 10;
+  z-index: 12;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px 14px;
-  background: rgba(20, 2, 4, 0.88);
-  border: 1px solid rgba(201, 154, 50, 0.45);
+  gap: 8px;
+  padding: 5px 11px;
+  background: rgba(18, 2, 4, 0.9);
+  border: 1px solid rgba(201, 154, 50, 0.55);
   border-radius: 999px;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
   pointer-events: none;
+  max-width: 155px;
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .callout-top-left {
-  top: 18px;
-  left: 18px;
+  top: 10px;
+  left: 10px;
 }
 
 .callout-bottom-right {
-  bottom: 42px;
-  right: 18px;
+  bottom: 46px;
+  right: 10px;
+}
+
+.emblem-callout strong {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.1;
+}
+
+.emblem-callout small {
+  display: block;
+  font-size: 8px;
+  font-weight: 600;
+  color: var(--gold-300);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .callout-dot {
@@ -1753,15 +1884,56 @@ textarea.form-control {
   font-family: var(--font-mono);
   font-size: 10px;
   color: rgba(255, 255, 255, 0.7);
-  pointer-events: none;
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.6);
   padding: 5px 10px;
   border-radius: 6px;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  z-index: 10;
+  z-index: 15;
 }
+
+.hud-left-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hud-explode-btn {
+  background: rgba(201, 154, 50, 0.22);
+  border: 1px solid rgba(201, 154, 50, 0.6);
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 4px 11px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
+}
+
+.hud-explode-btn:hover {
+  background: rgba(201, 154, 50, 0.35);
+  border-color: var(--gold-400);
+  transform: translateY(-1px);
+}
+
+.hud-explode-btn.active {
+  background: var(--gold-500);
+  color: #120204;
+  border-color: var(--gold-400);
+  font-weight: 700;
+}
+
 
 /* Subtle editorial 3D perspective transforms on cards */
 .card, .team-card, .event-card {

@@ -408,18 +408,26 @@ const THEME_KEY = 'marketing_lab_v2_theme';
 class MarketingLabEmblem3D {
   constructor() {
     this.stage = document.getElementById("emblem-stage");
-    this.shield = document.getElementById("emblem-shield-body");
+    this.anchor = document.getElementById("emblem-3d-anchor");
+    this.stack = document.getElementById("emblem-exploded-stack");
+    this.layerChassis = document.getElementById("layer-chassis");
+    this.layerBars = document.getElementById("layer-bars");
+    this.layerTrendline = document.getElementById("layer-trendline");
+    this.layerSymbols = document.getElementById("layer-symbols");
+    this.calipers = document.getElementById("exploded-calipers");
     this.shadow = document.getElementById("emblem-floor-shadow");
     this.pulseOrb = document.getElementById("emblem-pulse-orb");
     this.hudText = document.getElementById("emblem-scroll-hud");
-    this.glare = document.getElementById("emblem-glare-sheen");
+    this.glare = document.getElementById("layer-glare");
+    this.explodeBtn = document.getElementById("hud-explode-btn");
+    this.explodeBtnLabel = document.getElementById("explode-btn-label");
 
     this.val1El = document.getElementById("metric-hero-val1");
     this.lbl1El = document.getElementById("metric-hero-lbl1");
     this.val2El = document.getElementById("metric-hero-val2");
     this.lbl2El = document.getElementById("metric-hero-lbl2");
 
-    if (!this.stage || !this.shield) return;
+    if (!this.stage || !this.stack) return;
 
     this.trendNodes = [
       { x: 160, y: 427 },
@@ -464,6 +472,10 @@ class MarketingLabEmblem3D {
     this.mouseNy = 0;
 
     this.scrollProgress = 0;
+    this.isManualExploded = false;
+    this.explodeAmount = 0;
+    this.targetExplode = 0;
+
     this.time = 0;
     this.lastTime = performance.now();
 
@@ -494,6 +506,12 @@ class MarketingLabEmblem3D {
     window.addEventListener("scroll", this.scrollHandler, { passive: true });
     this.onScroll();
 
+    // Explode toggle button
+    if (this.explodeBtn) {
+      this.explodeClickHandler = () => this.toggleManualExplode();
+      this.explodeBtn.addEventListener("click", this.explodeClickHandler);
+    }
+
     // Tab switcher
     const tabs = document.querySelectorAll(".emblem-tab");
     tabs.forEach(tab => {
@@ -507,14 +525,25 @@ class MarketingLabEmblem3D {
       });
     });
 
-    // Click shield ripple
-    this.clickHandler = () => this.triggerRipple();
-    this.shield.addEventListener("click", this.clickHandler);
+    // Click on stack to trigger physical ripple
+    this.stackClickHandler = () => this.triggerRipple();
+    this.stack.addEventListener("click", this.stackClickHandler);
+  }
+
+  toggleManualExplode() {
+    this.isManualExploded = !this.isManualExploded;
+    if (this.explodeBtn) {
+      this.explodeBtn.classList.toggle("active", this.isManualExploded);
+    }
+    if (this.explodeBtnLabel) {
+      this.explodeBtnLabel.textContent = this.isManualExploded ? "Assemble Crest" : "Explode Layers";
+    }
+    this.targetRx -= 10;
   }
 
   onScroll() {
     const scrollY = (typeof window !== "undefined" && window.scrollY) || 0;
-    this.scrollProgress = Math.min(1, Math.max(0, scrollY / 550));
+    this.scrollProgress = Math.min(1, Math.max(0, scrollY / 480));
   }
 
   switchModel(key) {
@@ -531,7 +560,6 @@ class MarketingLabEmblem3D {
   }
 
   triggerRipple() {
-    if (!this.shield) return;
     this.targetRx -= 12;
   }
 
@@ -547,38 +575,84 @@ class MarketingLabEmblem3D {
     this.lastTime = timestamp;
     this.time += dt;
 
+    // Determine target explosion amount: driven by scroll, boosted if manual toggle is on
+    const scrollExplode = this.scrollProgress;
+    const rawTarget = this.isManualExploded ? Math.max(0.9, scrollExplode) : scrollExplode;
+    this.targetExplode = rawTarget;
+    this.explodeAmount += (this.targetExplode - this.explodeAmount) * 0.14;
+
     // Levitation oscillation
-    const levitateY = Math.sin(this.time * 2.2) * 6;
+    const levitateY = Math.sin(this.time * 2.2) * (5 - this.explodeAmount * 2.5);
     const levitateRz = Math.sin(this.time * 1.5) * 1.2;
 
-    // Scroll tilt + Mouse parallax tilt
-    const scrollRx = this.scrollProgress * 20; // Pitch forward on scroll
-    const scrollRy = -this.scrollProgress * 15; // Yaw slightly on scroll
-    const scrollTz = 24 + this.scrollProgress * 30; // Pop forward in 3D depth
+    // Exploded View Isometric Pitch & Yaw + Mouse Parallax
+    const explodePitch = this.explodeAmount * 26; // Tilt forward to look down at layers
+    const explodeYaw = -this.explodeAmount * 22; // Yaw left for clean layer separation
+    const explodeTz = 20 + this.explodeAmount * 38; // Elevate whole anchor toward camera
 
-    this.targetRx = -this.mouseNy * 22 + scrollRx;
-    this.targetRy = this.mouseNx * 26 + scrollRy;
+    this.targetRx = -this.mouseNy * 22 + explodePitch;
+    this.targetRy = this.mouseNx * 26 + explodeYaw;
 
     // Smooth inertia lerp
     this.rx += (this.targetRx - this.rx) * 0.12;
     this.ry += (this.targetRy - this.ry) * 0.12;
 
-    // Apply 3D transform to Shield
-    if (this.shield) {
-      this.shield.style.transform = `perspective(1000px) translateY(${levitateY.toFixed(2)}px) rotateX(${this.rx.toFixed(2)}deg) rotateY(${this.ry.toFixed(2)}deg) rotateZ(${levitateRz.toFixed(2)}deg) translateZ(${scrollTz.toFixed(1)}px)`;
+    // Apply 3D transform to overall Stack
+    if (this.stack) {
+      this.stack.style.transform = `perspective(1100px) translateY(${levitateY.toFixed(2)}px) rotateX(${this.rx.toFixed(2)}deg) rotateY(${this.ry.toFixed(2)}deg) rotateZ(${levitateRz.toFixed(2)}deg) translateZ(${explodeTz.toFixed(1)}px)`;
     }
 
-    // Apply Dynamic Drop Shadow physics (opposite offset and scaling)
+    // Separate individual layers along Z-axis in exploded view
+    const exp = this.explodeAmount;
+    if (this.layerChassis) {
+      const zChassis = exp * 12;
+      this.layerChassis.style.transform = `translateZ(${zChassis.toFixed(1)}px)`;
+    }
+
+    if (this.layerBars) {
+      const zBars = exp * 72;
+      const shadowBlur = (exp * 14).toFixed(1);
+      const shadowAlpha = (exp * 0.55).toFixed(2);
+      this.layerBars.style.transform = `translateZ(${zBars.toFixed(1)}px)`;
+      this.layerBars.style.filter = exp > 0.05 ? `drop-shadow(0 ${exp * 10}px ${shadowBlur}px rgba(0,0,0,${shadowAlpha}))` : "none";
+    }
+
+    if (this.layerTrendline) {
+      const zTrend = exp * 132;
+      const glowBlur = (8 + exp * 14).toFixed(1);
+      const glowAlpha = (0.35 + exp * 0.45).toFixed(2);
+      this.layerTrendline.style.transform = `translateZ(${zTrend.toFixed(1)}px)`;
+      this.layerTrendline.style.filter = `drop-shadow(0 ${exp * 12}px ${glowBlur}px rgba(223, 183, 92, ${glowAlpha}))`;
+    }
+
+    if (this.layerSymbols) {
+      const zSymbols = exp * 192;
+      const shadowBlur = (exp * 18).toFixed(1);
+      const shadowAlpha = (exp * 0.65).toFixed(2);
+      this.layerSymbols.style.transform = `translateZ(${zSymbols.toFixed(1)}px)`;
+      this.layerSymbols.style.filter = exp > 0.05 ? `drop-shadow(0 ${exp * 14}px ${shadowBlur}px rgba(0,0,0,${shadowAlpha}))` : "none";
+    }
+
+    // Calipers visibility and position
+    if (this.calipers) {
+      const caliperOpacity = Math.max(0, Math.min(1, (exp - 0.22) / 0.65));
+      this.calipers.style.opacity = caliperOpacity.toFixed(2);
+      this.calipers.style.transform = `translateZ(${(exp * 210).toFixed(1)}px)`;
+    }
+
+    // Dynamic Floor Shadow physics
     if (this.shadow) {
-      const shadowOffsetX = -this.ry * 1.3;
-      const shadowOffsetY = this.rx * 0.9;
-      const shadowScale = 1 - (levitateY / 35) - (this.scrollProgress * 0.12);
-      const shadowOpacity = 0.88 - (levitateY / 55);
+      const shadowOffsetX = -this.ry * 1.4;
+      const shadowOffsetY = this.rx * 0.85;
+      const shadowScale = 1 + exp * 0.35 - (levitateY / 40);
+      const shadowOpacity = Math.max(0.35, 0.88 - exp * 0.28 - (levitateY / 50));
+      const shadowBlur = 12 + exp * 14;
       this.shadow.style.transform = `translate(${shadowOffsetX.toFixed(1)}px, ${shadowOffsetY.toFixed(1)}px) scale(${shadowScale.toFixed(2)})`;
-      this.shadow.style.opacity = Math.max(0.3, shadowOpacity).toFixed(2);
+      this.shadow.style.opacity = shadowOpacity.toFixed(2);
+      this.shadow.style.filter = `blur(${shadowBlur.toFixed(1)}px)`;
     }
 
-    // Glare position
+    // Glare position on chassis
     if (this.glare) {
       const gx = 50 + this.mouseNx * 45;
       const gy = 30 + this.mouseNy * 35;
@@ -586,7 +660,7 @@ class MarketingLabEmblem3D {
       this.glare.style.setProperty("--glare-y", `${gy}%`);
     }
 
-    // Animate traveling pulse along trendline
+    // Traveling pulse orb along trendline
     if (this.pulseOrb) {
       const rawT = ((this.time * 0.5) % 1.0 + 1.0) % 1.0;
       const segCount = this.trendNodes.length - 1;
@@ -605,12 +679,13 @@ class MarketingLabEmblem3D {
 
     // Update HUD status
     if (this.hudText) {
-      if (this.scrollProgress < 0.05) {
-        this.hudText.textContent = "Scroll down or move mouse to tilt 3D heraldic crest";
+      if (exp < 0.05) {
+        this.hudText.textContent = "Scroll down or click Explode to deconstruct 3D crest";
       } else {
+        const percent = Math.round(exp * 100);
+        const zSpread = Math.round(exp * 192);
         const pitch = Math.round(this.rx);
-        const yaw = Math.round(this.ry);
-        this.hudText.textContent = `3D Crest Active · Pitch: ${pitch}° · Yaw: ${yaw}° · Elevation: ${Math.round(scrollTz)}px`;
+        this.hudText.textContent = `Exploded: ${percent}% · Z-Spread: ${zSpread}px · Pitch: ${pitch}°`;
       }
     }
 
@@ -619,35 +694,26 @@ class MarketingLabEmblem3D {
 
   destroy() {
     this.isRunning = false;
-    if (this.rafId) cancelAnimationFrame(this.rafId);
-    if (this.scrollHandler) window.removeEventListener("scroll", this.scrollHandler);
+    if (this.rafId) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
+    }
+    if (this.stage && this.mouseMoveHandler) {
+      this.stage.removeEventListener("mousemove", this.mouseMoveHandler);
+    }
+    if (this.stage && this.mouseLeaveHandler) {
+      this.stage.removeEventListener("mouseleave", this.mouseLeaveHandler);
+    }
+    if (this.scrollHandler) {
+      window.removeEventListener("scroll", this.scrollHandler);
+    }
+    if (this.explodeBtn && this.explodeClickHandler) {
+      this.explodeBtn.removeEventListener("click", this.explodeClickHandler);
+    }
+    if (this.stack && this.stackClickHandler) {
+      this.stack.removeEventListener("click", this.stackClickHandler);
+    }
   }
-}
-
-/**
- * Editorial 3D perspective tilt on cards
- */
-function initCard3DTilt() {
-  document.addEventListener("mousemove", (e) => {
-    const card = e.target && e.target.closest && e.target.closest(".card, .team-card, .event-card");
-    if (card) {
-      const rect = card.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = (e.clientY - rect.top) / rect.height;
-      card.style.setProperty("--tilt-x", `${(y - 0.5) * -8}deg`);
-      card.style.setProperty("--tilt-y", `${(x - 0.5) * 8}deg`);
-      card.style.setProperty("--mouse-x", `${x * 100}%`);
-      card.style.setProperty("--mouse-y", `${y * 100}%`);
-    }
-  }, { passive: true });
-
-  document.addEventListener("mouseout", (e) => {
-    const card = e.target && e.target.closest && e.target.closest(".card, .team-card, .event-card");
-    if (card && (!e.relatedTarget || !card.contains(e.relatedTarget))) {
-      card.style.setProperty("--tilt-x", "0deg");
-      card.style.setProperty("--tilt-y", "0deg");
-    }
-  }, { passive: true });
 }
 
 class App {
@@ -1005,8 +1071,8 @@ class App {
                 </div>
               </div>
 
-              <!-- 3D Crest Stage matching user's uploaded artwork -->
-              <div class="emblem-stage" id="emblem-stage" title="3D Marketing Lab Crest — Move mouse or scroll to tilt in perspective">
+              <!-- 3D Exploded Crest Stage -->
+              <div class="emblem-stage" id="emblem-stage" title="3D Exploded Crest — Move cursor or scroll down to deconstruct into 3D layers">
                 <!-- Grid Backdrop -->
                 <div class="emblem-grid-backdrop" aria-hidden="true"></div>
 
@@ -1018,38 +1084,83 @@ class App {
 
                 <!-- 3D Perspective Anchor -->
                 <div class="emblem-3d-anchor" id="emblem-3d-anchor">
-                  <!-- Physical 3D Shield -->
-                  <div class="emblem-shield-body" id="emblem-shield-body">
-                    <img src="assets/logo.png" alt="Marketing Lab Heraldic Shield" class="emblem-shield-img" id="emblem-shield-img">
-                    
-                    <!-- Luminous Vector Overlay for glowing trendline and beacons -->
-                    <svg class="emblem-crest-overlay" viewBox="0 0 699 779" fill="none" aria-hidden="true">
-                      <!-- Trendline glow -->
-                      <path class="emblem-trend-glow" d="M160 427 L260 370 L360 397 L450 420 L544 372 L599 350" />
-                      <path class="emblem-trend-line" d="M160 427 L260 370 L360 397 L450 420 L544 372 L599 350" />
-                      
-                      <!-- Data Nodes -->
-                      <circle class="emblem-node node-1" cx="260" cy="370" r="7.5" />
-                      <circle class="emblem-node node-2" cx="360" cy="397" r="7.5" />
-                      <circle class="emblem-node node-3" cx="450" cy="420" r="7.5" />
-                      <circle class="emblem-node node-4" cx="544" cy="372" r="8.5" />
-
-                      <!-- Traveling Pulse Beacon -->
-                      <circle class="emblem-pulse-orb" id="emblem-pulse-orb" cx="260" cy="370" r="8" />
-
-                      <!-- Lightbulb Flare Glow -->
-                      <circle class="emblem-bulb-flare" cx="533" cy="329" r="45" />
-                    </svg>
-
-                    <!-- Specular Glare -->
-                    <div class="emblem-glare-sheen" id="emblem-glare-sheen" aria-hidden="true"></div>
-                  </div>
-
-                  <!-- Real Cast Drop Shadow -->
+                  
+                  <!-- Floor Cast Shadow -->
                   <div class="emblem-floor-shadow" id="emblem-floor-shadow" aria-hidden="true"></div>
-                </div>
 
-                <!-- Floating Data Badges in 3D Space -->
+                  <!-- Exploded 3D Shield Stack -->
+                  <div class="emblem-exploded-stack" id="emblem-exploded-stack">
+                    
+                    <!-- Layer 0: Shield Base Chassis -->
+                    <div class="exploded-layer layer-chassis" id="layer-chassis">
+                      <img src="assets/crest-layer-chassis.png" alt="Chassis Base" class="layer-img">
+                      <div class="layer-glare" id="layer-glare" aria-hidden="true"></div>
+                    </div>
+
+                    <!-- Layer 1: Market Columns / 5 Data Bars -->
+                    <div class="exploded-layer layer-bars" id="layer-bars">
+                      <img src="assets/crest-layer-bars.png" alt="5 Data Bars" class="layer-img">
+                    </div>
+
+                    <!-- Layer 2: Glowing Econometric Trendline & Nodes -->
+                    <div class="exploded-layer layer-trendline" id="layer-trendline">
+                      <img src="assets/crest-layer-trend.png" alt="Trend Spline" class="layer-img">
+                      
+                      <!-- Vector Neon Overlay on top of trendline -->
+                      <svg class="emblem-crest-overlay" viewBox="0 0 699 779" fill="none" aria-hidden="true">
+                        <path class="emblem-trend-glow" d="M160 427 L260 370 L360 397 L450 420 L544 372 L599 350" />
+                        <path class="emblem-trend-line" d="M160 427 L260 370 L360 397 L450 420 L544 372 L599 350" />
+                        
+                        <circle class="emblem-node node-1" cx="260" cy="370" r="8" />
+                        <circle class="emblem-node node-2" cx="360" cy="397" r="8" />
+                        <circle class="emblem-node node-3" cx="450" cy="420" r="8" />
+                        <circle class="emblem-node node-4" cx="544" cy="372" r="9" />
+
+                        <circle class="emblem-pulse-orb" id="emblem-pulse-orb" cx="260" cy="370" r="8.5" />
+                      </svg>
+                    </div>
+
+                    <!-- Layer 3: Innovation Lightbulb & Monogram M -->
+                    <div class="exploded-layer layer-symbols" id="layer-symbols">
+                      <div class="symbol-elem symbol-m" id="symbol-m">
+                        <img src="assets/crest-layer-m.png" alt="M Monogram" class="layer-img">
+                      </div>
+                      <div class="symbol-elem symbol-bulb" id="symbol-bulb">
+                        <img src="assets/crest-layer-bulb.png" alt="Innovation Lightbulb" class="layer-img">
+                        <svg class="emblem-crest-overlay" viewBox="0 0 699 779" fill="none" aria-hidden="true">
+                          <circle class="emblem-bulb-flare" cx="515" cy="198" r="45" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    <!-- Layer 4: Hologram Exploded Calipers / HUD Leader Lines -->
+                    <div class="exploded-calipers" id="exploded-calipers" aria-hidden="true">
+                      <div class="caliper-tag tag-chassis">
+                        <span class="caliper-dot"></span>
+                        <span class="caliper-line"></span>
+                        <span class="caliper-label">01 // CHASSIS FOUNDATION</span>
+                      </div>
+                      <div class="caliper-tag tag-bars">
+                        <span class="caliper-dot"></span>
+                        <span class="caliper-line"></span>
+                        <span class="caliper-label">02 // 5 MARKET DATA BARS</span>
+                      </div>
+                      <div class="caliper-tag tag-trend">
+                        <span class="caliper-dot"></span>
+                        <span class="caliper-line"></span>
+                        <span class="caliper-label">03 // ECONOMETRIC SPLINE</span>
+                      </div>
+                      <div class="caliper-tag tag-symbols">
+                        <span class="caliper-dot"></span>
+                        <span class="caliper-line"></span>
+                        <span class="caliper-label">04 // BRAND &amp; INNOVATION CORE</span>
+                      </div>
+                    </div>
+
+                  </div> <!-- /emblem-exploded-stack -->
+                </div> <!-- /emblem-3d-anchor -->
+
+    <!-- Floating Metric Callouts in Stage Corners -->
                 <div class="emblem-callout callout-top-left" id="callout-metric-1">
                   <span class="callout-dot"></span>
                   <div>
@@ -1066,10 +1177,15 @@ class App {
                   </div>
                 </div>
 
-                <!-- Bottom HUD Status -->
+                <!-- Bottom HUD Status with Interactive Exploded Toggle -->
                 <div class="emblem-stage-hud">
-                  <span class="hud-tag">BMU 3D CREST</span>
-                  <span class="hud-status" id="emblem-scroll-hud">Scroll or move cursor to tilt 3D emblem</span>
+                  <div class="hud-left-meta">
+                    <span class="hud-tag">3D EXPLODED SHIELD</span>
+                    <span class="hud-status" id="emblem-scroll-hud">Scroll down to explode crest into 3D layers</span>
+                  </div>
+                  <button class="hud-explode-btn" id="hud-explode-btn" type="button" title="Toggle 3D Exploded View">
+                    <span class="btn-icon">❖</span> <span id="explode-btn-label">Explode Layers</span>
+                  </button>
                 </div>
               </div>
 
@@ -1084,7 +1200,7 @@ class App {
                   <span>Active Student Fellows</span>
                 </div>
               </div>
-            </div>
+            </div></div>
           </div>
         </div>
       </section>
