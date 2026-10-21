@@ -1432,26 +1432,25 @@ textarea.form-control {
 }
 
 /* ==========================================================================
-   Marketing Lab v2 · Interactive 3D Econometrics Engine & Editorial Depth
+   Marketing Lab v2 · Interactive 3D Heraldic Crest Emblem Stage
    ========================================================================== */
 
-/* 3D Econometrics Widget in Hero */
-.marketing-3d-widget {
-  background: rgba(36, 4, 7, 0.78);
-  border: 1px solid rgba(201, 154, 50, 0.35);
-  border-radius: 16px;
+.hero-emblem-widget {
+  background: rgba(30, 4, 6, 0.85);
+  border: 1px solid rgba(201, 154, 50, 0.42);
+  border-radius: 20px;
   padding: 24px;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.48), 0 0 0 1px rgba(255, 255, 255, 0.08);
   position: relative;
   overflow: hidden;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.marketing-3d-widget:hover {
-  border-color: rgba(201, 154, 50, 0.6);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.48), 0 0 32px rgba(201, 154, 50, 0.15);
+.hero-emblem-widget:hover {
+  border-color: rgba(201, 154, 50, 0.7);
+  box-shadow: 0 28px 75px rgba(0, 0, 0, 0.55), 0 0 36px rgba(201, 154, 50, 0.22);
 }
 
 .widget-kicker {
@@ -1465,20 +1464,36 @@ textarea.form-control {
   margin-bottom: 4px;
 }
 
-.widget-model-tabs {
+.emblem-widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.emblem-widget-header h4 {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+.emblem-model-tabs {
   display: flex;
   gap: 6px;
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.38);
   padding: 4px;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   overflow-x: auto;
 }
 
-.model-tab {
+.emblem-tab {
   background: transparent;
   border: none;
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(255, 255, 255, 0.75);
   font-family: var(--font-sans);
   font-size: 11px;
   font-weight: 600;
@@ -1489,42 +1504,263 @@ textarea.form-control {
   white-space: nowrap;
 }
 
-.model-tab:hover {
+.emblem-tab:hover {
   color: #ffffff;
 }
 
-.model-tab.active {
+.emblem-tab.active {
   background: linear-gradient(135deg, var(--gold-500), var(--gold-600));
   color: #1a1a1a;
   box-shadow: 0 2px 8px rgba(201, 154, 50, 0.35);
 }
 
-.matrix-canvas-wrap {
+/* The 3D Emblem Stage (Replicating user's crest artwork) */
+.emblem-stage {
   position: relative;
   width: 100%;
+  height: 350px;
   margin: 16px 0 14px;
-  border-radius: 12px;
-  background: radial-gradient(circle at 50% 25%, rgba(118, 8, 16, 0.45) 0%, rgba(18, 2, 4, 0.9) 100%);
-  border: 1px solid rgba(201, 154, 50, 0.25);
+  border-radius: 16px;
+  background: radial-gradient(circle at 50% 45%, #760810 0%, #4a060b 60%, #260305 100%);
+  border: 1px solid rgba(201, 154, 50, 0.28);
   overflow: hidden;
-}
-
-#marketing-matrix-canvas {
-  width: 100%;
-  height: 230px;
-  display: block;
+  perspective: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
   cursor: grab;
 }
 
-#marketing-matrix-canvas:active {
+.emblem-stage:active {
   cursor: grabbing;
 }
 
-.matrix-scroll-hud {
+/* Subtle Technical Coordinate Grid matching user's image */
+.emblem-grid-backdrop {
+  position: absolute;
+  inset: 0;
+  background-size: 38px 38px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Concentric Dashed Technical Orbit Rings matching user's image */
+.emblem-orbit-rings {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.emblem-ring-outer {
+  position: absolute;
+  width: 310px;
+  height: 310px;
+  border: 1.5px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  animation: emblemOrbitCW 48s linear infinite;
+  box-shadow: 0 0 35px rgba(118, 8, 16, 0.35) inset;
+}
+
+.emblem-ring-inner {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border: 1.2px dashed rgba(201, 154, 50, 0.32);
+  border-radius: 50%;
+  animation: emblemOrbitCCW 34s linear infinite;
+}
+
+@keyframes emblemOrbitCW {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes emblemOrbitCCW {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+/* 3D Floating Shield Container */
+.emblem-3d-anchor {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Physical 3D Shield */
+.emblem-shield-body {
+  position: relative;
+  width: 195px;
+  height: 220px;
+  transform-style: preserve-3d;
+  transition: transform 0.1s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.emblem-shield-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.45));
+  pointer-events: none;
+}
+
+/* Real Cast Drop Shadow Underneath matching user's image */
+.emblem-floor-shadow {
+  position: absolute;
+  bottom: -34px;
+  width: 185px;
+  height: 28px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 45%, transparent 75%);
+  filter: blur(10px);
+  border-radius: 50%;
+  transform: translateZ(-20px);
+  pointer-events: none;
+  transition: transform 0.1s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+  opacity: 0.92;
+}
+
+/* SVG Vector Overlay for Luminous Pulses */
+.emblem-crest-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.emblem-trend-glow {
+  stroke: rgba(223, 183, 92, 0.65);
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: blur(5px);
+}
+
+.emblem-trend-line {
+  stroke: #ffffff;
+  stroke-width: 4.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.emblem-node {
+  fill: #ffffff;
+  stroke: var(--gold-500);
+  stroke-width: 3.5;
+  filter: drop-shadow(0 0 6px rgba(201, 154, 50, 0.85));
+}
+
+.emblem-pulse-orb {
+  fill: #10b981;
+  stroke: #ffffff;
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.95));
+}
+
+.emblem-bulb-flare {
+  fill: rgba(223, 183, 92, 0.2);
+  filter: blur(14px);
+  animation: bulbGlow 3s ease-in-out infinite;
+}
+
+@keyframes bulbGlow {
+  0%, 100% { opacity: 0.35; transform: scale(0.95); }
+  50% { opacity: 0.85; transform: scale(1.15); }
+}
+
+/* Specular Glare Sheen */
+.emblem-glare-sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--glare-x, 50%) var(--glare-y, 30%), rgba(255, 255, 255, 0.18) 0%, transparent 60%);
+  opacity: 0.7;
+  mix-blend-mode: overlay;
+  transition: opacity 0.3s ease;
+}
+
+/* Floating Academic Metric Badges in 3D Space */
+.emblem-callout {
+  position: absolute;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  background: rgba(20, 2, 4, 0.88);
+  border: 1px solid rgba(201, 154, 50, 0.45);
+  border-radius: 999px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.callout-top-left {
+  top: 18px;
+  left: 18px;
+}
+
+.callout-bottom-right {
+  bottom: 42px;
+  right: 18px;
+}
+
+.callout-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold-400);
+  box-shadow: 0 0 8px rgba(201, 154, 50, 0.8);
+}
+
+.callout-dot.green {
+  background: #10b981;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
+}
+
+.emblem-callout strong {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.1;
+}
+
+.emblem-callout small {
+  display: block;
+  font-size: 9.5px;
+  font-weight: 600;
+  color: var(--gold-300);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+/* Stage HUD */
+.emblem-stage-hud {
   position: absolute;
   bottom: 8px;
-  left: 10px;
-  right: 10px;
+  left: 12px;
+  right: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1538,12 +1774,7 @@ textarea.form-control {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.hud-tag {
-  color: var(--gold-400);
-  font-weight: 700;
-  letter-spacing: 0.8px;
+  z-index: 10;
 }
 
 /* Subtle editorial 3D perspective transforms on cards */
@@ -1577,14 +1808,13 @@ textarea.form-control {
 
 /* Reduce motion media query */
 @media (prefers-reduced-motion: reduce) {
-  #marketing-matrix-canvas {
-    pointer-events: none;
+  .emblem-ring-outer, .emblem-ring-inner {
+    animation: none;
   }
   .card:hover, .team-card:hover, .event-card:hover {
     transform: translateY(-3px);
   }
 }
-
   </style>
 </head>
 <body>
@@ -1671,33 +1901,96 @@ textarea.form-control {
             </div>
           </div>
           <div>
-            <div class="hero-widget marketing-3d-widget" id="marketing-3d-widget">
-              <div class="widget-header">
+            <div class="hero-emblem-widget" id="hero-emblem-widget">
+              <div class="emblem-widget-header">
                 <div>
-                  <span class="widget-kicker">BMU Econometric Engine · v2.4</span>
-                  <h4 id="widget-model-title">Brand Equity Matrix</h4>
+                  <span class="widget-kicker">British Management University</span>
+                  <h4 id="emblem-widget-title">Marketing Insights Lab</h4>
                 </div>
-                <div class="widget-model-tabs" role="tablist" aria-label="Econometric Models">
-                  <button class="model-tab active" data-model="brand" type="button">Brand Equity</button>
-                  <button class="model-tab" data-model="roi" type="button">CAC : LTV</button>
-                  <button class="model-tab" data-model="retention" type="button">Retention</button>
-                </div>
-              </div>
-              <div class="matrix-canvas-wrap">
-                <canvas id="marketing-matrix-canvas" width="460" height="230" aria-label="3D Isometric Marketing Econometrics Model"></canvas>
-                <div class="matrix-scroll-hud">
-                  <span class="hud-tag">3D ISOMETRIC</span>
-                  <span class="hud-status" id="matrix-scroll-status">Scroll to expand econometric layers</span>
+                <div class="emblem-model-tabs" role="tablist" aria-label="Econometric Focus">
+                  <button class="emblem-tab active" data-model="brand" type="button">Brand Equity</button>
+                  <button class="emblem-tab" data-model="roi" type="button">CAC : LTV</button>
+                  <button class="emblem-tab" data-model="retention" type="button">Retention</button>
                 </div>
               </div>
+
+              <!-- 3D Crest Stage matching user's uploaded artwork -->
+              <div class="emblem-stage" id="emblem-stage" title="3D Marketing Lab Crest — Move mouse or scroll to tilt in perspective">
+                <!-- Grid Backdrop -->
+                <div class="emblem-grid-backdrop" aria-hidden="true"></div>
+
+                <!-- Concentric Dashed Orbit Rings -->
+                <div class="emblem-orbit-rings" aria-hidden="true">
+                  <div class="emblem-ring-outer" id="emblem-ring-outer"></div>
+                  <div class="emblem-ring-inner" id="emblem-ring-inner"></div>
+                </div>
+
+                <!-- 3D Perspective Anchor -->
+                <div class="emblem-3d-anchor" id="emblem-3d-anchor">
+                  <!-- Physical 3D Shield -->
+                  <div class="emblem-shield-body" id="emblem-shield-body">
+                    <img src="assets/logo.png" alt="Marketing Lab Heraldic Shield" class="emblem-shield-img" id="emblem-shield-img">
+                    
+                    <!-- Luminous Vector Overlay for glowing trendline and beacons -->
+                    <svg class="emblem-crest-overlay" viewBox="0 0 699 779" fill="none" aria-hidden="true">
+                      <!-- Trendline glow -->
+                      <path class="emblem-trend-glow" d="M160 427 L260 370 L360 397 L450 420 L544 372 L599 350" />
+                      <path class="emblem-trend-line" d="M160 427 L260 370 L360 397 L450 420 L544 372 L599 350" />
+                      
+                      <!-- Data Nodes -->
+                      <circle class="emblem-node node-1" cx="260" cy="370" r="7.5" />
+                      <circle class="emblem-node node-2" cx="360" cy="397" r="7.5" />
+                      <circle class="emblem-node node-3" cx="450" cy="420" r="7.5" />
+                      <circle class="emblem-node node-4" cx="544" cy="372" r="8.5" />
+
+                      <!-- Traveling Pulse Beacon -->
+                      <circle class="emblem-pulse-orb" id="emblem-pulse-orb" cx="260" cy="370" r="8" />
+
+                      <!-- Lightbulb Flare Glow -->
+                      <circle class="emblem-bulb-flare" cx="533" cy="329" r="45" />
+                    </svg>
+
+                    <!-- Specular Glare -->
+                    <div class="emblem-glare-sheen" id="emblem-glare-sheen" aria-hidden="true"></div>
+                  </div>
+
+                  <!-- Real Cast Drop Shadow -->
+                  <div class="emblem-floor-shadow" id="emblem-floor-shadow" aria-hidden="true"></div>
+                </div>
+
+                <!-- Floating Data Badges in 3D Space -->
+                <div class="emblem-callout callout-top-left" id="callout-metric-1">
+                  <span class="callout-dot"></span>
+                  <div>
+                    <strong id="metric-hero-val1">+240%</strong>
+                    <small id="metric-hero-lbl1">Brand Salience Multiplier</small>
+                  </div>
+                </div>
+
+                <div class="emblem-callout callout-bottom-right" id="callout-metric-2">
+                  <span class="callout-dot green"></span>
+                  <div>
+                    <strong id="metric-hero-val2">88.4 / 100</strong>
+                    <small id="metric-hero-lbl2">Empirical Equity Index</small>
+                  </div>
+                </div>
+
+                <!-- Bottom HUD Status -->
+                <div class="emblem-stage-hud">
+                  <span class="hud-tag">BMU 3D CREST</span>
+                  <span class="hud-status" id="emblem-scroll-hud">Scroll or move cursor to tilt 3D emblem</span>
+                </div>
+              </div>
+
+              <!-- Summary Stats Row -->
               <div class="hero-stats-row">
-                <div class="hero-stat-box" id="metric-box-1">
-                  <strong id="metric-val-1">+240%</strong>
-                  <span id="metric-lbl-1">Brand Salience Multiplier</span>
+                <div class="hero-stat-box">
+                  <strong>6</strong>
+                  <span>Case Studies & Surveys</span>
                 </div>
-                <div class="hero-stat-box" id="metric-box-2">
-                  <strong id="metric-val-2">88.4 / 100</strong>
-                  <span id="metric-lbl-2">Empirical Equity Index</span>
+                <div class="hero-stat-box">
+                  <strong>7</strong>
+                  <span>Active Student Fellows</span>
                 </div>
               </div>
             </div>
@@ -2479,162 +2772,110 @@ const AUTH_KEY = 'marketing_lab_v2_auth';
 const THEME_KEY = 'marketing_lab_v2_theme';
 
 /**
- * Marketing3DMatrixEngine
- * High-performance, zero-dependency 3D Isometric Marketing Econometrics Engine
- * Designed for British Management University Marketing Insights Lab
+ * MarketingLabEmblem3D
+ * High-performance 3D Heraldic Crest Animation Engine for British Management University Marketing Lab
  * 
  * Features:
- * - 3D Isometric Projection with dynamic pitch & yaw
- * - 3 Empirical Marketing Models:
- *     1. Brand Equity Matrix (Awareness, Perception, Salience, Loyalty, Equity Multiplier)
- *     2. CAC : LTV Acquisition Model (Paid CAC, Blended CAC, Payback, LTV Yr 1, LTV Yr 3)
- *     3. FMCG Cohort Retention (Day 1, Wk 2, Mo 1, Mo 3, Mo 12)
- * - Scroll-driven 3D Exploded Layer Separation (Architectural view)
- * - Dynamic 3D Pillar Extrusion & Growth calibration on scroll
- * - 3D Spline Growth Curve with animated pulse particle
- * - High-DPI Retina support with devicePixelRatio
- * - Interactive mouse tilt with inertial damping (lerp)
- * - Safe lifecycle: pauses when off-screen / on subpages, resumes on return
+ * - Real 3D physical levitation & breathing oscillation
+ * - Dual concentric rotating technical orbit rings matching uploaded crest design
+ * - Dynamic 3D gyro mouse parallax with smooth damping (lerp)
+ * - Scroll-driven 3D pitch/yaw tilt and shadow projection
+ * - Dynamic drop shadow that scales, blurs, and offsets realistically with 3D elevation
+ * - Animated glowing energy pulse traversing the crest trendline & data nodes
+ * - Model tab switcher (Brand Equity, CAC : LTV, Retention)
+ * - Safe lifecycle management for zero memory leaks
  */
-class Marketing3DMatrixEngine {
+class MarketingLabEmblem3D {
   constructor() {
-    this.canvas = document.getElementById("marketing-matrix-canvas");
-    if (!this.canvas) return;
-    this.ctx = this.canvas.getContext("2d");
-    if (!this.ctx) return;
+    this.stage = document.getElementById("emblem-stage");
+    this.shield = document.getElementById("emblem-shield-body");
+    this.shadow = document.getElementById("emblem-floor-shadow");
+    this.pulseOrb = document.getElementById("emblem-pulse-orb");
+    this.hudText = document.getElementById("emblem-scroll-hud");
+    this.glare = document.getElementById("emblem-glare-sheen");
 
-    this.dpr = Math.min(window.devicePixelRatio || 1, 2);
-    this.statusEl = document.getElementById("matrix-scroll-status");
-    this.titleEl = document.getElementById("widget-model-title");
-    this.val1El = document.getElementById("metric-val-1");
-    this.lbl1El = document.getElementById("metric-lbl-1");
-    this.val2El = document.getElementById("metric-val-2");
-    this.lbl2El = document.getElementById("metric-lbl-2");
+    this.val1El = document.getElementById("metric-hero-val1");
+    this.lbl1El = document.getElementById("metric-hero-lbl1");
+    this.val2El = document.getElementById("metric-hero-val2");
+    this.lbl2El = document.getElementById("metric-hero-lbl2");
+
+    if (!this.stage || !this.shield) return;
+
+    this.trendNodes = [
+      { x: 160, y: 427 },
+      { x: 260, y: 370 },
+      { x: 360, y: 397 },
+      { x: 450, y: 420 },
+      { x: 544, y: 372 },
+      { x: 599, y: 350 }
+    ];
 
     this.models = {
       brand: {
-        title: "Brand Equity Matrix",
-        pillars: [
-          { name: "Awareness", h: 36, curH: 36 },
-          { name: "Perception", h: 52, curH: 52 },
-          { name: "Salience", h: 72, curH: 72 },
-          { name: "Loyalty", h: 94, curH: 94 },
-          { name: "Advocacy", h: 118, curH: 118 }
-        ],
+        title: "Brand Equity Crest",
         val1: "+240%",
         lbl1: "Brand Salience Multiplier",
         val2: "88.4 / 100",
         lbl2: "Empirical Equity Index"
       },
       roi: {
-        title: "CAC : LTV Acquisition Model",
-        pillars: [
-          { name: "Paid CAC", h: 32, curH: 32 },
-          { name: "Blended", h: 46, curH: 46 },
-          { name: "Payback", h: 68, curH: 68 },
-          { name: "LTV Yr 1", h: 98, curH: 98 },
-          { name: "LTV Yr 3", h: 130, curH: 130 }
-        ],
+        title: "CAC : LTV Acquisition",
         val1: "4.6 : 1",
         lbl1: "LTV to CAC Ratio",
         val2: "2.4 Mos",
-        lbl2: "Capital Payback Horizon"
+        lbl2: "Capital Recovery Horizon"
       },
       retention: {
-        title: "FMCG Cohort Retention",
-        pillars: [
-          { name: "Day 1", h: 112, curH: 112 },
-          { name: "Wk 2", h: 88, curH: 88 },
-          { name: "Mo 1", h: 72, curH: 72 },
-          { name: "Mo 3", h: 62, curH: 62 },
-          { name: "Mo 12", h: 52, curH: 52 }
-        ],
+        title: "Cohort Retention Model",
         val1: "64.2%",
         lbl1: "Annual Retention Baseline",
         val2: "0.92 β",
         lbl2: "Cohort Stability Beta"
       }
     };
-
     this.activeKey = "brand";
-    this.activeModel = this.models.brand;
 
-    this.coords = [
-      { x: -56, y: -56 },
-      { x: -28, y: -28 },
-      { x: 0, y: 0 },
-      { x: 28, y: 28 },
-      { x: 56, y: 56 }
-    ];
+    this.rx = 0;
+    this.ry = 0;
+    this.targetRx = 0;
+    this.targetRy = 0;
 
-    this.baseRotY = 48 * Math.PI / 180;
-    this.baseRotX = 30 * Math.PI / 180;
-    this.rotY = this.baseRotY;
-    this.rotX = this.baseRotX;
-    this.targetRotY = this.baseRotY;
-    this.targetRotX = this.baseRotX;
+    this.mouseNx = 0;
+    this.mouseNy = 0;
 
-    this.layerSeparation = 0;
-    this.targetLayerSeparation = 0;
-    this.scrollGrowth = 1;
-    this.targetScrollGrowth = 1;
-
-    this.mouseTiltX = 0;
-    this.mouseTiltY = 0;
-    this.targetMouseTiltX = 0;
-    this.targetMouseTiltY = 0;
-
-    this.pulseT = 0;
+    this.scrollProgress = 0;
+    this.time = 0;
     this.lastTime = performance.now();
 
-    this.onResize();
     this.bindEvents();
-
     this.isRunning = true;
     this.rafId = requestAnimationFrame(t => this.loop(t));
   }
 
-  onResize() {
-    if (!this.canvas) return;
-    const rect = this.canvas.getBoundingClientRect();
-    this.width = rect.width || 460;
-    this.height = rect.height || 230;
-    this.canvas.width = this.width * this.dpr;
-    this.canvas.height = this.height * this.dpr;
-    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-    this.ctx.scale(this.dpr, this.dpr);
-
-    this.cx = this.width / 2;
-    this.cy = this.height / 2 + 18;
-    this.scale = Math.min(this.width / 340, 1.25);
-  }
-
   bindEvents() {
-    this.resizeHandler = () => this.onResize();
-    window.addEventListener("resize", this.resizeHandler, { passive: true });
+    this.mouseMoveHandler = (e) => {
+      if (!this.stage) return;
+      const rect = this.stage.getBoundingClientRect();
+      const nx = (e.clientX - rect.left) / rect.width - 0.5;
+      const ny = (e.clientY - rect.top) / rect.height - 0.5;
+      this.mouseNx = nx;
+      this.mouseNy = ny;
+    };
+
+    this.mouseLeaveHandler = () => {
+      this.mouseNx = 0;
+      this.mouseNy = 0;
+    };
+
+    this.stage.addEventListener("mousemove", this.mouseMoveHandler, { passive: true });
+    this.stage.addEventListener("mouseleave", this.mouseLeaveHandler, { passive: true });
 
     this.scrollHandler = () => this.onScroll();
     window.addEventListener("scroll", this.scrollHandler, { passive: true });
     this.onScroll();
 
-    this.mouseMoveHandler = (e) => {
-      if (!this.canvas) return;
-      const rect = this.canvas.getBoundingClientRect();
-      const nx = (e.clientX - rect.left) / rect.width - 0.5;
-      const ny = (e.clientY - rect.top) / rect.height - 0.5;
-      this.targetMouseTiltX = nx * (14 * Math.PI / 180);
-      this.targetMouseTiltY = -ny * (8 * Math.PI / 180);
-    };
-
-    this.mouseLeaveHandler = () => {
-      this.targetMouseTiltX = 0;
-      this.targetMouseTiltY = 0;
-    };
-
-    this.canvas.addEventListener("mousemove", this.mouseMoveHandler, { passive: true });
-    this.canvas.addEventListener("mouseleave", this.mouseLeaveHandler, { passive: true });
-
-    const tabs = document.querySelectorAll(".model-tab");
+    // Tab switcher
+    const tabs = document.querySelectorAll(".emblem-tab");
     tabs.forEach(tab => {
       tab.addEventListener("click", (e) => {
         const key = e.currentTarget.getAttribute("data-model");
@@ -2645,381 +2886,120 @@ class Marketing3DMatrixEngine {
         }
       });
     });
+
+    // Click shield ripple
+    this.clickHandler = () => this.triggerRipple();
+    this.shield.addEventListener("click", this.clickHandler);
+  }
+
+  onScroll() {
+    const scrollY = (typeof window !== "undefined" && window.scrollY) || 0;
+    this.scrollProgress = Math.min(1, Math.max(0, scrollY / 550));
   }
 
   switchModel(key) {
     if (!this.models[key]) return;
     this.activeKey = key;
-    this.activeModel = this.models[key];
+    const m = this.models[key];
 
-    this.activeModel.pillars.forEach((p, i) => {
-      p.curH = this.activeModel.pillars[i].curH || p.h * 0.5;
-    });
+    if (this.val1El) this.val1El.textContent = m.val1;
+    if (this.lbl1El) this.lbl1El.textContent = m.lbl1;
+    if (this.val2El) this.val2El.textContent = m.val2;
+    if (this.lbl2El) this.lbl2El.textContent = m.lbl2;
 
-    if (this.titleEl) this.titleEl.textContent = this.activeModel.title;
-    if (this.val1El) this.val1El.textContent = this.activeModel.val1;
-    if (this.lbl1El) this.lbl1El.textContent = this.activeModel.lbl1;
-    if (this.val2El) this.val2El.textContent = this.activeModel.val2;
-    if (this.lbl2El) this.lbl2El.textContent = this.activeModel.lbl2;
+    this.triggerRipple();
   }
 
-  onScroll() {
-    const scrollY = (typeof window !== "undefined" && window.scrollY) || 0;
-    const progress = Math.min(1, Math.max(0, scrollY / 650));
-
-    this.targetLayerSeparation = progress * 38;
-    this.targetScrollGrowth = 1 + progress * 0.32;
-    this.targetRotY = this.baseRotY + progress * (24 * Math.PI / 180);
-    this.targetRotX = this.baseRotX - progress * (10 * Math.PI / 180);
-
-    if (this.statusEl) {
-      if (progress < 0.05) {
-        this.statusEl.textContent = "Scroll to expand econometric layers";
-      } else {
-        const zMm = Math.round(this.layerSeparation);
-        const yawDeg = Math.round(this.rotY * 180 / Math.PI);
-        this.statusEl.textContent = "Exploded View Active · Separation Z: +" + zMm + "px · Yaw: " + yawDeg + "°";
-      }
-    }
-  }
-
-  project(x, y, z) {
-    const cosY = Math.cos(this.rotY), sinY = Math.sin(this.rotY);
-    const x1 = x * cosY - y * sinY;
-    const y1 = x * sinY + y * cosY;
-
-    const cosX = Math.cos(this.rotX), sinX = Math.sin(this.rotX);
-    const y2 = y1 * cosX - z * sinX;
-    const z2 = y1 * sinX + z * cosX;
-
-    return {
-      x: this.cx + x1 * this.scale,
-      y: this.cy + y2 * this.scale,
-      z: z2
-    };
+  triggerRipple() {
+    if (!this.shield) return;
+    this.targetRx -= 12;
   }
 
   loop(timestamp) {
     if (!this.isRunning) return;
 
-    if (!document.body.contains(this.canvas)) {
+    if (!document.body.contains(this.stage)) {
       this.isRunning = false;
       return;
     }
 
     const dt = Math.max(0, Math.min((timestamp - this.lastTime) / 1000, 0.1));
     this.lastTime = timestamp;
-    this.pulseT += dt * 0.65;
+    this.time += dt;
 
-    this.rotY += (this.targetRotY + this.targetMouseTiltX - this.rotY) * 0.1;
-    this.rotX += (this.targetRotX + this.targetMouseTiltY - this.rotX) * 0.1;
-    this.layerSeparation += (this.targetLayerSeparation - this.layerSeparation) * 0.1;
-    this.scrollGrowth += (this.targetScrollGrowth - this.scrollGrowth) * 0.1;
+    // Levitation oscillation
+    const levitateY = Math.sin(this.time * 2.2) * 6;
+    const levitateRz = Math.sin(this.time * 1.5) * 1.2;
 
-    this.activeModel.pillars.forEach(p => {
-      p.curH += (p.h - p.curH) * 0.12;
-    });
+    // Scroll tilt + Mouse parallax tilt
+    const scrollRx = this.scrollProgress * 20; // Pitch forward on scroll
+    const scrollRy = -this.scrollProgress * 15; // Yaw slightly on scroll
+    const scrollTz = 24 + this.scrollProgress * 30; // Pop forward in 3D depth
 
-    this.render();
+    this.targetRx = -this.mouseNy * 22 + scrollRx;
+    this.targetRy = this.mouseNx * 26 + scrollRy;
+
+    // Smooth inertia lerp
+    this.rx += (this.targetRx - this.rx) * 0.12;
+    this.ry += (this.targetRy - this.ry) * 0.12;
+
+    // Apply 3D transform to Shield
+    if (this.shield) {
+      this.shield.style.transform = `perspective(1000px) translateY(${levitateY.toFixed(2)}px) rotateX(${this.rx.toFixed(2)}deg) rotateY(${this.ry.toFixed(2)}deg) rotateZ(${levitateRz.toFixed(2)}deg) translateZ(${scrollTz.toFixed(1)}px)`;
+    }
+
+    // Apply Dynamic Drop Shadow physics (opposite offset and scaling)
+    if (this.shadow) {
+      const shadowOffsetX = -this.ry * 1.3;
+      const shadowOffsetY = this.rx * 0.9;
+      const shadowScale = 1 - (levitateY / 35) - (this.scrollProgress * 0.12);
+      const shadowOpacity = 0.88 - (levitateY / 55);
+      this.shadow.style.transform = `translate(${shadowOffsetX.toFixed(1)}px, ${shadowOffsetY.toFixed(1)}px) scale(${shadowScale.toFixed(2)})`;
+      this.shadow.style.opacity = Math.max(0.3, shadowOpacity).toFixed(2);
+    }
+
+    // Glare position
+    if (this.glare) {
+      const gx = 50 + this.mouseNx * 45;
+      const gy = 30 + this.mouseNy * 35;
+      this.glare.style.setProperty("--glare-x", `${gx}%`);
+      this.glare.style.setProperty("--glare-y", `${gy}%`);
+    }
+
+    // Animate traveling pulse along trendline
+    if (this.pulseOrb) {
+      const rawT = ((this.time * 0.5) % 1.0 + 1.0) % 1.0;
+      const segCount = this.trendNodes.length - 1;
+      const progressT = rawT * segCount;
+      const idx = Math.min(Math.floor(progressT), segCount - 1);
+      const frac = progressT - idx;
+      const p0 = this.trendNodes[idx];
+      const p1 = this.trendNodes[idx + 1];
+      if (p0 && p1) {
+        const ox = p0.x + (p1.x - p0.x) * frac;
+        const oy = p0.y + (p1.y - p0.y) * frac;
+        this.pulseOrb.setAttribute("cx", ox.toFixed(1));
+        this.pulseOrb.setAttribute("cy", oy.toFixed(1));
+      }
+    }
+
+    // Update HUD status
+    if (this.hudText) {
+      if (this.scrollProgress < 0.05) {
+        this.hudText.textContent = "Scroll down or move mouse to tilt 3D heraldic crest";
+      } else {
+        const pitch = Math.round(this.rx);
+        const yaw = Math.round(this.ry);
+        this.hudText.textContent = `3D Crest Active · Pitch: ${pitch}° · Yaw: ${yaw}° · Elevation: ${Math.round(scrollTz)}px`;
+      }
+    }
 
     this.rafId = requestAnimationFrame(t => this.loop(t));
-  }
-
-  render() {
-    const ctx = this.ctx;
-    ctx.clearRect(0, 0, this.width, this.height);
-
-    this.renderFloorGrid(ctx);
-
-    if (this.layerSeparation > 3) {
-      this.renderFilterLayer(ctx);
-    }
-
-    const pillarData = this.coords.map((c, idx) => {
-      const p = this.activeModel.pillars[idx];
-      const z0 = this.layerSeparation;
-      const h = p.curH * this.scrollGrowth;
-      const baseProj = this.project(c.x, c.y, z0);
-      return {
-        idx,
-        name: p.name,
-        x: c.x,
-        y: c.y,
-        z0,
-        h,
-        depth: baseProj.z
-      };
-    });
-
-    pillarData.sort((a, b) => a.depth - b.depth);
-
-    pillarData.forEach(p => {
-      this.renderPillar(ctx, p);
-    });
-
-    this.renderGrowthSpline(ctx);
-    this.renderCallout(ctx);
-  }
-
-  renderFloorGrid(ctx) {
-    const g = 75;
-    const c0 = this.project(-g, -g, 0);
-    const c1 = this.project(g, -g, 0);
-    const c2 = this.project(g, g, 0);
-    const c3 = this.project(-g, g, 0);
-
-    ctx.beginPath();
-    ctx.moveTo(c0.x, c0.y);
-    ctx.lineTo(c1.x, c1.y);
-    ctx.lineTo(c2.x, c2.y);
-    ctx.lineTo(c3.x, c3.y);
-    ctx.closePath();
-    ctx.fillStyle = "rgba(40, 5, 8, 0.55)";
-    ctx.fill();
-    ctx.strokeStyle = "rgba(201, 154, 50, 0.35)";
-    ctx.lineWidth = 1.2;
-    ctx.stroke();
-
-    ctx.strokeStyle = "rgba(201, 154, 50, 0.14)";
-    ctx.lineWidth = 1;
-    for (let i = -g + 25; i < g; i += 25) {
-      const pA = this.project(i, -g, 0);
-      const pB = this.project(i, g, 0);
-      ctx.beginPath();
-      ctx.moveTo(pA.x, pA.y);
-      ctx.lineTo(pB.x, pB.y);
-      ctx.stroke();
-
-      const pC = this.project(-g, i, 0);
-      const pD = this.project(g, i, 0);
-      ctx.beginPath();
-      ctx.moveTo(pC.x, pC.y);
-      ctx.lineTo(pD.x, pD.y);
-      ctx.stroke();
-    }
-
-    const lblX = this.project(g + 10, 0, 0);
-    ctx.font = "600 9px monospace";
-    ctx.fillStyle = "rgba(201, 154, 50, 0.65)";
-    ctx.textAlign = "left";
-    ctx.fillText("FUNNEL →", lblX.x, lblX.y);
-
-    const lblY = this.project(0, -g - 10, 0);
-    ctx.textAlign = "center";
-    ctx.fillText("CHANNELS ↑", lblY.x, lblY.y);
-  }
-
-  renderFilterLayer(ctx) {
-    const z = this.layerSeparation * 0.5;
-    const g = 68;
-    const c0 = this.project(-g, -g, z);
-    const c1 = this.project(g, -g, z);
-    const c2 = this.project(g, g, z);
-    const c3 = this.project(-g, g, z);
-
-    ctx.beginPath();
-    ctx.moveTo(c0.x, c0.y);
-    ctx.lineTo(c1.x, c1.y);
-    ctx.lineTo(c2.x, c2.y);
-    ctx.lineTo(c3.x, c3.y);
-    ctx.closePath();
-    ctx.fillStyle = "rgba(201, 154, 50, 0.08)";
-    ctx.fill();
-
-    ctx.save();
-    ctx.setLineDash([3, 4]);
-    ctx.strokeStyle = "rgba(201, 154, 50, 0.38)";
-    ctx.lineWidth = 1;
-    ctx.stroke();
-
-    const b0 = this.project(-g, -g, 0);
-    const b2 = this.project(g, g, 0);
-    ctx.beginPath();
-    ctx.moveTo(b0.x, b0.y);
-    ctx.lineTo(c0.x, c0.y);
-    ctx.moveTo(b2.x, b2.y);
-    ctx.lineTo(c2.x, c2.y);
-    ctx.strokeStyle = "rgba(201, 154, 50, 0.25)";
-    ctx.stroke();
-    ctx.restore();
-
-    const centerProj = this.project(0, 0, z);
-    ctx.font = "700 8.5px monospace";
-    ctx.fillStyle = "rgba(223, 183, 92, 0.85)";
-    ctx.textAlign = "center";
-    ctx.fillText("ECONOMETRIC FILTER · Z:+" + Math.round(z) + "px", centerProj.x, centerProj.y - 4);
-  }
-
-  renderPillar(ctx, p) {
-    const w = 10, d = 10;
-    const xc = p.x, yc = p.y, z0 = p.z0, z1 = p.z0 + p.h;
-
-    const b1 = this.project(xc + w, yc - d, z0);
-    const b2 = this.project(xc + w, yc + d, z0);
-    const b3 = this.project(xc - w, yc + d, z0);
-
-    const t0 = this.project(xc - w, yc - d, z1);
-    const t1 = this.project(xc + w, yc - d, z1);
-    const t2 = this.project(xc + w, yc + d, z1);
-    const t3 = this.project(xc - w, yc + d, z1);
-
-    ctx.beginPath();
-    ctx.moveTo(b3.x, b3.y);
-    ctx.lineTo(b2.x, b2.y);
-    ctx.lineTo(t2.x, t2.y);
-    ctx.lineTo(t3.x, t3.y);
-    ctx.closePath();
-    const gradLeft = ctx.createLinearGradient(t3.x, t3.y, b3.x, b3.y);
-    gradLeft.addColorStop(0, "#9b131c");
-    gradLeft.addColorStop(1, "#66070d");
-    ctx.fillStyle = gradLeft;
-    ctx.fill();
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.12)";
-    ctx.lineWidth = 0.8;
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(b2.x, b2.y);
-    ctx.lineTo(b1.x, b1.y);
-    ctx.lineTo(t1.x, t1.y);
-    ctx.lineTo(t2.x, t2.y);
-    ctx.closePath();
-    const gradRight = ctx.createLinearGradient(t1.x, t1.y, b1.x, b1.y);
-    gradRight.addColorStop(0, "#55060b");
-    gradRight.addColorStop(1, "#2e0305");
-    ctx.fillStyle = gradRight;
-    ctx.fill();
-    ctx.strokeStyle = "rgba(0, 0, 0, 0.35)";
-    ctx.lineWidth = 0.8;
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(t0.x, t0.y);
-    ctx.lineTo(t1.x, t1.y);
-    ctx.lineTo(t2.x, t2.y);
-    ctx.lineTo(t3.x, t3.y);
-    ctx.closePath();
-    const gradTop = ctx.createLinearGradient(t0.x, t0.y, t2.x, t2.y);
-    gradTop.addColorStop(0, "#f5cf6d");
-    gradTop.addColorStop(1, "#c99a32");
-    ctx.fillStyle = gradTop;
-    ctx.fill();
-    ctx.strokeStyle = "#ffffff";
-    ctx.lineWidth = 1;
-    ctx.stroke();
-
-    const nameProj = this.project(xc, yc + d + 6, z0);
-    ctx.font = "600 8.5px monospace";
-    ctx.fillStyle = "rgba(255, 255, 255, 0.75)";
-    ctx.textAlign = "center";
-    ctx.fillText(p.name, nameProj.x, nameProj.y);
-  }
-
-  renderGrowthSpline(ctx) {
-    const pts = this.coords.map((c, idx) => {
-      const p = this.activeModel.pillars[idx];
-      const z = this.layerSeparation + p.curH * this.scrollGrowth;
-      return this.project(c.x, c.y, z);
-    });
-
-    if (pts.length < 2) return;
-
-    ctx.save();
-    ctx.beginPath();
-    ctx.moveTo(pts[0].x, pts[0].y);
-    for (let i = 0; i < pts.length - 1; i++) {
-      const midX = (pts[i].x + pts[i + 1].x) / 2;
-      const midY = (pts[i].y + pts[i + 1].y) / 2;
-      ctx.quadraticCurveTo(pts[i].x, pts[i].y, midX, midY);
-    }
-    ctx.lineTo(pts[pts.length - 1].x, pts[pts.length - 1].y);
-    ctx.strokeStyle = "rgba(201, 154, 50, 0.28)";
-    ctx.lineWidth = 6;
-    ctx.lineCap = "round";
-    ctx.stroke();
-
-    const grad = ctx.createLinearGradient(pts[0].x, pts[0].y, pts[pts.length - 1].x, pts[pts.length - 1].y);
-    grad.addColorStop(0, "#fdfbf7");
-    grad.addColorStop(0.5, "#dfb75c");
-    grad.addColorStop(1, "#10b981");
-    ctx.strokeStyle = grad;
-    ctx.lineWidth = 2.4;
-    ctx.stroke();
-    ctx.restore();
-
-    pts.forEach(pt => {
-      ctx.beginPath();
-      ctx.arc(pt.x, pt.y, 3.5, 0, Math.PI * 2);
-      ctx.fillStyle = "#ffffff";
-      ctx.fill();
-      ctx.strokeStyle = "#c99a32";
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-    });
-
-    const rawT = ((this.pulseT % 1.0) + 1.0) % 1.0;
-    const pulseIdx = rawT * (pts.length - 1);
-    const i0 = Math.min(Math.max(0, Math.floor(pulseIdx)), pts.length - 1);
-    const frac = pulseIdx - i0;
-    const nextIdx = Math.min(i0 + 1, pts.length - 1);
-    if (!pts[i0] || !pts[nextIdx]) return;
-    const pulseX = pts[i0].x + (pts[nextIdx].x - pts[i0].x) * frac;
-    const pulseY = pts[i0].y + (pts[nextIdx].y - pts[i0].y) * frac;
-
-    ctx.beginPath();
-    ctx.arc(pulseX, pulseY, 5, 0, Math.PI * 2);
-    ctx.fillStyle = "#10b981";
-    ctx.fill();
-    ctx.strokeStyle = "#ffffff";
-    ctx.lineWidth = 1.8;
-    ctx.stroke();
-  }
-
-  renderCallout(ctx) {
-    const peakIdx = 4;
-    const pPeak = this.activeModel.pillars[peakIdx];
-    const cPeak = this.coords[peakIdx];
-    const zPeak = this.layerSeparation + pPeak.curH * this.scrollGrowth;
-    const peakProj = this.project(cPeak.x, cPeak.y, zPeak);
-
-    const calloutX = peakProj.x;
-    const calloutY = peakProj.y - 14;
-
-    const label = "▲ " + this.activeModel.val1;
-    ctx.font = "700 9px monospace";
-    const textWidth = ctx.measureText(label).width;
-    const padX = 8;
-    const pillW = textWidth + padX * 2;
-    const pillH = 18;
-
-    ctx.save();
-    ctx.fillStyle = "rgba(18, 2, 4, 0.88)";
-    ctx.strokeStyle = "#dfb75c";
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    if (typeof ctx.roundRect === "function") {
-      ctx.roundRect(calloutX - pillW / 2, calloutY - pillH, pillW, pillH, 4);
-    } else {
-      ctx.rect(calloutX - pillW / 2, calloutY - pillH, pillW, pillH);
-    }
-    ctx.fill();
-    ctx.stroke();
-
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(label, calloutX, calloutY - pillH / 2);
-    ctx.restore();
-  }
-
-  updateTheme() {
-    this.render();
   }
 
   destroy() {
     this.isRunning = false;
     if (this.rafId) cancelAnimationFrame(this.rafId);
-    if (this.resizeHandler) window.removeEventListener("resize", this.resizeHandler);
     if (this.scrollHandler) window.removeEventListener("scroll", this.scrollHandler);
   }
 }
@@ -3066,7 +3046,7 @@ class App {
     this.initEventListeners();
     this.initRouter();
     initCard3DTilt();
-    this.init3DMatrix();
+    this.init3DEmblem();
   }
 
   loadData() {
@@ -3117,7 +3097,7 @@ class App {
         document.documentElement.setAttribute('data-theme', theme);
       }
       this.updateThemeButton();
-      if (this.matrix3D) this.matrix3D.updateTheme();
+      
     } catch (e) {}
   }
 
@@ -3130,7 +3110,7 @@ class App {
       }
       safeStorage.set('localStorage', THEME_KEY, next);
       this.updateThemeButton();
-      if (this.matrix3D) this.matrix3D.updateTheme();
+      
       this.showToast(`Switched to ${next} mode`);
     } catch (e) {}
   }
@@ -3173,18 +3153,18 @@ class App {
   }
 
 
-  init3DMatrix() {
+  init3DEmblem() {
     try {
-      if (this.matrix3D) {
-        this.matrix3D.destroy();
-        this.matrix3D = null;
+      if (this.emblem3D) {
+        this.emblem3D.destroy();
+        this.emblem3D = null;
       }
-      const canvas = document.getElementById("marketing-matrix-canvas");
-      if (canvas) {
-        this.matrix3D = new Marketing3DMatrixEngine();
+      const stage = document.getElementById("emblem-stage");
+      if (stage) {
+        this.emblem3D = new MarketingLabEmblem3D();
       }
     } catch (e) {
-      console.warn("3D Matrix init error:", e);
+      console.warn("3D Emblem init error:", e);
     }
   }
 
@@ -3229,7 +3209,7 @@ class App {
       const param = parts[1];
 
       this.updateNavLinks(route);
-      if (route !== "home" && this.matrix3D) { this.matrix3D.destroy(); this.matrix3D = null; }
+      if (route !== "home" && this.emblem3D) { this.emblem3D.destroy(); this.emblem3D = null; }
       try {
         if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
           window.scrollTo(0, 0);
@@ -3392,33 +3372,96 @@ class App {
             </div>
           </div>
           <div>
-            <div class="hero-widget marketing-3d-widget" id="marketing-3d-widget">
-              <div class="widget-header">
+            <div class="hero-emblem-widget" id="hero-emblem-widget">
+              <div class="emblem-widget-header">
                 <div>
-                  <span class="widget-kicker">BMU Econometric Engine · v2.4</span>
-                  <h4 id="widget-model-title">Brand Equity Matrix</h4>
+                  <span class="widget-kicker">British Management University</span>
+                  <h4 id="emblem-widget-title">Marketing Insights Lab</h4>
                 </div>
-                <div class="widget-model-tabs" role="tablist" aria-label="Econometric Models">
-                  <button class="model-tab active" data-model="brand" type="button">Brand Equity</button>
-                  <button class="model-tab" data-model="roi" type="button">CAC : LTV</button>
-                  <button class="model-tab" data-model="retention" type="button">Retention</button>
-                </div>
-              </div>
-              <div class="matrix-canvas-wrap">
-                <canvas id="marketing-matrix-canvas" width="460" height="230" aria-label="3D Isometric Marketing Econometrics Model"></canvas>
-                <div class="matrix-scroll-hud">
-                  <span class="hud-tag">3D ISOMETRIC</span>
-                  <span class="hud-status" id="matrix-scroll-status">Scroll to expand econometric layers</span>
+                <div class="emblem-model-tabs" role="tablist" aria-label="Econometric Focus">
+                  <button class="emblem-tab active" data-model="brand" type="button">Brand Equity</button>
+                  <button class="emblem-tab" data-model="roi" type="button">CAC : LTV</button>
+                  <button class="emblem-tab" data-model="retention" type="button">Retention</button>
                 </div>
               </div>
+
+              <!-- 3D Crest Stage matching user's uploaded artwork -->
+              <div class="emblem-stage" id="emblem-stage" title="3D Marketing Lab Crest — Move mouse or scroll to tilt in perspective">
+                <!-- Grid Backdrop -->
+                <div class="emblem-grid-backdrop" aria-hidden="true"></div>
+
+                <!-- Concentric Dashed Orbit Rings -->
+                <div class="emblem-orbit-rings" aria-hidden="true">
+                  <div class="emblem-ring-outer" id="emblem-ring-outer"></div>
+                  <div class="emblem-ring-inner" id="emblem-ring-inner"></div>
+                </div>
+
+                <!-- 3D Perspective Anchor -->
+                <div class="emblem-3d-anchor" id="emblem-3d-anchor">
+                  <!-- Physical 3D Shield -->
+                  <div class="emblem-shield-body" id="emblem-shield-body">
+                    <img src="assets/logo.png" alt="Marketing Lab Heraldic Shield" class="emblem-shield-img" id="emblem-shield-img">
+                    
+                    <!-- Luminous Vector Overlay for glowing trendline and beacons -->
+                    <svg class="emblem-crest-overlay" viewBox="0 0 699 779" fill="none" aria-hidden="true">
+                      <!-- Trendline glow -->
+                      <path class="emblem-trend-glow" d="M160 427 L260 370 L360 397 L450 420 L544 372 L599 350" />
+                      <path class="emblem-trend-line" d="M160 427 L260 370 L360 397 L450 420 L544 372 L599 350" />
+                      
+                      <!-- Data Nodes -->
+                      <circle class="emblem-node node-1" cx="260" cy="370" r="7.5" />
+                      <circle class="emblem-node node-2" cx="360" cy="397" r="7.5" />
+                      <circle class="emblem-node node-3" cx="450" cy="420" r="7.5" />
+                      <circle class="emblem-node node-4" cx="544" cy="372" r="8.5" />
+
+                      <!-- Traveling Pulse Beacon -->
+                      <circle class="emblem-pulse-orb" id="emblem-pulse-orb" cx="260" cy="370" r="8" />
+
+                      <!-- Lightbulb Flare Glow -->
+                      <circle class="emblem-bulb-flare" cx="533" cy="329" r="45" />
+                    </svg>
+
+                    <!-- Specular Glare -->
+                    <div class="emblem-glare-sheen" id="emblem-glare-sheen" aria-hidden="true"></div>
+                  </div>
+
+                  <!-- Real Cast Drop Shadow -->
+                  <div class="emblem-floor-shadow" id="emblem-floor-shadow" aria-hidden="true"></div>
+                </div>
+
+                <!-- Floating Data Badges in 3D Space -->
+                <div class="emblem-callout callout-top-left" id="callout-metric-1">
+                  <span class="callout-dot"></span>
+                  <div>
+                    <strong id="metric-hero-val1">+240%</strong>
+                    <small id="metric-hero-lbl1">Brand Salience Multiplier</small>
+                  </div>
+                </div>
+
+                <div class="emblem-callout callout-bottom-right" id="callout-metric-2">
+                  <span class="callout-dot green"></span>
+                  <div>
+                    <strong id="metric-hero-val2">88.4 / 100</strong>
+                    <small id="metric-hero-lbl2">Empirical Equity Index</small>
+                  </div>
+                </div>
+
+                <!-- Bottom HUD Status -->
+                <div class="emblem-stage-hud">
+                  <span class="hud-tag">BMU 3D CREST</span>
+                  <span class="hud-status" id="emblem-scroll-hud">Scroll or move cursor to tilt 3D emblem</span>
+                </div>
+              </div>
+
+              <!-- Summary Stats Row -->
               <div class="hero-stats-row">
-                <div class="hero-stat-box" id="metric-box-1">
-                  <strong id="metric-val-1">+240%</strong>
-                  <span id="metric-lbl-1">Brand Salience Multiplier</span>
+                <div class="hero-stat-box">
+                  <strong>${this.data.posts.length}</strong>
+                  <span>Case Studies & Surveys</span>
                 </div>
-                <div class="hero-stat-box" id="metric-box-2">
-                  <strong id="metric-val-2">88.4 / 100</strong>
-                  <span id="metric-lbl-2">Empirical Equity Index</span>
+                <div class="hero-stat-box">
+                  <strong>${this.data.team.filter(m => !m.hidden).length}</strong>
+                  <span>Active Student Fellows</span>
                 </div>
               </div>
             </div>
@@ -3548,7 +3591,7 @@ class App {
         </div>
       </section>
     `;
-    this.init3DMatrix();
+    this.init3DEmblem();
   }
 
   renderArticles(container, queryString) {

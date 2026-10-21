@@ -1418,26 +1418,25 @@ textarea.form-control {
 }
 
 /* ==========================================================================
-   Marketing Lab v2 · Interactive 3D Econometrics Engine & Editorial Depth
+   Marketing Lab v2 · Interactive 3D Heraldic Crest Emblem Stage
    ========================================================================== */
 
-/* 3D Econometrics Widget in Hero */
-.marketing-3d-widget {
-  background: rgba(36, 4, 7, 0.78);
-  border: 1px solid rgba(201, 154, 50, 0.35);
-  border-radius: 16px;
+.hero-emblem-widget {
+  background: rgba(30, 4, 6, 0.85);
+  border: 1px solid rgba(201, 154, 50, 0.42);
+  border-radius: 20px;
   padding: 24px;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.48), 0 0 0 1px rgba(255, 255, 255, 0.08);
   position: relative;
   overflow: hidden;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.marketing-3d-widget:hover {
-  border-color: rgba(201, 154, 50, 0.6);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.48), 0 0 32px rgba(201, 154, 50, 0.15);
+.hero-emblem-widget:hover {
+  border-color: rgba(201, 154, 50, 0.7);
+  box-shadow: 0 28px 75px rgba(0, 0, 0, 0.55), 0 0 36px rgba(201, 154, 50, 0.22);
 }
 
 .widget-kicker {
@@ -1451,20 +1450,36 @@ textarea.form-control {
   margin-bottom: 4px;
 }
 
-.widget-model-tabs {
+.emblem-widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.emblem-widget-header h4 {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+.emblem-model-tabs {
   display: flex;
   gap: 6px;
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.38);
   padding: 4px;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   overflow-x: auto;
 }
 
-.model-tab {
+.emblem-tab {
   background: transparent;
   border: none;
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(255, 255, 255, 0.75);
   font-family: var(--font-sans);
   font-size: 11px;
   font-weight: 600;
@@ -1475,42 +1490,263 @@ textarea.form-control {
   white-space: nowrap;
 }
 
-.model-tab:hover {
+.emblem-tab:hover {
   color: #ffffff;
 }
 
-.model-tab.active {
+.emblem-tab.active {
   background: linear-gradient(135deg, var(--gold-500), var(--gold-600));
   color: #1a1a1a;
   box-shadow: 0 2px 8px rgba(201, 154, 50, 0.35);
 }
 
-.matrix-canvas-wrap {
+/* The 3D Emblem Stage (Replicating user's crest artwork) */
+.emblem-stage {
   position: relative;
   width: 100%;
+  height: 350px;
   margin: 16px 0 14px;
-  border-radius: 12px;
-  background: radial-gradient(circle at 50% 25%, rgba(118, 8, 16, 0.45) 0%, rgba(18, 2, 4, 0.9) 100%);
-  border: 1px solid rgba(201, 154, 50, 0.25);
+  border-radius: 16px;
+  background: radial-gradient(circle at 50% 45%, #760810 0%, #4a060b 60%, #260305 100%);
+  border: 1px solid rgba(201, 154, 50, 0.28);
   overflow: hidden;
-}
-
-#marketing-matrix-canvas {
-  width: 100%;
-  height: 230px;
-  display: block;
+  perspective: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
   cursor: grab;
 }
 
-#marketing-matrix-canvas:active {
+.emblem-stage:active {
   cursor: grabbing;
 }
 
-.matrix-scroll-hud {
+/* Subtle Technical Coordinate Grid matching user's image */
+.emblem-grid-backdrop {
+  position: absolute;
+  inset: 0;
+  background-size: 38px 38px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Concentric Dashed Technical Orbit Rings matching user's image */
+.emblem-orbit-rings {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.emblem-ring-outer {
+  position: absolute;
+  width: 310px;
+  height: 310px;
+  border: 1.5px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  animation: emblemOrbitCW 48s linear infinite;
+  box-shadow: 0 0 35px rgba(118, 8, 16, 0.35) inset;
+}
+
+.emblem-ring-inner {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border: 1.2px dashed rgba(201, 154, 50, 0.32);
+  border-radius: 50%;
+  animation: emblemOrbitCCW 34s linear infinite;
+}
+
+@keyframes emblemOrbitCW {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes emblemOrbitCCW {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+/* 3D Floating Shield Container */
+.emblem-3d-anchor {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Physical 3D Shield */
+.emblem-shield-body {
+  position: relative;
+  width: 195px;
+  height: 220px;
+  transform-style: preserve-3d;
+  transition: transform 0.1s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.emblem-shield-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.45));
+  pointer-events: none;
+}
+
+/* Real Cast Drop Shadow Underneath matching user's image */
+.emblem-floor-shadow {
+  position: absolute;
+  bottom: -34px;
+  width: 185px;
+  height: 28px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 45%, transparent 75%);
+  filter: blur(10px);
+  border-radius: 50%;
+  transform: translateZ(-20px);
+  pointer-events: none;
+  transition: transform 0.1s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+  opacity: 0.92;
+}
+
+/* SVG Vector Overlay for Luminous Pulses */
+.emblem-crest-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.emblem-trend-glow {
+  stroke: rgba(223, 183, 92, 0.65);
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: blur(5px);
+}
+
+.emblem-trend-line {
+  stroke: #ffffff;
+  stroke-width: 4.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.emblem-node {
+  fill: #ffffff;
+  stroke: var(--gold-500);
+  stroke-width: 3.5;
+  filter: drop-shadow(0 0 6px rgba(201, 154, 50, 0.85));
+}
+
+.emblem-pulse-orb {
+  fill: #10b981;
+  stroke: #ffffff;
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.95));
+}
+
+.emblem-bulb-flare {
+  fill: rgba(223, 183, 92, 0.2);
+  filter: blur(14px);
+  animation: bulbGlow 3s ease-in-out infinite;
+}
+
+@keyframes bulbGlow {
+  0%, 100% { opacity: 0.35; transform: scale(0.95); }
+  50% { opacity: 0.85; transform: scale(1.15); }
+}
+
+/* Specular Glare Sheen */
+.emblem-glare-sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--glare-x, 50%) var(--glare-y, 30%), rgba(255, 255, 255, 0.18) 0%, transparent 60%);
+  opacity: 0.7;
+  mix-blend-mode: overlay;
+  transition: opacity 0.3s ease;
+}
+
+/* Floating Academic Metric Badges in 3D Space */
+.emblem-callout {
+  position: absolute;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  background: rgba(20, 2, 4, 0.88);
+  border: 1px solid rgba(201, 154, 50, 0.45);
+  border-radius: 999px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.callout-top-left {
+  top: 18px;
+  left: 18px;
+}
+
+.callout-bottom-right {
+  bottom: 42px;
+  right: 18px;
+}
+
+.callout-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold-400);
+  box-shadow: 0 0 8px rgba(201, 154, 50, 0.8);
+}
+
+.callout-dot.green {
+  background: #10b981;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
+}
+
+.emblem-callout strong {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.1;
+}
+
+.emblem-callout small {
+  display: block;
+  font-size: 9.5px;
+  font-weight: 600;
+  color: var(--gold-300);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+/* Stage HUD */
+.emblem-stage-hud {
   position: absolute;
   bottom: 8px;
-  left: 10px;
-  right: 10px;
+  left: 12px;
+  right: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1524,12 +1760,7 @@ textarea.form-control {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.hud-tag {
-  color: var(--gold-400);
-  font-weight: 700;
-  letter-spacing: 0.8px;
+  z-index: 10;
 }
 
 /* Subtle editorial 3D perspective transforms on cards */
@@ -1563,8 +1794,8 @@ textarea.form-control {
 
 /* Reduce motion media query */
 @media (prefers-reduced-motion: reduce) {
-  #marketing-matrix-canvas {
-    pointer-events: none;
+  .emblem-ring-outer, .emblem-ring-inner {
+    animation: none;
   }
   .card:hover, .team-card:hover, .event-card:hover {
     transform: translateY(-3px);
