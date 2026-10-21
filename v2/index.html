@@ -484,31 +484,6 @@ button, input, select, textarea {
   height: 180px;
 }
 
-.hero-stats-row {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  margin-top: 20px;
-}
-
-.hero-stat-box {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 14px 16px;
-  border-radius: var(--radius-md);
-}
-
-.hero-stat-box strong {
-  display: block;
-  font-family: var(--font-serif);
-  font-size: 24px;
-  color: var(--gold-300);
-}
-
-.hero-stat-box span {
-  font-size: 12px;
-  opacity: 0.8;
-}
 
 /* Metric Stats Bar */
 .stats-bar {
@@ -2684,7 +2659,7 @@ const THEME_KEY = 'marketing_lab_v2_theme';
  * - Scroll-driven 3D pitch/yaw tilt and shadow projection
  * - Dynamic drop shadow that scales, blurs, and offsets realistically with 3D elevation
  * - Animated glowing energy pulse traversing the crest trendline & data nodes
- * - Model tab switcher (Brand Equity, CAC : LTV, Retention)
+ * - 3D exploded layer deconstruction on scroll with floating chassis, bars, trendline, and symbols
  * - Safe lifecycle management for zero memory leaks
  */
 class MarketingLabEmblem3D {

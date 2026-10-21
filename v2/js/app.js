@@ -402,7 +402,7 @@ const THEME_KEY = 'marketing_lab_v2_theme';
  * - Scroll-driven 3D pitch/yaw tilt and shadow projection
  * - Dynamic drop shadow that scales, blurs, and offsets realistically with 3D elevation
  * - Animated glowing energy pulse traversing the crest trendline & data nodes
- * - Model tab switcher (Brand Equity, CAC : LTV, Retention)
+ * - 3D exploded layer deconstruction on scroll with floating chassis, bars, trendline, and symbols
  * - Safe lifecycle management for zero memory leaks
  */
 class MarketingLabEmblem3D {
