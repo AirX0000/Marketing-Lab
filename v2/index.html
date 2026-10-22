@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Marketing Insights Lab · British Management University</title>
   <meta name="description" content="A student-driven marketing publication, research hub, and professional community connected to British Management University.">
-  <!-- Release: v2.1.1 - 2026-10-21 -->
+  <!-- Release: v2.2.0 - 2026-10-22 -->
   <meta property="og:title" content="Marketing Insights Lab · British Management University">
   <meta property="og:description" content="Think like marketers. Act like analysts. Create like professionals.">
   <meta property="og:type" content="website">
@@ -31,6 +31,7 @@
   --gold-600: #a97e24;
   --gold-500: #c99a32;
   --gold-400: #e0b44e;
+  --gold-300: #ecc970;
   --gold-100: #fbf5e7;
 
   /* Theme: Light Mode (Default) */
@@ -1784,6 +1785,259 @@ textarea.form-control {
     transform: translateY(-3px);
   }
 }
+
+/* ==========================================================================
+   v2.2 Refinements · polish, mobile fixes, icons & motion
+   ========================================================================== */
+
+/* Inline SVG icon base */
+.ico {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  flex-shrink: 0;
+  vertical-align: -0.125em;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.btn { white-space: nowrap; }
+.icon-btn .ico { width: 18px; height: 18px; }
+
+/* Stats bar: hairline dividers + tabular numerals for count-up */
+.stat-item { position: relative; }
+.stat-item strong { font-variant-numeric: tabular-nums lining-nums; }
+@media (min-width: 993px) {
+  .stat-item + .stat-item::before {
+    content: "";
+    position: absolute;
+    left: -10px;
+    top: 12%;
+    bottom: 12%;
+    width: 1px;
+    background: var(--border-light);
+  }
+}
+
+/* Ticker: seamless loop + soft fading edges */
+.ticker-wrap { position: relative; }
+.ticker-track {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 40px, #000 calc(100% - 60px), transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 40px, #000 calc(100% - 60px), transparent 100%);
+}
+.ticker-track .ticker-content {
+  width: max-content;
+  padding-left: 0;
+  animation-duration: 60s;
+}
+.ticker-group {
+  display: flex;
+  gap: 40px;
+  padding-right: 40px;
+  flex-shrink: 0;
+}
+.ticker-item:hover { color: var(--accent-primary); }
+.ticker-wrap:focus-within .ticker-content { animation-play-state: paused; }
+
+/* Section row header (title + action) */
+.section-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 40px 0 24px;
+}
+
+/* Knowledge tracks */
+.track-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+.track-card {
+  padding: 28px;
+  cursor: pointer;
+  color: inherit;
+}
+.track-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  color: var(--accent-primary);
+  background: var(--crimson-100);
+  border: 1px solid rgba(118, 8, 16, 0.12);
+  transition: var(--transition-smooth);
+}
+:root[data-theme="dark"] .track-icon {
+  background: rgba(230, 82, 91, 0.12);
+  border-color: rgba(230, 82, 91, 0.22);
+}
+.track-icon .ico { width: 24px; height: 24px; }
+.track-card:hover .track-icon {
+  background: var(--accent-primary);
+  color: #fff;
+  border-color: var(--accent-primary);
+}
+.track-card h3 {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+.track-card p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.track-link {
+  margin-top: 16px;
+  color: var(--accent-primary);
+  font-weight: 700;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.track-link span { transition: transform 0.25s ease; }
+.track-card:hover .track-link span { transform: translateX(4px); }
+
+/* Events: let 1–2 cards fill the row, tidy meta */
+.events-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); }
+.event-meta {
+  flex-wrap: wrap;
+  column-gap: 16px;
+  row-gap: 4px;
+}
+.event-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.event-meta .ico { color: var(--accent-primary); font-size: 14px; }
+.event-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Footer social icons */
+.social-btn .ico { width: 18px; height: 18px; fill: currentColor; stroke: none; }
+
+/* Scroll reveal (only active once JS has confirmed support) */
+.js-reveal .reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.js-reveal .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Header & hero on small screens */
+@media (max-width: 991px) {
+  .emblem-stage { height: 380px; }
+}
+
+@media (max-width: 600px) {
+  :root { --header-height: 64px; }
+  .container { padding-left: 18px; padding-right: 18px; }
+  .header-content { gap: 10px; }
+  .brand-wrapper { gap: 10px; min-width: 0; }
+  .brand-logo { height: 36px; }
+  .brand-title { font-size: 16px; white-space: nowrap; }
+  .brand-subtitle { display: none; }
+  .header-actions { gap: 8px; }
+  .header-actions .btn-sm { display: none; }
+  .icon-btn { width: 38px; height: 38px; }
+
+  .hero { padding: 44px 0 40px; }
+  .hero-tag { font-size: 10.5px; letter-spacing: 0.08em; }
+  .hero-actions .btn { width: 100%; }
+  .hero-emblem-widget { padding: 16px; border-radius: 20px; }
+  .emblem-stage { height: 320px; }
+
+  .stat-item strong { font-size: 30px; }
+  .stat-item span { font-size: 11px; }
+
+  .section { padding: 60px 0; }
+  .section-head { margin-bottom: 30px; }
+  .featured-media { min-height: 220px; }
+  .featured-body { padding: 26px 22px; }
+
+  .track-grid { gap: 14px; }
+  .track-card {
+    padding: 18px;
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    column-gap: 16px;
+    align-items: start;
+  }
+  .track-icon { width: 44px; height: 44px; margin-bottom: 0; grid-row: span 3; }
+  .track-icon .ico { width: 20px; height: 20px; }
+  .track-card h3 { font-size: 18px; margin-bottom: 4px; }
+  .track-link { margin-top: 8px; }
+
+  .event-card { padding: 22px; flex-direction: column; gap: 14px; }
+  .event-date-badge {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 8px 14px;
+    min-width: 0;
+  }
+  .event-day { font-size: 22px; }
+  .event-month { margin-top: 0; }
+
+  .cta-band { padding: 44px 22px; }
+  .cta-band p { font-size: 16px; }
+  .cta-band .btn { width: 100%; }
+}
+
+/* Mobile drawer: animated, accessible */
+.mobile-drawer {
+  display: block;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0s linear 0.22s;
+  max-height: calc(100dvh - var(--header-height));
+  overflow-y: auto;
+}
+.mobile-drawer.open {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+@media (min-width: 769px) {
+  .mobile-drawer { display: none !important; }
+}
+@media (max-width: 768px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px 24px; }
+  .footer-col:first-child, .footer-col:last-child { grid-column: 1 / -1; }
+}
+.mobile-nav-links a.active { color: var(--accent-primary); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-content { animation: none !important; }
+  .ticker-track { overflow-x: auto; }
+  .js-reveal .reveal { opacity: 1; transform: none; transition: none; }
+}
   </style>
 </head>
 <body>
@@ -1820,11 +2074,11 @@ textarea.form-control {
       <!-- Action Controls -->
       <div class="header-actions">
         <button id="theme-toggle-btn" class="icon-btn" aria-label="Toggle light or dark theme" title="Toggle theme">
-          🌙
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
         </button>
         <a href="#/join" class="btn btn-primary btn-sm" onclick="if(window.app && typeof window.app.navigate === 'function'){window.app.navigate('#/join');return false;}">Join the Lab</a>
-        <button id="mobile-nav-toggle" class="icon-btn mobile-toggle" aria-label="Open navigation menu">
-          ☰
+        <button id="mobile-nav-toggle" class="icon-btn mobile-toggle" aria-label="Open navigation menu" aria-controls="mobile-drawer" aria-expanded="false">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
         </button>
       </div>
     </div>
@@ -1840,7 +2094,7 @@ textarea.form-control {
       <a href="#/resources" onclick="if(window.app && typeof window.app.navigate === 'function'){window.app.navigate('#/resources');return false;}">Resources</a>
       <a href="#/about" onclick="if(window.app && typeof window.app.navigate === 'function'){window.app.navigate('#/about');return false;}">About</a>
       <a href="#/bookmarks" onclick="if(window.app && typeof window.app.navigate === 'function'){window.app.navigate('#/bookmarks');return false;}">Reading List</a>
-      <a href="#/admin" onclick="if(window.app && typeof window.app.navigate === 'function'){window.app.navigate('#/admin');return false;}">Admin ⚙</a>
+      <a href="#/admin" id="admin-mobile-nav-item" style="display:none" onclick="if(window.app && typeof window.app.navigate === 'function'){window.app.navigate('#/admin');return false;}">Admin ⚙</a>
       <a href="#/join" onclick="if(window.app && typeof window.app.navigate === 'function'){window.app.navigate('#/join');return false;}">Apply to Join</a>
     </nav>
   </div>
@@ -1915,15 +2169,15 @@ textarea.form-control {
                           
                           <!-- Vector Neon Overlay on top of trendline -->
                           <svg class="emblem-crest-overlay" viewBox="0 0 699 779" fill="none" aria-hidden="true">
-                            <path class="emblem-trend-glow" d="M160 427 L260 370 L360 397 L450 420 L544 372 L599 350" />
-                            <path class="emblem-trend-line" d="M160 427 L260 370 L360 397 L450 420 L544 372 L599 350" />
+                            <path class="emblem-trend-glow" d="M160 427 L260 370 L360 397 L450 420 L544 372 L599 350"></path>
+                            <path class="emblem-trend-line" d="M160 427 L260 370 L360 397 L450 420 L544 372 L599 350"></path>
                             
-                            <circle class="emblem-node node-1" cx="260" cy="370" r="8" />
-                            <circle class="emblem-node node-2" cx="360" cy="397" r="8" />
-                            <circle class="emblem-node node-3" cx="450" cy="420" r="8" />
-                            <circle class="emblem-node node-4" cx="544" cy="372" r="9" />
+                            <circle class="emblem-node node-1" cx="260" cy="370" r="8"></circle>
+                            <circle class="emblem-node node-2" cx="360" cy="397" r="8"></circle>
+                            <circle class="emblem-node node-3" cx="450" cy="420" r="8"></circle>
+                            <circle class="emblem-node node-4" cx="544" cy="372" r="9"></circle>
 
-                            <circle class="emblem-pulse-orb" id="emblem-pulse-orb" cx="260" cy="370" r="8.5" />
+                            <circle class="emblem-pulse-orb" id="emblem-pulse-orb" cx="260" cy="370" r="8.5"></circle>
                           </svg>
                         </div>
 
@@ -1935,7 +2189,7 @@ textarea.form-control {
                           <div class="symbol-elem symbol-bulb" id="symbol-bulb">
                             <img src="assets/crest-layer-bulb.png" alt="Innovation Lightbulb" class="layer-img">
                             <svg class="emblem-crest-overlay" viewBox="0 0 699 779" fill="none" aria-hidden="true">
-                              <circle class="emblem-bulb-flare" cx="515" cy="198" r="45" />
+                              <circle class="emblem-bulb-flare" cx="515" cy="198" r="45"></circle>
                             </svg>
                           </div>
                         </div>
@@ -1960,70 +2214,104 @@ textarea.form-control {
         <div class="container stats-grid">
           
             <div class="stat-item">
-              <strong>500+</strong>
+              <strong data-count="500+">500+</strong>
               <span>Campus Members</span>
             </div>
           
             <div class="stat-item">
-              <strong>48+</strong>
+              <strong data-count="48+">48+</strong>
               <span>Published Insights</span>
             </div>
           
             <div class="stat-item">
-              <strong>100%</strong>
+              <strong data-count="100%">100%</strong>
               <span>Student-Led</span>
             </div>
           
             <div class="stat-item">
-              <strong>12</strong>
+              <strong data-count="12">12</strong>
               <span>Industry Partners</span>
             </div>
           
         </div>
       </section>
 
-      <!-- Trending Ticker -->
+      <!-- Trending Ticker (group duplicated for a seamless loop) -->
       <div class="ticker-wrap">
         <div class="ticker-label">Trending Now</div>
-        <div class="ticker-content">
-          
-            <a href="#/article/1" class="ticker-item">
-              <strong>Campaign Analysis:</strong> How Red Bull Built a $10B Media Powerhouse Disguised as an Energy Drink
-            </a>
-          
-            <a href="#/article/2" class="ticker-item">
-              <strong>Research:</strong> Gen Z Consumer Behavior in Central Asia: The Rise of Social Commerce &amp; FinTech
-            </a>
-          
-            <a href="#/article/3" class="ticker-item">
-              <strong>Educational:</strong> The Complete Guide to Brand Archetypes: Crafting Distinctive Brand Voice in 2026
-            </a>
-          
-            <a href="#/article/4" class="ticker-item">
-              <strong>Opinion:</strong> Will Generative AI Replace Creative Strategy or Expose Mediocre Copywriting?
-            </a>
-          
-            <a href="#/article/5" class="ticker-item">
-              <strong>News:</strong> Retail Media Networks &amp; Third-Party Cookies: What Marketers Must Prepare for in 2026
-            </a>
-          
-            <a href="#/article/6" class="ticker-item">
-              <strong>Behind the Scenes:</strong> From Classroom Theory to Real Publication: How We Built the Marketing Insights Lab
-            </a>
-          
+        <div class="ticker-track">
+          <div class="ticker-content">
+            
+              <div class="ticker-group">
+                
+                  <a href="#/article/1" class="ticker-item">
+                    <strong>Campaign Analysis:</strong> How Red Bull Built a $10B Media Powerhouse Disguised as an Energy Drink
+                  </a>
+                
+                  <a href="#/article/2" class="ticker-item">
+                    <strong>Research:</strong> Gen Z Consumer Behavior in Central Asia: The Rise of Social Commerce &amp; FinTech
+                  </a>
+                
+                  <a href="#/article/3" class="ticker-item">
+                    <strong>Educational:</strong> The Complete Guide to Brand Archetypes: Crafting Distinctive Brand Voice in 2026
+                  </a>
+                
+                  <a href="#/article/4" class="ticker-item">
+                    <strong>Opinion:</strong> Will Generative AI Replace Creative Strategy or Expose Mediocre Copywriting?
+                  </a>
+                
+                  <a href="#/article/5" class="ticker-item">
+                    <strong>News:</strong> Retail Media Networks &amp; Third-Party Cookies: What Marketers Must Prepare for in 2026
+                  </a>
+                
+                  <a href="#/article/6" class="ticker-item">
+                    <strong>Behind the Scenes:</strong> From Classroom Theory to Real Publication: How We Built the Marketing Insights Lab
+                  </a>
+                
+              </div>
+            
+              <div class="ticker-group" aria-hidden="true">
+                
+                  <a href="#/article/1" class="ticker-item" tabindex="-1">
+                    <strong>Campaign Analysis:</strong> How Red Bull Built a $10B Media Powerhouse Disguised as an Energy Drink
+                  </a>
+                
+                  <a href="#/article/2" class="ticker-item" tabindex="-1">
+                    <strong>Research:</strong> Gen Z Consumer Behavior in Central Asia: The Rise of Social Commerce &amp; FinTech
+                  </a>
+                
+                  <a href="#/article/3" class="ticker-item" tabindex="-1">
+                    <strong>Educational:</strong> The Complete Guide to Brand Archetypes: Crafting Distinctive Brand Voice in 2026
+                  </a>
+                
+                  <a href="#/article/4" class="ticker-item" tabindex="-1">
+                    <strong>Opinion:</strong> Will Generative AI Replace Creative Strategy or Expose Mediocre Copywriting?
+                  </a>
+                
+                  <a href="#/article/5" class="ticker-item" tabindex="-1">
+                    <strong>News:</strong> Retail Media Networks &amp; Third-Party Cookies: What Marketers Must Prepare for in 2026
+                  </a>
+                
+                  <a href="#/article/6" class="ticker-item" tabindex="-1">
+                    <strong>Behind the Scenes:</strong> From Classroom Theory to Real Publication: How We Built the Marketing Insights Lab
+                  </a>
+                
+              </div>
+            
+          </div>
         </div>
       </div>
 
       <!-- Featured Piece & Latest -->
       <section class="section">
         <div class="container">
-          <div class="section-head">
+          <div class="section-head reveal">
             <span class="section-eyebrow">Curated Research</span>
             <h2 class="section-title">Editor's Choice of the Month</h2>
           </div>
 
           
-            <div class="featured-card">
+            <div class="featured-card reveal">
               <div class="featured-media">
                 <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&amp;fit=crop&amp;w=1200&amp;q=80" alt="How Red Bull Built a $10B Media Powerhouse Disguised as an Energy Drink">
                 <span class="card-badge">Campaign Analysis</span>
@@ -2033,7 +2321,7 @@ textarea.form-control {
                 <h3 class="featured-title">
                   <a href="#/article/1">How Red Bull Built a $10B Media Powerhouse Disguised as an Energy Drink</a>
                 </h3>
-                <p class="featured-desc">An in-depth breakdown of Red Bull&#39;s non-traditional marketing blueprint: content studio ownership, event IP, and lifestyle positioning over product ads.</p>
+                <p class="featured-desc">An in-depth breakdown of Red Bull's non-traditional marketing blueprint: content studio ownership, event IP, and lifestyle positioning over product ads.</p>
                 <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
                   <small style="color:var(--text-muted);font-weight:600">
                     14 Oct 2026 · 1 min read · By Ayder Parmankulov
@@ -2044,7 +2332,7 @@ textarea.form-control {
             </div>
           
 
-          <div style="display:flex;justify-content:space-between;align-items:flex-end;margin:40px 0 24px">
+          <div class="section-row reveal">
             <div>
               <span class="section-eyebrow">Fresh Insights</span>
               <h3 style="font-family:var(--font-serif);font-size:28px">Latest from the Lab</h3>
@@ -2052,15 +2340,13 @@ textarea.form-control {
             <a href="#/articles" class="btn btn-secondary btn-sm">View All 6 Articles →</a>
           </div>
 
-          <div class="articles-grid">
+          <div class="articles-grid reveal">
             
       <article class="card">
         <div class="card-media">
           <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&amp;fit=crop&amp;w=1200&amp;q=80" alt="Gen Z Consumer Behavior in Central Asia: The Rise of Social Commerce &amp; FinTech" loading="lazy">
           <span class="card-badge">Research</span>
-          <button class="card-bookmark-btn " 
-            title="Save bookmark" 
-            onclick="window.app.toggleBookmark(2)">
+          <button class="card-bookmark-btn " title="Save bookmark" onclick="window.app.toggleBookmark(2)">
             ☆
           </button>
         </div>
@@ -2080,9 +2366,7 @@ textarea.form-control {
         <div class="card-media">
           <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&amp;fit=crop&amp;w=1200&amp;q=80" alt="The Complete Guide to Brand Archetypes: Crafting Distinctive Brand Voice in 2026" loading="lazy">
           <span class="card-badge">Educational</span>
-          <button class="card-bookmark-btn " 
-            title="Save bookmark" 
-            onclick="window.app.toggleBookmark(3)">
+          <button class="card-bookmark-btn " title="Save bookmark" onclick="window.app.toggleBookmark(3)">
             ☆
           </button>
         </div>
@@ -2102,9 +2386,7 @@ textarea.form-control {
         <div class="card-media">
           <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&amp;fit=crop&amp;w=1200&amp;q=80" alt="Will Generative AI Replace Creative Strategy or Expose Mediocre Copywriting?" loading="lazy">
           <span class="card-badge">Opinion</span>
-          <button class="card-bookmark-btn " 
-            title="Save bookmark" 
-            onclick="window.app.toggleBookmark(4)">
+          <button class="card-bookmark-btn " title="Save bookmark" onclick="window.app.toggleBookmark(4)">
             ☆
           </button>
         </div>
@@ -2127,55 +2409,55 @@ textarea.form-control {
       <!-- Content Categories -->
       <section class="section section-alt">
         <div class="container">
-          <div class="section-head" style="text-align:center">
-            <span class="section-eyebrow">Seven Knowledge Tracks</span>
-            <h2 class="section-title">What We Produce & Research</h2>
+          <div class="section-head reveal" style="text-align:center">
+            <span class="section-eyebrow">Six Knowledge Tracks</span>
+            <h2 class="section-title">What We Produce &amp; Research</h2>
             <p class="section-lead" style="margin:0 auto">Every format is designed to be read, cited, and added to a student's professional portfolio.</p>
           </div>
 
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px">
+          <div class="track-grid reveal">
             
-              <div class="card" style="padding:28px;cursor:pointer" onclick="location.hash='#/articles?cat=Campaign%20Analysis'">
-                <div style="font-size:32px;margin-bottom:14px">🔍</div>
-                <h3 style="font-family:var(--font-serif);font-size:20px;margin-bottom:8px">Campaign Analysis</h3>
-                <p style="font-size:14px;color:var(--text-secondary);line-height:1.5">Deep deconstructions of breakthrough advertising, rebranding, and product launches.</p>
-                <div style="margin-top:16px;color:var(--accent-primary);font-weight:700;font-size:13px">Explore Track →</div>
-              </div>
+              <a class="card track-card" href="#/articles?cat=Campaign%20Analysis">
+                <div class="track-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m20 20-4.2-4.2"></path></svg></div>
+                <h3>Campaign Analysis</h3>
+                <p>Deep deconstructions of breakthrough advertising, rebranding, and product launches.</p>
+                <div class="track-link">Explore Track <span>→</span></div>
+              </a>
             
-              <div class="card" style="padding:28px;cursor:pointer" onclick="location.hash='#/articles?cat=Research'">
-                <div style="font-size:32px;margin-bottom:14px">📊</div>
-                <h3 style="font-family:var(--font-serif);font-size:20px;margin-bottom:8px">Research &amp; Data</h3>
-                <p style="font-size:14px;color:var(--text-secondary);line-height:1.5">Data-driven investigations, consumer behavior surveys, and market trends.</p>
-                <div style="margin-top:16px;color:var(--accent-primary);font-weight:700;font-size:13px">Explore Track →</div>
-              </div>
+              <a class="card track-card" href="#/articles?cat=Research">
+                <div class="track-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg></div>
+                <h3>Research &amp; Data</h3>
+                <p>Data-driven investigations, consumer behavior surveys, and market trends.</p>
+                <div class="track-link">Explore Track <span>→</span></div>
+              </a>
             
-              <div class="card" style="padding:28px;cursor:pointer" onclick="location.hash='#/articles?cat=Educational'">
-                <div style="font-size:32px;margin-bottom:14px">🎓</div>
-                <h3 style="font-family:var(--font-serif);font-size:20px;margin-bottom:8px">Educational Guides</h3>
-                <p style="font-size:14px;color:var(--text-secondary);line-height:1.5">Frameworks, tactical playbooks, and modern marketing methodologies.</p>
-                <div style="margin-top:16px;color:var(--accent-primary);font-weight:700;font-size:13px">Explore Track →</div>
-              </div>
+              <a class="card track-card" href="#/articles?cat=Educational">
+                <div class="track-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9.5 12 5l10 4.5-10 4.5L2 9.5Z"></path><path d="M6 11.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5M22 9.5V15"></path></svg></div>
+                <h3>Educational Guides</h3>
+                <p>Frameworks, tactical playbooks, and modern marketing methodologies.</p>
+                <div class="track-link">Explore Track <span>→</span></div>
+              </a>
             
-              <div class="card" style="padding:28px;cursor:pointer" onclick="location.hash='#/articles?cat=Opinion'">
-                <div style="font-size:32px;margin-bottom:14px">💡</div>
-                <h3 style="font-family:var(--font-serif);font-size:20px;margin-bottom:8px">Thought Leadership</h3>
-                <p style="font-size:14px;color:var(--text-secondary);line-height:1.5">Critical perspectives, debates, and future-looking market forecasts.</p>
-                <div style="margin-top:16px;color:var(--accent-primary);font-weight:700;font-size:13px">Explore Track →</div>
-              </div>
+              <a class="card track-card" href="#/articles?cat=Opinion">
+                <div class="track-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4"></path><path d="M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3Z"></path></svg></div>
+                <h3>Thought Leadership</h3>
+                <p>Critical perspectives, debates, and future-looking market forecasts.</p>
+                <div class="track-link">Explore Track <span>→</span></div>
+              </a>
             
-              <div class="card" style="padding:28px;cursor:pointer" onclick="location.hash='#/articles?cat=News'">
-                <div style="font-size:32px;margin-bottom:14px">⚡</div>
-                <h3 style="font-family:var(--font-serif);font-size:20px;margin-bottom:8px">Industry Briefs</h3>
-                <p style="font-size:14px;color:var(--text-secondary);line-height:1.5">Curated updates on global tech, retail media, and consumer ecosystems.</p>
-                <div style="margin-top:16px;color:var(--accent-primary);font-weight:700;font-size:13px">Explore Track →</div>
-              </div>
+              <a class="card track-card" href="#/articles?cat=News">
+                <div class="track-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"></path></svg></div>
+                <h3>Industry Briefs</h3>
+                <p>Curated updates on global tech, retail media, and consumer ecosystems.</p>
+                <div class="track-link">Explore Track <span>→</span></div>
+              </a>
             
-              <div class="card" style="padding:28px;cursor:pointer" onclick="location.hash='#/articles?cat=Behind%20the%20Scenes'">
-                <div style="font-size:32px;margin-bottom:14px">🎬</div>
-                <h3 style="font-family:var(--font-serif);font-size:20px;margin-bottom:8px">Behind the Scenes</h3>
-                <p style="font-size:14px;color:var(--text-secondary);line-height:1.5">Editorial workflows, lab experiments, and project reflections.</p>
-                <div style="margin-top:16px;color:var(--accent-primary);font-weight:700;font-size:13px">Explore Track →</div>
-              </div>
+              <a class="card track-card" href="#/articles?cat=Behind%20the%20Scenes">
+                <div class="track-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M7 4v16M17 4v16M3 9h4M3 15h4M17 9h4M17 15h4"></path></svg></div>
+                <h3>Behind the Scenes</h3>
+                <p>Editorial workflows, lab experiments, and project reflections.</p>
+                <div class="track-link">Explore Track <span>→</span></div>
+              </a>
             
           </div>
         </div>
@@ -2185,14 +2467,14 @@ textarea.form-control {
       
         <section class="section">
           <div class="container">
-            <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:34px;flex-wrap:wrap;gap:16px">
+            <div class="section-row reveal" style="margin:0 0 34px">
               <div>
-                <span class="section-eyebrow">Community & Meetups</span>
-                <h2 class="section-title">Upcoming Masterclasses & Workshops</h2>
+                <span class="section-eyebrow">Community &amp; Meetups</span>
+                <h2 class="section-title">Upcoming Masterclasses &amp; Workshops</h2>
               </div>
               <a href="#/events" class="btn btn-secondary btn-sm">View Event Calendar →</a>
             </div>
-            <div class="events-grid">
+            <div class="events-grid reveal">
               
       <div class="event-card">
         <div class="event-date-badge">
@@ -2202,14 +2484,14 @@ textarea.form-control {
         <div class="event-details" style="flex-grow:1">
           <h3>Masterclass: Building Modern Brand Strategy with Industry CMOs</h3>
           <div class="event-meta">
-            <span>⏰ 15:00 - 17:00</span>
-            <span>📍 BMU Campus · Main Auditorium &amp; Online Stream</span>
+            <span><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg> 15:00 - 17:00</span>
+            <span><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.1-7-11.5a7 7 0 0 1 14 0C19 14.9 12 21 12 21Z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg> BMU Campus · Main Auditorium &amp; Online Stream</span>
           </div>
           <p class="event-desc">An interactive case workshop on positioning, customer segmentation, and omnichannel brand consistency with invited marketing directors.</p>
-          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <div class="event-actions">
             
               <button class="btn btn-primary btn-sm" onclick="window.app.openRsvpModal(1)">RSVP Spot</button>
-              <button class="btn btn-secondary btn-sm" onclick="window.app.downloadCalendarFile(1)">📅 Add to Calendar</button>
+              <button class="btn btn-secondary btn-sm" onclick="window.app.downloadCalendarFile(1)"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 10h18"></path></svg> Add to Calendar</button>
             
           </div>
         </div>
@@ -2223,14 +2505,14 @@ textarea.form-control {
         <div class="event-details" style="flex-grow:1">
           <h3>Lab Hackathon: 24-Hour Brand Turnaround Challenge</h3>
           <div class="event-meta">
-            <span>⏰ 10:00 - Next Day 10:00</span>
-            <span>📍 Innovation Hub · British Management University</span>
+            <span><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg> 10:00 - Next Day 10:00</span>
+            <span><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.1-7-11.5a7 7 0 0 1 14 0C19 14.9 12 21 12 21Z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg> Innovation Hub · British Management University</span>
           </div>
           <p class="event-desc">Teams will receive a live brief from a real regional enterprise and have 24 hours to research, build, and pitch a complete marketing campaign.</p>
-          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <div class="event-actions">
             
               <button class="btn btn-primary btn-sm" onclick="window.app.openRsvpModal(2)">RSVP Spot</button>
-              <button class="btn btn-secondary btn-sm" onclick="window.app.downloadCalendarFile(2)">📅 Add to Calendar</button>
+              <button class="btn btn-secondary btn-sm" onclick="window.app.downloadCalendarFile(2)"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 10h18"></path></svg> Add to Calendar</button>
             
           </div>
         </div>
@@ -2244,7 +2526,7 @@ textarea.form-control {
       <!-- CTA Band -->
       <section class="section" style="padding-top:0">
         <div class="container">
-          <div class="cta-band">
+          <div class="cta-band reveal">
             <h2>Ready to Publish Real Market Work?</h2>
             <p>Join a community of students who investigate real brands, build analytical portfolios, and connect directly with industry CMOs.</p>
             <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
@@ -2254,7 +2536,6 @@ textarea.form-control {
           </div>
         </div>
       </section>
-    
   </main>
 
   <!-- Modals using native <dialog> -->
@@ -2278,9 +2559,15 @@ textarea.form-control {
             A student-led marketing research publication and collaborative community based at British Management University.
           </p>
           <div style="display:flex;gap:12px;margin-top:18px">
-            <a href="https://t.me/bmu_marketing_lab" target="_blank" rel="noopener" class="icon-btn" title="Telegram Channel" aria-label="Telegram">TG</a>
-            <a href="https://www.linkedin.com/school/british-management-university" target="_blank" rel="noopener" class="icon-btn" title="LinkedIn" aria-label="LinkedIn">in</a>
-            <a href="https://www.instagram.com/bmu_marketinglab" target="_blank" rel="noopener" class="icon-btn" title="Instagram" aria-label="Instagram">IG</a>
+            <a href="https://t.me/bmu_marketing_lab" target="_blank" rel="noopener" class="icon-btn social-btn" title="Telegram Channel" aria-label="Telegram">
+              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 3.6 2.9 10.8c-1.3.5-1.2 1.2-.2 1.5l4.8 1.5 1.8 5.6c.2.6.4.8.9.8.4 0 .6-.2.9-.4l2.3-2.2 4.7 3.5c.9.5 1.5.2 1.7-.8l3.1-14.6c.3-1.3-.5-1.9-1.4-1.5ZM9 13.4l9.3-5.9c.4-.3.8-.1.5.2l-7.6 6.9-.3 3.3L9 13.4Z"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/school/british-management-university" target="_blank" rel="noopener" class="icon-btn social-btn" title="LinkedIn" aria-label="LinkedIn">
+              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.75h4V21H3V9.75Zm6.5 0h3.8v1.6h.06c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.77 2.65 4.77 6.1V21h-4v-4.9c0-1.17-.02-2.68-1.63-2.68-1.64 0-1.89 1.28-1.89 2.6V21h-4V9.75Z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/bmu_marketinglab" target="_blank" rel="noopener" class="icon-btn social-btn" title="Instagram" aria-label="Instagram">
+              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.8.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.8.07-3.2 0-3.58-.01-4.85-.07-3.26-.15-4.77-1.7-4.92-4.92C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85C2.38 3.92 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16ZM12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0Zm0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32ZM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.4-11.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88Z"/></svg>
+            </a>
           </div>
         </div>
 
@@ -3034,6 +3321,66 @@ class MarketingLabEmblem3D {
   }
 }
 
+// Subtle 3D tilt for cards (desktop pointers only). Bound once via document delegation.
+function initCard3DTilt() {
+  if (window.__cardTiltBound) return;
+  window.__cardTiltBound = true;
+  try {
+    if (window.matchMedia && (window.matchMedia('(hover: none)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+  } catch (e) {}
+  const SEL = '.card, .team-card, .event-card';
+  document.addEventListener('mousemove', (e) => {
+    const card = e.target && e.target.closest && e.target.closest(SEL);
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    card.style.setProperty('--tilt-x', `${((y - 0.5) * -6).toFixed(2)}deg`);
+    card.style.setProperty('--tilt-y', `${((x - 0.5) * 6).toFixed(2)}deg`);
+    card.style.setProperty('--mouse-x', `${(x * 100).toFixed(1)}%`);
+    card.style.setProperty('--mouse-y', `${(y * 100).toFixed(1)}%`);
+  }, { passive: true });
+  document.addEventListener('mouseout', (e) => {
+    const card = e.target && e.target.closest && e.target.closest(SEL);
+    if (card && (!e.relatedTarget || !card.contains(e.relatedTarget))) {
+      card.style.setProperty('--tilt-x', '0deg');
+      card.style.setProperty('--tilt-y', '0deg');
+    }
+  }, { passive: true });
+}
+
+// Inline SVG icon set (consistent, theme-aware line icons replacing emoji)
+const ICONS = {
+  search: '<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>',
+  chart: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+  cap: '<path d="M2 9.5 12 5l10 4.5-10 4.5L2 9.5Z"/><path d="M6 11.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5M22 9.5V15"/>',
+  bulb: '<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3Z"/>',
+  bolt: '<path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/>',
+  film: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v16M17 4v16M3 9h4M3 15h4M17 9h4M17 15h4"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  pin: '<path d="M12 21s-7-6.1-7-11.5a7 7 0 0 1 14 0C19 14.9 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/>',
+  calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  moon: '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/>',
+  menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+  close: '<path d="M6 6l12 12M18 6 6 18"/>'
+};
+const CATEGORY_ICONS = {
+  'Campaign Analysis': 'search',
+  'Research': 'chart',
+  'Educational': 'cap',
+  'Opinion': 'bulb',
+  'News': 'bolt',
+  'Behind the Scenes': 'film'
+};
+function svgIcon(name) {
+  return `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ICONS.bulb}</svg>`;
+}
+function numberWord(n) {
+  const words = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve'];
+  return words[n] || String(n);
+}
+
 class App {
   constructor() {
     window.app = this;
@@ -3124,7 +3471,7 @@ class App {
     const btn = document.getElementById('theme-toggle-btn');
     if (btn) {
       const isDark = document.documentElement && document.documentElement.getAttribute('data-theme') === 'dark';
-      btn.innerHTML = isDark ? '☀️' : '🌙';
+      btn.innerHTML = isDark ? svgIcon('sun') : svgIcon('moon');
       btn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
     }
   }
@@ -3139,7 +3486,7 @@ class App {
     try {
       const drawer = document.getElementById('mobile-drawer');
       if (drawer && drawer.classList.contains('open')) {
-        drawer.classList.remove('open');
+        this.setMobileMenu(false);
       }
     } catch (e) {}
 
@@ -3196,6 +3543,12 @@ class App {
   initReadingProgress() {
     this.progressBar = document.getElementById('reading-progress');
     if (!this.progressBar || typeof window === 'undefined') return;
+
+    // Bind listeners only once (renderHome calls this on every visit)
+    if (this.progressScrollHandler) {
+      this.updateReadingProgressTarget();
+      return;
+    }
 
     this.progressCurrent = 0;
     this.progressTarget = 0;
@@ -3336,6 +3689,10 @@ class App {
     const adminLink = document.getElementById('admin-nav-item');
     if (adminLink) {
       adminLink.style.display = this.isAdmin ? 'inline-flex' : 'none';
+    }
+    const adminMobileLink = document.getElementById('admin-mobile-nav-item');
+    if (adminMobileLink) {
+      adminMobileLink.style.display = this.isAdmin ? 'block' : 'none';
     }
 
     this.updateBookmarkBadge();
@@ -3522,35 +3879,41 @@ class App {
         <div class="container stats-grid">
           ${this.data.cfg.stats.map(s => `
             <div class="stat-item">
-              <strong>${this.escape(s.value)}</strong>
+              <strong data-count="${this.escape(s.value)}">${this.escape(s.value)}</strong>
               <span>${this.escape(s.label)}</span>
             </div>
           `).join('')}
         </div>
       </section>
 
-      <!-- Trending Ticker -->
+      <!-- Trending Ticker (group duplicated for a seamless loop) -->
       <div class="ticker-wrap">
         <div class="ticker-label">Trending Now</div>
-        <div class="ticker-content">
-          ${this.data.posts.map(p => `
-            <a href="#/article/${p.id}" class="ticker-item">
-              <strong>${this.escape(p.c)}:</strong> ${this.escape(p.t)}
-            </a>
-          `).join('')}
+        <div class="ticker-track">
+          <div class="ticker-content">
+            ${[0, 1].map(copy => `
+              <div class="ticker-group"${copy ? ' aria-hidden="true"' : ''}>
+                ${this.data.posts.map(p => `
+                  <a href="#/article/${p.id}" class="ticker-item"${copy ? ' tabindex="-1"' : ''}>
+                    <strong>${this.escape(p.c)}:</strong> ${this.escape(p.t)}
+                  </a>
+                `).join('')}
+              </div>
+            `).join('')}
+          </div>
         </div>
       </div>
 
       <!-- Featured Piece & Latest -->
       <section class="section">
         <div class="container">
-          <div class="section-head">
+          <div class="section-head reveal">
             <span class="section-eyebrow">Curated Research</span>
             <h2 class="section-title">Editor's Choice of the Month</h2>
           </div>
 
           ${featured ? `
-            <div class="featured-card">
+            <div class="featured-card reveal">
               <div class="featured-media">
                 <img src="${this.escape(featured.cv)}" alt="${this.escape(featured.t)}">
                 <span class="card-badge">${this.escape(featured.c)}</span>
@@ -3571,7 +3934,7 @@ class App {
             </div>
           ` : ''}
 
-          <div style="display:flex;justify-content:space-between;align-items:flex-end;margin:40px 0 24px">
+          <div class="section-row reveal">
             <div>
               <span class="section-eyebrow">Fresh Insights</span>
               <h3 style="font-family:var(--font-serif);font-size:28px">Latest from the Lab</h3>
@@ -3579,7 +3942,7 @@ class App {
             <a href="#/articles" class="btn btn-secondary btn-sm">View All ${this.data.posts.length} Articles →</a>
           </div>
 
-          <div class="articles-grid">
+          <div class="articles-grid reveal">
             ${latestPosts.map(p => this.renderArticleCard(p)).join('')}
           </div>
         </div>
@@ -3588,20 +3951,20 @@ class App {
       <!-- Content Categories -->
       <section class="section section-alt">
         <div class="container">
-          <div class="section-head" style="text-align:center">
-            <span class="section-eyebrow">Seven Knowledge Tracks</span>
-            <h2 class="section-title">What We Produce & Research</h2>
+          <div class="section-head reveal" style="text-align:center">
+            <span class="section-eyebrow">${numberWord(this.data.categories.length)} Knowledge Tracks</span>
+            <h2 class="section-title">What We Produce &amp; Research</h2>
             <p class="section-lead" style="margin:0 auto">Every format is designed to be read, cited, and added to a student's professional portfolio.</p>
           </div>
 
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px">
+          <div class="track-grid reveal">
             ${this.data.categories.map(cat => `
-              <div class="card" style="padding:28px;cursor:pointer" onclick="location.hash='#/articles?cat=${encodeURIComponent(cat.id)}'">
-                <div style="font-size:32px;margin-bottom:14px">${cat.icon}</div>
-                <h3 style="font-family:var(--font-serif);font-size:20px;margin-bottom:8px">${this.escape(cat.name)}</h3>
-                <p style="font-size:14px;color:var(--text-secondary);line-height:1.5">${this.escape(cat.desc)}</p>
-                <div style="margin-top:16px;color:var(--accent-primary);font-weight:700;font-size:13px">Explore Track →</div>
-              </div>
+              <a class="card track-card" href="#/articles?cat=${encodeURIComponent(cat.id)}">
+                <div class="track-icon">${CATEGORY_ICONS[cat.id] ? svgIcon(CATEGORY_ICONS[cat.id]) : `<span style="font-size:24px">${this.escape(cat.icon)}</span>`}</div>
+                <h3>${this.escape(cat.name)}</h3>
+                <p>${this.escape(cat.desc)}</p>
+                <div class="track-link">Explore Track <span>→</span></div>
+              </a>
             `).join('')}
           </div>
         </div>
@@ -3611,14 +3974,14 @@ class App {
       ${upcomingEvents.length ? `
         <section class="section">
           <div class="container">
-            <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:34px;flex-wrap:wrap;gap:16px">
+            <div class="section-row reveal" style="margin:0 0 34px">
               <div>
-                <span class="section-eyebrow">Community & Meetups</span>
-                <h2 class="section-title">Upcoming Masterclasses & Workshops</h2>
+                <span class="section-eyebrow">Community &amp; Meetups</span>
+                <h2 class="section-title">Upcoming Masterclasses &amp; Workshops</h2>
               </div>
               <a href="#/events" class="btn btn-secondary btn-sm">View Event Calendar →</a>
             </div>
-            <div class="events-grid">
+            <div class="events-grid reveal">
               ${upcomingEvents.map(e => this.renderEventCard(e)).join('')}
             </div>
           </div>
@@ -3628,7 +3991,7 @@ class App {
       <!-- CTA Band -->
       <section class="section" style="padding-top:0">
         <div class="container">
-          <div class="cta-band">
+          <div class="cta-band reveal">
             <h2>Ready to Publish Real Market Work?</h2>
             <p>Join a community of students who investigate real brands, build analytical portfolios, and connect directly with industry CMOs.</p>
             <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
@@ -3641,6 +4004,64 @@ class App {
     `;
     this.init3DEmblem();
     this.initReadingProgress();
+    this.initHomeEnhancements(container);
+  }
+
+  // Count-up stats + reveal-on-scroll for the home view
+  initHomeEnhancements(root) {
+    if (!root || !root.isConnected) return;
+    if (this.revealObserver) { this.revealObserver.disconnect(); this.revealObserver = null; }
+    if (this.statsObserver) { this.statsObserver.disconnect(); this.statsObserver = null; }
+
+    let reduceMotion = false;
+    try { reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+    if (reduceMotion || typeof IntersectionObserver === 'undefined') {
+      document.documentElement.classList.remove('js-reveal');
+      return;
+    }
+
+    // Reveal on scroll
+    document.documentElement.classList.add('js-reveal');
+    const revealEls = root.querySelectorAll('.reveal');
+    this.revealObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    revealEls.forEach(el => this.revealObserver.observe(el));
+
+    // Count-up numbers (e.g. "500+", "100%", "12")
+    const statEls = root.querySelectorAll('.stat-item strong[data-count]');
+    const animate = (el) => {
+      const raw = el.getAttribute('data-count') || '';
+      const m = raw.match(/^(\D*)(\d+(?:\.\d+)?)(.*)$/);
+      if (!m) return;
+      const [, pre, numStr, post] = m;
+      const target = parseFloat(numStr);
+      const decimals = (numStr.split('.')[1] || '').length;
+      const duration = 1400;
+      const start = performance.now();
+      const step = (now) => {
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        el.textContent = pre + (target * eased).toFixed(decimals) + post;
+        if (t < 1) requestAnimationFrame(step);
+        else el.textContent = raw;
+      };
+      requestAnimationFrame(step);
+    };
+    this.statsObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animate(entry.target);
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.6 });
+    statEls.forEach(el => this.statsObserver.observe(el));
   }
 
   renderArticles(container, queryString) {
@@ -3898,14 +4319,14 @@ class App {
         <div class="event-details" style="flex-grow:1">
           <h3>${this.escape(e.t)}</h3>
           <div class="event-meta">
-            <span>⏰ ${this.escape(e.time || '15:00')}</span>
-            <span>📍 ${this.escape(e.p)}</span>
+            <span>${svgIcon('clock')} ${this.escape(e.time || '15:00')}</span>
+            <span>${svgIcon('pin')} ${this.escape(e.p)}</span>
           </div>
           <p class="event-desc">${this.escape(e.x)}</p>
-          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <div class="event-actions">
             ${!isPast ? `
               <button class="btn btn-primary btn-sm" onclick="window.app.openRsvpModal(${e.id})">RSVP Spot</button>
-              <button class="btn btn-secondary btn-sm" onclick="window.app.downloadCalendarFile(${e.id})">📅 Add to Calendar</button>
+              <button class="btn btn-secondary btn-sm" onclick="window.app.downloadCalendarFile(${e.id})">${svgIcon('calendar')} Add to Calendar</button>
             ` : `
               <span class="chip" style="cursor:default">Event Concluded</span>
             `}
@@ -4484,10 +4905,32 @@ END:VCALENDAR`;
     const mobileBtn = document.getElementById('mobile-nav-toggle');
     const mobileMenu = document.getElementById('mobile-drawer');
     if (mobileBtn && mobileMenu) {
-      mobileBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('open');
+      mobileBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.setMobileMenu(!mobileMenu.classList.contains('open'));
+      });
+      document.addEventListener('click', (e) => {
+        if (mobileMenu.classList.contains('open') && !mobileMenu.contains(e.target) && !mobileBtn.contains(e.target)) {
+          this.setMobileMenu(false);
+        }
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mobileMenu.classList.contains('open')) {
+          this.setMobileMenu(false);
+          mobileBtn.focus();
+        }
       });
     }
+  }
+
+  setMobileMenu(open) {
+    const mobileBtn = document.getElementById('mobile-nav-toggle');
+    const mobileMenu = document.getElementById('mobile-drawer');
+    if (!mobileBtn || !mobileMenu) return;
+    mobileMenu.classList.toggle('open', open);
+    mobileBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    mobileBtn.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+    mobileBtn.innerHTML = svgIcon(open ? 'close' : 'menu');
   }
 }
 
