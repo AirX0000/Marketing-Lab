@@ -714,6 +714,7 @@ class App {
     this.initRouter();
     initCard3DTilt();
     this.init3DEmblem();
+    this.initReadingProgress();
   }
 
   loadData() {
@@ -855,16 +856,71 @@ class App {
     }
     this.handleRoute();
   }
-  handleScroll() {
-    const progressBar = document.getElementById('reading-progress');
-    if (!progressBar || typeof window === 'undefined') return;
-    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-    if (totalHeight <= 0) {
-      progressBar.style.width = '0%';
+  initReadingProgress() {
+    this.progressBar = document.getElementById('reading-progress');
+    if (!this.progressBar || typeof window === 'undefined') return;
+
+    this.progressCurrent = 0;
+    this.progressTarget = 0;
+    this.progressOpacity = 0;
+    this.progressTargetOpacity = 0;
+    this.progressTicking = false;
+
+    this.progressScrollHandler = () => this.updateReadingProgressTarget();
+    window.addEventListener('scroll', this.progressScrollHandler, { passive: true });
+    window.addEventListener('resize', this.progressScrollHandler, { passive: true });
+    this.updateReadingProgressTarget();
+  }
+
+  updateReadingProgressTarget() {
+    if (!this.progressBar || typeof window === 'undefined') return;
+    const scrollY = (window.pageYOffset || window.scrollY || (document.documentElement && document.documentElement.scrollTop) || (document.body && document.body.scrollTop)) || 0;
+    const totalHeight = (document.documentElement.scrollHeight || document.body.scrollHeight) - window.innerHeight;
+
+    if (totalHeight > 0) {
+      this.progressTarget = Math.min(1, Math.max(0, scrollY / totalHeight));
+      this.progressTargetOpacity = scrollY > 6 ? 1 : 0;
+    } else {
+      this.progressTarget = 0;
+      this.progressTargetOpacity = 0;
+    }
+
+    if (!this.progressTicking) {
+      this.progressTicking = true;
+      requestAnimationFrame(() => this.loopReadingProgress());
+    }
+  }
+
+  loopReadingProgress() {
+    if (!this.progressBar) {
+      this.progressTicking = false;
       return;
     }
-    const percent = Math.min(100, Math.max(0, (window.scrollY / totalHeight) * 100));
-    progressBar.style.width = `${percent}%`;
+
+    // Smooth exponential damping (fluid 60/120fps glide)
+    this.progressCurrent += (this.progressTarget - this.progressCurrent) * 0.16;
+    this.progressOpacity += (this.progressTargetOpacity - this.progressOpacity) * 0.16;
+
+    // Snap to target if infinitesimally close
+    if (Math.abs(this.progressTarget - this.progressCurrent) < 0.0004) {
+      this.progressCurrent = this.progressTarget;
+    }
+    if (Math.abs(this.progressTargetOpacity - this.progressOpacity) < 0.004) {
+      this.progressOpacity = this.progressTargetOpacity;
+    }
+
+    this.progressBar.style.transform = `scaleX(${this.progressCurrent.toFixed(4)})`;
+    this.progressBar.style.opacity = this.progressOpacity.toFixed(3);
+
+    if (this.progressCurrent !== this.progressTarget || this.progressOpacity !== this.progressTargetOpacity) {
+      requestAnimationFrame(() => this.loopReadingProgress());
+    } else {
+      this.progressTicking = false;
+    }
+  }
+
+  handleScroll() {
+    this.updateReadingProgressTarget();
   }
 
   handleRoute() {
@@ -1247,6 +1303,7 @@ class App {
       </section>
     `;
     this.init3DEmblem();
+    this.initReadingProgress();
   }
 
   renderArticles(container, queryString) {

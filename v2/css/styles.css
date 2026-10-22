@@ -123,16 +123,23 @@ button, input, select, textarea {
   padding-right: 24px;
 }
 
-/* Reading Progress Bar */
+/* Reading Progress Bar (Ultra-smooth GPU-accelerated) */
 #reading-progress {
   position: fixed;
   top: 0;
   left: 0;
+  right: 0;
   height: 3px;
-  width: 0%;
-  background: linear-gradient(90deg, var(--accent-primary), var(--accent-gold));
-  z-index: 100;
-  transition: width 0.1s ease-out;
+  width: 100%;
+  transform-origin: 0% 50%;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, #991b1b 0%, #e6525b 35%, #dfb75c 85%, #fef08a 100%);
+  box-shadow: 0 0 12px rgba(223, 183, 92, 0.65), 0 0 4px rgba(230, 82, 91, 0.8);
+  border-radius: 0 2px 2px 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform, opacity;
 }
 
 /* Sticky Header */
