@@ -174,7 +174,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
       views: 1320
     }
   ],
-  teamV: 2,
+  teamV: 3,
   team: [
     {
       "id": 1,
@@ -194,8 +194,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Quality control"
       ],
       "ph": "",
-      "ln": "https://t.me/n_ilham",
-      "tg": "@n_ilham",
+      "ln": "",
       "hidden": false
     },
     {
@@ -216,8 +215,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Onboarding"
       ],
       "ph": "",
-      "ln": "https://t.me/argentovad",
-      "tg": "@argentovad",
+      "ln": "",
       "hidden": false
     },
     {
@@ -237,8 +235,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Design systems"
       ],
       "ph": "",
-      "ln": "https://t.me/kokkoss",
-      "tg": "@kokkoss",
+      "ln": "",
       "hidden": false
     },
     {
@@ -259,8 +256,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Content standards"
       ],
       "ph": "",
-      "ln": "https://t.me/Helenmasson",
-      "tg": "@Helenmasson",
+      "ln": "",
       "hidden": false
     },
     {
@@ -280,8 +276,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Operations"
       ],
       "ph": "",
-      "ln": "https://t.me/Sin4in",
-      "tg": "@Sin4in",
+      "ln": "",
       "hidden": false
     },
     {
@@ -302,8 +297,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Communication"
       ],
       "ph": "",
-      "ln": "https://t.me/kh_arianaaa",
-      "tg": "@kh_arianaaa",
+      "ln": "",
       "hidden": false
     },
     {
@@ -323,8 +317,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Storytelling"
       ],
       "ph": "",
-      "ln": "https://t.me/RoxikCocsik",
-      "tg": "@RoxikCocsik",
+      "ln": "",
       "hidden": false
     },
     {
@@ -344,8 +337,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Trend research"
       ],
       "ph": "",
-      "ln": "https://t.me/shaxsiybrendchi",
-      "tg": "@shaxsiybrendchi",
+      "ln": "",
       "hidden": false
     },
     {
@@ -366,8 +358,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Brand representation"
       ],
       "ph": "",
-      "ln": "https://t.me/etoneshera",
-      "tg": "@etoneshera",
+      "ln": "",
       "hidden": false
     },
     {
@@ -388,8 +379,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Brand guidelines"
       ],
       "ph": "",
-      "ln": "https://t.me/teriteriii",
-      "tg": "@teriteriii",
+      "ln": "",
       "hidden": false
     },
     {
@@ -410,8 +400,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Brand guidelines"
       ],
       "ph": "",
-      "ln": "https://t.me/ev1novv",
-      "tg": "@ev1novv",
+      "ln": "",
       "hidden": false
     },
     {
@@ -432,8 +421,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Layout"
       ],
       "ph": "",
-      "ln": "https://t.me/fulsew",
-      "tg": "@fulsew",
+      "ln": "",
       "hidden": false
     },
     {
@@ -453,8 +441,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Excel"
       ],
       "ph": "",
-      "ln": "https://t.me/aziz_fhdg",
-      "tg": "@aziz_fhdg",
+      "ln": "",
       "hidden": false
     },
     {
@@ -474,8 +461,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Reporting"
       ],
       "ph": "",
-      "ln": "https://t.me/MaxMarcane",
-      "tg": "@MaxMarcane",
+      "ln": "",
       "hidden": false
     },
     {
@@ -495,8 +481,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Digital infrastructure"
       ],
       "ph": "",
-      "ln": "https://t.me/Air_A_P",
-      "tg": "@Air_A_P",
+      "ln": "",
       "hidden": false
     }
   ],
