@@ -174,7 +174,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
       views: 1320
     }
   ],
-  teamV: 3,
+  teamV: 4,
   team: [
     {
       "id": 1,
@@ -188,11 +188,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Gives final approval of publication materials",
         "Communicates with the university administration"
       ],
-      "sk": [
-        "Strategy",
-        "Academic leadership",
-        "Quality control"
-      ],
+      "sk": [],
       "ph": "",
       "ln": "",
       "hidden": false
@@ -209,11 +205,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Designs and maintains team workflows",
         "Answers process-related questions"
       ],
-      "sk": [
-        "Coordination",
-        "Operations",
-        "Onboarding"
-      ],
+      "sk": [],
       "ph": "",
       "ln": "",
       "hidden": false
@@ -229,11 +221,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Guides designers and keeps the visual identity consistent",
         "Leads the marketing manager and designers"
       ],
-      "sk": [
-        "Art direction",
-        "Visual identity",
-        "Design systems"
-      ],
+      "sk": [],
       "ph": "",
       "ln": "",
       "hidden": false
@@ -250,11 +238,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Covers marketing news",
         "Leads PR and the Brand Ambassador"
       ],
-      "sk": [
-        "Editing",
-        "PR",
-        "Content standards"
-      ],
+      "sk": [],
       "ph": "",
       "ln": "",
       "hidden": false
@@ -270,11 +254,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Works on the strategic positioning of the Lab",
         "Reports to Darya Subotina"
       ],
-      "sk": [
-        "Marketing strategy",
-        "Positioning",
-        "Operations"
-      ],
+      "sk": [],
       "ph": "",
       "ln": "",
       "hidden": false
@@ -291,11 +271,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Keeps team communication effective",
         "Reports to Darya Argentova"
       ],
-      "sk": [
-        "Project management",
-        "Planning",
-        "Communication"
-      ],
+      "sk": [],
       "ph": "",
       "ln": "",
       "hidden": false
@@ -311,11 +287,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Leads the videographers",
         "Communicates with the audience and community"
       ],
-      "sk": [
-        "Video production",
-        "Community management",
-        "Storytelling"
-      ],
+      "sk": [],
       "ph": "",
       "ln": "",
       "hidden": false
@@ -331,11 +303,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Finds new topics and opportunities to cover",
         "Keeps the content pipeline moving"
       ],
-      "sk": [
-        "Content strategy",
-        "Copywriting",
-        "Trend research"
-      ],
+      "sk": [],
       "ph": "",
       "ln": "",
       "hidden": false
@@ -352,11 +320,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Spreads the news about the Lab to new audiences",
         "Reports to Alina Baybekova"
       ],
-      "sk": [
-        "Public speaking",
-        "Networking",
-        "Brand representation"
-      ],
+      "sk": [],
       "ph": "",
       "ln": "",
       "hidden": false
@@ -373,11 +337,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Keeps the Lab's tone of voice in video",
         "Reports to Raxshonaxon (Roxy)"
       ],
-      "sk": [
-        "Video editing",
-        "Filming",
-        "Brand guidelines"
-      ],
+      "sk": [],
       "ph": "",
       "ln": "",
       "hidden": false
@@ -394,11 +354,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Keeps the Lab's tone of voice in video",
         "Reports to Raxshonaxon (Roxy)"
       ],
-      "sk": [
-        "Filming",
-        "Video editing",
-        "Brand guidelines"
-      ],
+      "sk": [],
       "ph": "",
       "ln": "",
       "hidden": false
@@ -415,11 +371,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Helps members who struggle with design",
         "Reports to Darya Subotina"
       ],
-      "sk": [
-        "Graphic design",
-        "Canva / Figma",
-        "Layout"
-      ],
+      "sk": [],
       "ph": "",
       "ln": "",
       "hidden": false
@@ -435,11 +387,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Works with numbers and market data",
         "Finds key and interesting topics for industry case studies and analysis"
       ],
-      "sk": [
-        "Market research",
-        "Data collection",
-        "Excel"
-      ],
+      "sk": [],
       "ph": "",
       "ln": "",
       "hidden": false
@@ -455,11 +403,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Keeps insights up to date",
         "Analyses case reports"
       ],
-      "sk": [
-        "Data analysis",
-        "Insights",
-        "Reporting"
-      ],
+      "sk": [],
       "ph": "",
       "ln": "",
       "hidden": false
@@ -475,11 +419,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Develops the Lab's infrastructure across platforms",
         "Supports the website and digital tools"
       ],
-      "sk": [
-        "Web development",
-        "JavaScript",
-        "Digital infrastructure"
-      ],
+      "sk": [],
       "ph": "",
       "ln": "",
       "hidden": false
