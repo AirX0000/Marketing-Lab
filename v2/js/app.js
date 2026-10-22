@@ -417,6 +417,7 @@ class MarketingLabEmblem3D {
     this.shadow = document.getElementById("emblem-floor-shadow");
     this.pulseOrb = document.getElementById("emblem-pulse-orb");
     this.glare = document.getElementById("layer-glare");
+    this.scrollIndicator = document.getElementById("emblem-scroll-indicator");
 
     if (!this.stage || !this.stack) return;
 
@@ -437,8 +438,16 @@ class MarketingLabEmblem3D {
     this.mouseNx = 0;
     this.mouseNy = 0;
 
-    this.scrollProgress = 0;
+    this.pageScroll = 0;
+    this.wheelExplode = 0;
     this.explodeAmount = 0;
+
+    // Drag-to-rotate state
+    this.isDragging = false;
+    this.dragStartX = 0;
+    this.dragStartY = 0;
+    this.dragRx = 0;
+    this.dragRy = 0;
 
     this.time = 0;
     this.lastTime = performance.now();
@@ -449,6 +458,7 @@ class MarketingLabEmblem3D {
   }
 
   bindEvents() {
+    // Mouse movement parallax & drag
     this.mouseMoveHandler = (e) => {
       if (!this.stage) return;
       const rect = this.stage.getBoundingClientRect();
@@ -456,29 +466,85 @@ class MarketingLabEmblem3D {
       const ny = (e.clientY - rect.top) / rect.height - 0.5;
       this.mouseNx = nx;
       this.mouseNy = ny;
+
+      if (this.isDragging) {
+        const dx = e.clientX - this.dragStartX;
+        const dy = e.clientY - this.dragStartY;
+        this.dragRy = dx * 0.35;
+        this.dragRx = -dy * 0.35;
+      }
+    };
+
+    this.mouseDownHandler = (e) => {
+      this.isDragging = true;
+      this.dragStartX = e.clientX;
+      this.dragStartY = e.clientY;
+    };
+
+    this.mouseUpHandler = () => {
+      this.isDragging = false;
+      this.dragRx *= 0.5;
+      this.dragRy *= 0.5;
     };
 
     this.mouseLeaveHandler = () => {
       this.mouseNx = 0;
       this.mouseNy = 0;
+      this.isDragging = false;
     };
 
     this.stage.addEventListener("mousemove", this.mouseMoveHandler, { passive: true });
+    this.stage.addEventListener("mousedown", this.mouseDownHandler, { passive: true });
+    window.addEventListener("mouseup", this.mouseUpHandler, { passive: true });
     this.stage.addEventListener("mouseleave", this.mouseLeaveHandler, { passive: true });
 
+    // Touch support for mobile / tablet drag
+    this.touchStartHandler = (e) => {
+      if (e.touches && e.touches[0]) {
+        this.isDragging = true;
+        this.dragStartX = e.touches[0].clientX;
+        this.dragStartY = e.touches[0].clientY;
+      }
+    };
+    this.touchMoveHandler = (e) => {
+      if (this.isDragging && e.touches && e.touches[0]) {
+        const dx = e.touches[0].clientX - this.dragStartX;
+        const dy = e.touches[0].clientY - this.dragStartY;
+        this.dragRy = dx * 0.35;
+        this.dragRx = -dy * 0.35;
+      }
+    };
+    this.touchEndHandler = () => {
+      this.isDragging = false;
+    };
+
+    this.stage.addEventListener("touchstart", this.touchStartHandler, { passive: true });
+    this.stage.addEventListener("touchmove", this.touchMoveHandler, { passive: true });
+    this.stage.addEventListener("touchend", this.touchEndHandler, { passive: true });
+
+    // Direct wheel/trackpad scrolling on stage
+    this.wheelHandler = (e) => {
+      if (Math.abs(e.deltaY) > 1) {
+        this.wheelExplode = Math.min(1, Math.max(0, this.wheelExplode + e.deltaY * 0.0035));
+      }
+    };
+    this.stage.addEventListener("wheel", this.wheelHandler, { passive: true });
+
+    // Page window scroll listener (cross-browser defensive)
     this.scrollHandler = () => this.onScroll();
     window.addEventListener("scroll", this.scrollHandler, { passive: true });
+    document.addEventListener("scroll", this.scrollHandler, { passive: true });
     this.onScroll();
 
-    // Click on stack to trigger physical ripple
+    // Click to ripple
     this.stackClickHandler = () => this.triggerRipple();
     this.stack.addEventListener("click", this.stackClickHandler);
   }
 
   onScroll() {
-    const scrollY = (typeof window !== "undefined" && window.scrollY) || 0;
-    // Explodes smoothly over first 500px of scroll
-    this.scrollProgress = Math.min(1, Math.max(0, scrollY / 500));
+    const scrollY = (typeof window !== "undefined" && (window.pageYOffset || window.scrollY || (document.documentElement && document.documentElement.scrollTop) || (document.body && document.body.scrollTop))) || 0;
+    // Responsive explosion: unfolds over first 320px of scroll
+    this.pageScroll = Math.min(1, Math.max(0, scrollY / 450));
   }
 
   triggerRipple() {
@@ -497,20 +563,27 @@ class MarketingLabEmblem3D {
     this.lastTime = timestamp;
     this.time += dt;
 
-    // Scroll drives the explode separation smoothly
-    this.explodeAmount += (this.scrollProgress - this.explodeAmount) * 0.12;
+    // Target explosion is driven by page scroll or direct stage wheel scrubbing
+    const target = Math.max(this.pageScroll, this.wheelExplode);
+    this.explodeAmount += (target - this.explodeAmount) * 0.14;
 
-    // Natural breathing levitation
-    const levitateY = Math.sin(this.time * 2.2) * (5 - this.explodeAmount * 2);
+    const exp = this.explodeAmount;
+
+    // Natural levitation breathing oscillation
+    const levitateY = Math.sin(this.time * 2.2) * (5 - exp * 2);
     const levitateRz = Math.sin(this.time * 1.5) * 1.1;
 
-    // Isometric 3D pitch & yaw tilt on scroll
-    const explodePitch = this.explodeAmount * 24; // Tilt forward
-    const explodeYaw = -this.explodeAmount * 20; // Yaw left
-    const explodeTz = 20 + this.explodeAmount * 36; // Pop forward in Z depth
+    // Calibrated isometric angles for optimal perspective & readability
+    const explodePitch = exp * 26; // Tilt forward 26deg
+    const explodeYaw = -exp * 22; // Yaw left 22deg
+    const explodeTz = 18 + exp * 32;
 
-    this.targetRx = -this.mouseNy * 22 + explodePitch;
-    this.targetRy = this.mouseNx * 26 + explodeYaw;
+    // Perspective counter-shift keeps all 4 separated layers centered in frame
+    const centerShiftX = exp * 48;
+    const centerShiftY = exp * 40;
+
+    this.targetRx = -this.mouseNy * 20 + explodePitch + (this.dragRx || 0);
+    this.targetRy = this.mouseNx * 24 + explodeYaw + (this.dragRy || 0);
 
     // Smooth inertia lerp
     this.rx += (this.targetRx - this.rx) * 0.12;
@@ -518,53 +591,52 @@ class MarketingLabEmblem3D {
 
     // Apply 3D transform to overall Stack
     if (this.stack) {
-      this.stack.style.transform = `perspective(1100px) translateY(${levitateY.toFixed(2)}px) rotateX(${this.rx.toFixed(2)}deg) rotateY(${this.ry.toFixed(2)}deg) rotateZ(${levitateRz.toFixed(2)}deg) translateZ(${explodeTz.toFixed(1)}px)`;
+      this.stack.style.transform = `translate(${centerShiftX.toFixed(1)}px, ${(levitateY + centerShiftY).toFixed(1)}px) rotateX(${this.rx.toFixed(2)}deg) rotateY(${this.ry.toFixed(2)}deg) rotateZ(${levitateRz.toFixed(2)}deg) translateZ(${explodeTz.toFixed(1)}px)`;
     }
 
-    // Smoothly separate individual layers along Z-axis in exploded view
-    const exp = this.explodeAmount;
+    // High-depth layer separation along Z-axis (True 3D space)
     if (this.layerChassis) {
-      const zChassis = exp * 12;
+      const zChassis = exp * 10;
       this.layerChassis.style.transform = `translateZ(${zChassis.toFixed(1)}px)`;
     }
 
     if (this.layerBars) {
-      const zBars = exp * 72;
-      const shadowBlur = (exp * 14).toFixed(1);
-      const shadowAlpha = (exp * 0.55).toFixed(2);
+      const zBars = exp * 70;
+      const shadowBlur = (exp * 16).toFixed(1);
+      const shadowAlpha = (exp * 0.6).toFixed(2);
       this.layerBars.style.transform = `translateZ(${zBars.toFixed(1)}px)`;
-      this.layerBars.style.filter = exp > 0.05 ? `drop-shadow(0 ${exp * 10}px ${shadowBlur}px rgba(0,0,0,${shadowAlpha}))` : "none";
+      this.layerBars.style.filter = exp > 0.04 ? `drop-shadow(0 ${(exp * 14).toFixed(1)}px ${shadowBlur}px rgba(0,0,0,${shadowAlpha}))` : "none";
     }
 
     if (this.layerTrendline) {
-      const zTrend = exp * 132;
-      const glowBlur = (8 + exp * 14).toFixed(1);
-      const glowAlpha = (0.35 + exp * 0.45).toFixed(2);
+      const zTrend = exp * 135;
+      const glowBlur = (10 + exp * 18).toFixed(1);
+      const glowAlpha = (0.4 + exp * 0.5).toFixed(2);
       this.layerTrendline.style.transform = `translateZ(${zTrend.toFixed(1)}px)`;
-      this.layerTrendline.style.filter = `drop-shadow(0 ${exp * 12}px ${glowBlur}px rgba(223, 183, 92, ${glowAlpha}))`;
+      this.layerTrendline.style.filter = `drop-shadow(0 ${(exp * 16).toFixed(1)}px ${glowBlur}px rgba(223, 183, 92, ${glowAlpha}))`;
     }
 
     if (this.layerSymbols) {
-      const zSymbols = exp * 192;
-      const shadowBlur = (exp * 18).toFixed(1);
-      const shadowAlpha = (exp * 0.65).toFixed(2);
+      const zSymbols = exp * 200;
+      const shadowBlur = (exp * 22).toFixed(1);
+      const shadowAlpha = (exp * 0.7).toFixed(2);
       this.layerSymbols.style.transform = `translateZ(${zSymbols.toFixed(1)}px)`;
-      this.layerSymbols.style.filter = exp > 0.05 ? `drop-shadow(0 ${exp * 14}px ${shadowBlur}px rgba(0,0,0,${shadowAlpha}))` : "none";
+      this.layerSymbols.style.filter = exp > 0.04 ? `drop-shadow(0 ${(exp * 20).toFixed(1)}px ${shadowBlur}px rgba(0,0,0,${shadowAlpha}))` : "none";
     }
 
     // Dynamic Floor Shadow physics
     if (this.shadow) {
-      const shadowOffsetX = -this.ry * 1.4;
-      const shadowOffsetY = this.rx * 0.85;
-      const shadowScale = 1 + exp * 0.35 - (levitateY / 40);
-      const shadowOpacity = Math.max(0.35, 0.92 - exp * 0.28 - (levitateY / 50));
-      const shadowBlur = 12 + exp * 14;
+      const shadowOffsetX = -this.ry * 1.5;
+      const shadowOffsetY = this.rx * 0.9;
+      const shadowScale = 1 + exp * 0.35 - (levitateY / 35);
+      const shadowOpacity = Math.max(0.3, 0.92 - exp * 0.3 - (levitateY / 50));
+      const shadowBlur = 12 + exp * 16;
       this.shadow.style.transform = `translate(${shadowOffsetX.toFixed(1)}px, ${shadowOffsetY.toFixed(1)}px) scale(${shadowScale.toFixed(2)})`;
       this.shadow.style.opacity = shadowOpacity.toFixed(2);
       this.shadow.style.filter = `blur(${shadowBlur.toFixed(1)}px)`;
     }
 
-    // Glare position on chassis
+    // Specular glare position on chassis
     if (this.glare) {
       const gx = 50 + this.mouseNx * 45;
       const gy = 30 + this.mouseNy * 35;
@@ -572,7 +644,7 @@ class MarketingLabEmblem3D {
       this.glare.style.setProperty("--glare-y", `${gy}%`);
     }
 
-    // Traveling pulse orb along trendline
+    // Traveling neon pulse orb along trendline
     if (this.pulseOrb) {
       const rawT = ((this.time * 0.5) % 1.0 + 1.0) % 1.0;
       const segCount = this.trendNodes.length - 1;
@@ -589,9 +661,14 @@ class MarketingLabEmblem3D {
       }
     }
 
+    // Fade scroll indicator as user scrolls
+    if (this.scrollIndicator) {
+      const indOpacity = Math.max(0, 1 - exp * 2.8);
+      this.scrollIndicator.style.opacity = indOpacity.toFixed(2);
+    }
+
     this.rafId = requestAnimationFrame(t => this.loop(t));
   }
-
   destroy() {
     this.isRunning = false;
     if (this.rafId) {
@@ -600,12 +677,19 @@ class MarketingLabEmblem3D {
     }
     if (this.stage && this.mouseMoveHandler) {
       this.stage.removeEventListener("mousemove", this.mouseMoveHandler);
-    }
-    if (this.stage && this.mouseLeaveHandler) {
+      this.stage.removeEventListener("mousedown", this.mouseDownHandler);
       this.stage.removeEventListener("mouseleave", this.mouseLeaveHandler);
+      this.stage.removeEventListener("touchstart", this.touchStartHandler);
+      this.stage.removeEventListener("touchmove", this.touchMoveHandler);
+      this.stage.removeEventListener("touchend", this.touchEndHandler);
+      this.stage.removeEventListener("wheel", this.wheelHandler);
+    }
+    if (this.mouseUpHandler) {
+      window.removeEventListener("mouseup", this.mouseUpHandler);
     }
     if (this.scrollHandler) {
       window.removeEventListener("scroll", this.scrollHandler);
+      document.removeEventListener("scroll", this.scrollHandler);
     }
     if (this.stack && this.stackClickHandler) {
       this.stack.removeEventListener("click", this.stackClickHandler);
@@ -936,97 +1020,106 @@ class App {
     container.innerHTML = `
       <!-- Hero -->
       <section class="hero">
-        <div class="container hero-grid">
-          <div>
-            <div class="hero-tag">
-              <span>★</span> ${this.escape(this.data.cfg.institution)}
-            </div>
-            <h1 class="hero-title">
-              Think like marketers.<br>
-              <em>Act like analysts.</em><br>
-              Create like professionals.
-            </h1>
-            <p class="hero-lead">
-              ${this.escape(this.data.cfg.description)}
-            </p>
-            <div class="hero-actions">
-              <a href="#/articles" class="btn btn-gold">Explore Latest Research →</a>
-              <a href="#/join" class="btn btn-outline-white">Join the Community</a>
-            </div>
-          </div>
-          <div>
-            <div class="hero-emblem-widget" id="hero-emblem-widget">
-              <div class="emblem-widget-header">
-                <span class="widget-kicker">British Management University</span>
-                <h4 id="emblem-widget-title">Marketing Insights Lab</h4>
-              </div>
-
-              <!-- 3D Crest Stage (Pure Artwork & Scroll Animation) -->
-              <div class="emblem-stage" id="emblem-stage" title="3D Marketing Lab Crest — Move mouse or scroll down to deconstruct into 3D layers">
-                <!-- Grid Backdrop -->
-                <div class="emblem-grid-backdrop" aria-hidden="true"></div>
-
-                <!-- Concentric Dashed Orbit Rings -->
-                <div class="emblem-orbit-rings" aria-hidden="true">
-                  <div class="emblem-ring-outer" id="emblem-ring-outer"></div>
-                  <div class="emblem-ring-inner" id="emblem-ring-inner"></div>
+        <div class="hero-scroll-track" id="hero-scroll-track">
+          <div class="hero-sticky-frame" id="hero-sticky-frame">
+            <div class="container hero-grid">
+              <div>
+                <div class="hero-tag">
+                  <span>★</span> ${this.escape(this.data.cfg.institution)}
                 </div>
-
-                <!-- 3D Perspective Anchor -->
-                <div class="emblem-3d-anchor" id="emblem-3d-anchor">
-                  
-                  <!-- Floor Cast Shadow -->
-                  <div class="emblem-floor-shadow" id="emblem-floor-shadow" aria-hidden="true"></div>
-
-                  <!-- Exploded 3D Shield Stack -->
-                  <div class="emblem-exploded-stack" id="emblem-exploded-stack">
-                    
-                    <!-- Layer 0: Shield Base Chassis -->
-                    <div class="exploded-layer layer-chassis" id="layer-chassis">
-                      <img src="assets/crest-layer-chassis.png" alt="Chassis Base" class="layer-img">
-                      <div class="layer-glare" id="layer-glare" aria-hidden="true"></div>
-                    </div>
-
-                    <!-- Layer 1: Market Columns / 5 Data Bars -->
-                    <div class="exploded-layer layer-bars" id="layer-bars">
-                      <img src="assets/crest-layer-bars.png" alt="5 Data Bars" class="layer-img">
-                    </div>
-
-                    <!-- Layer 2: Glowing Econometric Trendline & Nodes -->
-                    <div class="exploded-layer layer-trendline" id="layer-trendline">
-                      <img src="assets/crest-layer-trend.png" alt="Trend Spline" class="layer-img">
-                      
-                      <!-- Vector Neon Overlay on top of trendline -->
-                      <svg class="emblem-crest-overlay" viewBox="0 0 699 779" fill="none" aria-hidden="true">
-                        <path class="emblem-trend-glow" d="M160 427 L260 370 L360 397 L450 420 L544 372 L599 350" />
-                        <path class="emblem-trend-line" d="M160 427 L260 370 L360 397 L450 420 L544 372 L599 350" />
-                        
-                        <circle class="emblem-node node-1" cx="260" cy="370" r="8" />
-                        <circle class="emblem-node node-2" cx="360" cy="397" r="8" />
-                        <circle class="emblem-node node-3" cx="450" cy="420" r="8" />
-                        <circle class="emblem-node node-4" cx="544" cy="372" r="9" />
-
-                        <circle class="emblem-pulse-orb" id="emblem-pulse-orb" cx="260" cy="370" r="8.5" />
-                      </svg>
-                    </div>
-
-                    <!-- Layer 3: Innovation Lightbulb & Monogram M -->
-                    <div class="exploded-layer layer-symbols" id="layer-symbols">
-                      <div class="symbol-elem symbol-m" id="symbol-m">
-                        <img src="assets/crest-layer-m.png" alt="M Monogram" class="layer-img">
-                      </div>
-                      <div class="symbol-elem symbol-bulb" id="symbol-bulb">
-                        <img src="assets/crest-layer-bulb.png" alt="Innovation Lightbulb" class="layer-img">
-                        <svg class="emblem-crest-overlay" viewBox="0 0 699 779" fill="none" aria-hidden="true">
-                          <circle class="emblem-bulb-flare" cx="515" cy="198" r="45" />
-                        </svg>
-                      </div>
-                    </div>
-
-                  </div> <!-- /emblem-exploded-stack -->
-                </div> <!-- /emblem-3d-anchor -->
+                <h1 class="hero-title">
+                  Think like marketers.<br>
+                  <em>Act like analysts.</em><br>
+                  Create like professionals.
+                </h1>
+                <p class="hero-lead">
+                  ${this.escape(this.data.cfg.description)}
+                </p>
+                <div class="hero-actions">
+                  <a href="#/articles" class="btn btn-gold">Explore Latest Research →</a>
+                  <a href="#/join" class="btn btn-outline-white">Join the Community</a>
+                </div>
               </div>
-            </div></div>
+              <div>
+                <div class="hero-emblem-widget" id="hero-emblem-widget">
+                  <div class="emblem-widget-header">
+                    <span class="widget-kicker">British Management University</span>
+                    <h4 id="emblem-widget-title">Marketing Insights Lab</h4>
+                  </div>
+
+                  <!-- 3D Crest Stage (Pure Artwork & Scroll Animation) -->
+                  <div class="emblem-stage" id="emblem-stage" title="3D Marketing Lab Crest — Move mouse or scroll down to deconstruct into 3D layers">
+                    <!-- Grid Backdrop -->
+                    <div class="emblem-grid-backdrop" aria-hidden="true"></div>
+
+                    <!-- Concentric Dashed Orbit Rings -->
+                    <div class="emblem-orbit-rings" aria-hidden="true">
+                      <div class="emblem-ring-outer" id="emblem-ring-outer"></div>
+                      <div class="emblem-ring-inner" id="emblem-ring-inner"></div>
+                    </div>
+
+                    <!-- 3D Perspective Anchor -->
+                    <div class="emblem-3d-anchor" id="emblem-3d-anchor">
+                      
+                      <!-- Floor Cast Shadow -->
+                      <div class="emblem-floor-shadow" id="emblem-floor-shadow" aria-hidden="true"></div>
+
+                      <!-- Exploded 3D Shield Stack -->
+                      <div class="emblem-exploded-stack" id="emblem-exploded-stack">
+                        
+                        <!-- Layer 0: Shield Base Chassis -->
+                        <div class="exploded-layer layer-chassis" id="layer-chassis">
+                          <img src="assets/crest-layer-chassis.png" alt="Chassis Base" class="layer-img">
+                          <div class="layer-glare" id="layer-glare" aria-hidden="true"></div>
+                        </div>
+
+                        <!-- Layer 1: Market Columns / 5 Data Bars -->
+                        <div class="exploded-layer layer-bars" id="layer-bars">
+                          <img src="assets/crest-layer-bars.png" alt="5 Data Bars" class="layer-img">
+                        </div>
+
+                        <!-- Layer 2: Glowing Econometric Trendline & Nodes -->
+                        <div class="exploded-layer layer-trendline" id="layer-trendline">
+                          <img src="assets/crest-layer-trend.png" alt="Trend Spline" class="layer-img">
+                          
+                          <!-- Vector Neon Overlay on top of trendline -->
+                          <svg class="emblem-crest-overlay" viewBox="0 0 699 779" fill="none" aria-hidden="true">
+                            <path class="emblem-trend-glow" d="M160 427 L260 370 L360 397 L450 420 L544 372 L599 350" />
+                            <path class="emblem-trend-line" d="M160 427 L260 370 L360 397 L450 420 L544 372 L599 350" />
+                            
+                            <circle class="emblem-node node-1" cx="260" cy="370" r="8" />
+                            <circle class="emblem-node node-2" cx="360" cy="397" r="8" />
+                            <circle class="emblem-node node-3" cx="450" cy="420" r="8" />
+                            <circle class="emblem-node node-4" cx="544" cy="372" r="9" />
+
+                            <circle class="emblem-pulse-orb" id="emblem-pulse-orb" cx="260" cy="370" r="8.5" />
+                          </svg>
+                        </div>
+
+                        <!-- Layer 3: Innovation Lightbulb & Monogram M -->
+                        <div class="exploded-layer layer-symbols" id="layer-symbols">
+                          <div class="symbol-elem symbol-m" id="symbol-m">
+                            <img src="assets/crest-layer-m.png" alt="M Monogram" class="layer-img">
+                          </div>
+                          <div class="symbol-elem symbol-bulb" id="symbol-bulb">
+                            <img src="assets/crest-layer-bulb.png" alt="Innovation Lightbulb" class="layer-img">
+                            <svg class="emblem-crest-overlay" viewBox="0 0 699 779" fill="none" aria-hidden="true">
+                              <circle class="emblem-bulb-flare" cx="515" cy="198" r="45" />
+                            </svg>
+                          </div>
+                        </div>
+
+                      </div> <!-- /emblem-exploded-stack -->
+                    </div> <!-- /emblem-3d-anchor -->
+
+                    <!-- Subtle Scroll Hint -->
+                    <div class="emblem-scroll-indicator" id="emblem-scroll-indicator" aria-hidden="true">
+                      <span>↓ Scroll down to view 3D deconstruction</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
