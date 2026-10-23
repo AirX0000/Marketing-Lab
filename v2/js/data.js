@@ -60,7 +60,7 @@ By forming Red Bull Media House in 2007, the brand transitioned from sponsor to 
 1. **Audience-First Architecture:** Identify the emotional peak of your target audience and build media around that feeling.
 2. **IP Ownership Beats Renting:** When you own the tournament or media platform, you capture all downstream audience data and brand equity.
 3. **Product as a Badge:** The physical product becomes a ticket to belong to a global community rather than merely a beverage.`,
-      a: 1,
+      a: 2,
       d: "2026-10-14",
       cv: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&w=1200&q=80",
       featured: true,
@@ -82,7 +82,7 @@ By forming Red Bull Media House in 2007, the brand transitioned from sponsor to 
 
 ### What Marketers Must Adapt:
 Brands must treat Telegram and social messaging not just as notification channels, but as end-to-end CRM ecosystems with native web-apps and micro-landing experiences.`,
-      a: 2,
+      a: 14,
       d: "2026-10-08",
       cv: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=80",
       featured: false,
@@ -106,7 +106,7 @@ Brands must treat Telegram and social messaging not just as notification channel
 - **Audit your Touchpoints:** Does your onboarding email sound like a Sage while your Instagram sounds like an Outlaw? Inconsistency erodes brand trust.
 - **Define Your Enemy:** Clear brands stand against something—whether it is mediocrity, complexity, or cynicism.
 - **Document Voice Pillars:** Provide teams with "We are X, but never Y" guidelines.`,
-      a: 3,
+      a: 1,
       d: "2026-09-30",
       cv: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1200&q=80",
       featured: false,
@@ -128,7 +128,7 @@ Because LLMs synthesize existing consensus from training data, their unfiltered 
 1. **Contrarian Truths:** Great brand positioning rests on observations that most people secretly feel but nobody has voiced aloud. AI models are explicitly trained to avoid controversial novelty.
 2. **Curation and Taste:** The future creative director acts less like a copy generator and more like an art curator—filtering out the noise to preserve brand soul.
 3. **Real-world Cultural Immersion:** Real insights come from speaking to students on campus, observing street culture, and understanding regional nuances.`,
-      a: 5,
+      a: 4,
       d: "2026-09-22",
       cv: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80",
       featured: false,
@@ -148,7 +148,7 @@ Because LLMs synthesize existing consensus from training data, their unfiltered 
 
 ### Strategic Implications:
 Brands must rethink their packaging, digital shelf availability, and retail search optimization. Marketing and retail sales teams can no longer operate in separate silos.`,
-      a: 4,
+      a: 5,
       d: "2026-09-15",
       cv: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
       featured: false,
@@ -167,14 +167,14 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
 1. **The Topic Pitch:** Every piece begins with a research proposal defending why this market development matters and what evidence supports it.
 2. **Editorial Peer Review:** Authors receive structured feedback from fellow student editors and faculty advisors on clarity, structure, and argument robustness.
 3. **Multi-format Distribution:** The final piece is packaged as a long-form article, an executive infographic summary for LinkedIn, and a community discussion trigger.`,
-      a: 1,
+      a: 2,
       d: "2026-09-05",
       cv: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80",
       featured: false,
       views: 1320
     }
   ],
-  teamV: 4,
+  teamV: 5,
   team: [
     {
       "id": 1,
@@ -195,6 +195,23 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
     },
     {
       "id": 2,
+      "n": "Ayder Parmankulov",
+      "r": "Co-Founder & Web Developer",
+      "g": "Leadership",
+      "bio": "Working on an online brand presence and developing the Lab’s digital infrastructure across platforms.",
+      "resp": [
+        "Builds and maintains the Lab’s online brand presence",
+        "Develops the Lab’s digital infrastructure across platforms",
+        "Engineers web applications and interactive tools for the Lab",
+        "Ensures technical performance, security and platform accessibility"
+      ],
+      "sk": [],
+      "ph": "",
+      "ln": "",
+      "hidden": false
+    },
+    {
+      "id": 3,
       "n": "Darya Argentova",
       "r": "Senior Coordinator",
       "g": "Leadership",
@@ -211,7 +228,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
       "hidden": false
     },
     {
-      "id": 3,
+      "id": 4,
       "n": "Darya Subotina",
       "r": "Senior Designer",
       "g": "Leadership",
@@ -227,7 +244,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
       "hidden": false
     },
     {
-      "id": 4,
+      "id": 5,
       "n": "Alina Baybekova",
       "r": "Senior Editor and PR",
       "g": "Leadership",
@@ -244,15 +261,15 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
       "hidden": false
     },
     {
-      "id": 5,
-      "n": "Muhammadsodiq Sotiboldiev",
-      "r": "Marketing Manager",
+      "id": 6,
+      "n": "Abduraxmonova Raxshonaxon",
+      "r": "Videographer Lead + Community Manager",
       "g": "Management",
-      "bio": "Reports to Dasha S., supports the operations and strategic positioning of the Lab.",
+      "bio": "Supervises video content creation and communicates with the audience and community.",
       "resp": [
-        "Supports the day-to-day operations of the Lab",
-        "Works on the strategic positioning of the Lab",
-        "Reports to Darya Subotina"
+        "Supervises video content creation",
+        "Leads the videographers",
+        "Communicates with the audience and community"
       ],
       "sk": [],
       "ph": "",
@@ -260,7 +277,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
       "hidden": false
     },
     {
-      "id": 6,
+      "id": 7,
       "n": "Ariana Khajenassiri",
       "r": "Project Manager",
       "g": "Management",
@@ -277,15 +294,15 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
       "hidden": false
     },
     {
-      "id": 7,
-      "n": "Abduraxmonova Raxshonaxon",
-      "r": "Videographer Lead + Community Manager",
+      "id": 8,
+      "n": "Muhammadsodiq Sotiboldiev",
+      "r": "Marketing Manager",
       "g": "Management",
-      "bio": "Supervises video content creation and communicates with the audience and community.",
+      "bio": "Reports to Dasha S., supports the operations and strategic positioning of the Lab.",
       "resp": [
-        "Supervises video content creation",
-        "Leads the videographers",
-        "Communicates with the audience and community"
+        "Supports the day-to-day operations of the Lab",
+        "Works on the strategic positioning of the Lab",
+        "Reports to Darya Subotina"
       ],
       "sk": [],
       "ph": "",
@@ -293,13 +310,13 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
       "hidden": false
     },
     {
-      "id": 8,
+      "id": 9,
       "n": "Xolmamatov Karomatillo",
       "r": "Content Manager",
       "g": "Management",
       "bio": "Supervises the content and finds new opportunities to cover.",
       "resp": [
-        "Supervises the Lab's content",
+        "Supervises the Lab’s content",
         "Finds new topics and opportunities to cover",
         "Keeps the content pipeline moving"
       ],
@@ -309,11 +326,11 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
       "hidden": false
     },
     {
-      "id": 9,
+      "id": 10,
       "n": "Shermuhammad Abdullayev",
       "r": "Brand Ambassador",
       "g": "Creative & Media",
-      "bio": "The face and soul of our brand. Reports to Alina and helps with attracting new people and spreading the news about the Lab to the new audience.",
+      "bio": "The face and soul of our brand. Reports to Alina and helps with attracting new people and spread the news about the Lab to the new audience.",
       "resp": [
         "Represents the Lab as the face of the brand",
         "Attracts new people to the Lab",
@@ -326,41 +343,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
       "hidden": false
     },
     {
-      "id": 10,
-      "n": "Ishankulova Samira",
-      "r": "Videographer & Editor",
-      "g": "Creative & Media",
-      "bio": "Reports to Roxy. Supports the video content creation and editing according to the brand guidelines and tone of voice of the Lab.",
-      "resp": [
-        "Creates video content for the Lab",
-        "Edits videos according to the brand guidelines",
-        "Keeps the Lab's tone of voice in video",
-        "Reports to Raxshonaxon (Roxy)"
-      ],
-      "sk": [],
-      "ph": "",
-      "ln": "",
-      "hidden": false
-    },
-    {
       "id": 11,
-      "n": "Fozil Raupov",
-      "r": "Videographer",
-      "g": "Creative & Media",
-      "bio": "Reports to Roxy. Supports the video content creation and editing according to the brand guidelines and tone of voice of the Lab.",
-      "resp": [
-        "Films video content for the Lab",
-        "Supports video editing according to the brand guidelines",
-        "Keeps the Lab's tone of voice in video",
-        "Reports to Raxshonaxon (Roxy)"
-      ],
-      "sk": [],
-      "ph": "",
-      "ln": "",
-      "hidden": false
-    },
-    {
-      "id": 12,
       "n": "Robiya Salixova",
       "r": "Designer",
       "g": "Creative & Media",
@@ -377,7 +360,41 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
       "hidden": false
     },
     {
+      "id": 12,
+      "n": "Ishankulova Samira",
+      "r": "Videographer & Editor",
+      "g": "Creative & Media",
+      "bio": "Reports to Roxy. Supports the video content creation and editing according to the brand guidelines and tone of voice of the Lab.",
+      "resp": [
+        "Creates video content for the Lab",
+        "Edits videos according to the brand guidelines",
+        "Keeps the Lab’s tone of voice in video",
+        "Reports to Raxshonaxon (Roxy)"
+      ],
+      "sk": [],
+      "ph": "",
+      "ln": "",
+      "hidden": false
+    },
+    {
       "id": 13,
+      "n": "Fozil Raupov",
+      "r": "Videographer",
+      "g": "Creative & Media",
+      "bio": "Reports to Roxy. Supports the video content creation and editing according to the brand guidelines and tone of voice of the Lab.",
+      "resp": [
+        "Films video content for the Lab",
+        "Supports video editing according to the brand guidelines",
+        "Keeps the Lab’s tone of voice in video",
+        "Reports to Raxshonaxon (Roxy)"
+      ],
+      "sk": [],
+      "ph": "",
+      "ln": "",
+      "hidden": false
+    },
+    {
+      "id": 14,
       "n": "Ismatov Azizbek",
       "r": "Market Research Analyst",
       "g": "Research & Tech",
@@ -393,7 +410,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
       "hidden": false
     },
     {
-      "id": 14,
+      "id": 15,
       "n": "Muslim Yunuskhojayev",
       "r": "Marketing Analyst",
       "g": "Research & Tech",
@@ -402,22 +419,6 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
         "Works with data and turns it into insights",
         "Keeps insights up to date",
         "Analyses case reports"
-      ],
-      "sk": [],
-      "ph": "",
-      "ln": "",
-      "hidden": false
-    },
-    {
-      "id": 15,
-      "n": "Aider Parmankulov",
-      "r": "Web Developer",
-      "g": "Research & Tech",
-      "bio": "Working on an online brand presence and developing the Lab's infrastructure across platforms.",
-      "resp": [
-        "Builds and maintains the Lab's online brand presence",
-        "Develops the Lab's infrastructure across platforms",
-        "Supports the website and digital tools"
       ],
       "sk": [],
       "ph": "",
