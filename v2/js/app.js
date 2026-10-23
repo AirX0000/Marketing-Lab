@@ -174,7 +174,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
       views: 1320
     }
   ],
-  teamV: 5,
+  teamV: 6,
   team: [
     {
       "id": 1,
@@ -196,7 +196,7 @@ The Marketing Insights Lab was founded with a singular conviction: students shou
     {
       "id": 2,
       "n": "Ayder Parmankulov",
-      "r": "Co-Founder & Web Developer",
+      "r": "Web Developer",
       "g": "Leadership",
       "bio": "Working on an online brand presence and developing the Lab’s digital infrastructure across platforms.",
       "resp": [
